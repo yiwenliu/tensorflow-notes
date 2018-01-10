@@ -10,7 +10,8 @@ Welcome to tensorflow-notes's documentation!
    :maxdepth: 2
    :caption: Contents:
    
-   basic
+   programming_model
+   graph_session
 
 
 
