@@ -58,6 +58,28 @@ TensorFlow automatically chooses a unique name for each operation in your graph�
 
 `programming guid <https://www.tensorflow.org/programmers_guide/graphs#naming_operations>`_
 
+4、可以影响operation name的因素
+
+- graph context. 因为each operation in a single graph must have a unique name. 
+
+- tf.name_scope
+
+.. code-block:: python
+  :linenos:
+
+  c_0 = tf.constant(0, name="c")  # => operation named "c"
+
+  # Already-used names will be "uniquified".
+  c_1 = tf.constant(2, name="c")  # => operation named "c_1"
+
+  # Name scopes add a prefix to all operations created in the same context.
+  with tf.name_scope("outer"):
+    c_2 = tf.constant(2, name="c")  # => operation named "outer/c"
+
+  # Name scopes nest like paths in a hierarchical file system.
+  with tf.name_scope("inner"):
+    c_3 = tf.constant(3, name="c")  # => operation named "outer/inner/c"
+
 running device
 ^^^^^^^^^^^^^^^^
 1. 默认的设备
@@ -74,11 +96,20 @@ running device
 Tensor
 --------
 
+name
+^^^^^^
+和operation name 是对应着的。 按照一定的规则，由operation's name来决定。
+
+A tensor name has the form "<OP_NAME>:<i>" where:
+
+- "<OP_NAME>" is the name of the operation that produces it.
+- "<i>" is an integer representing the index of that tensor among the operation's outputs.
+
 Collection
 -----------
 
-Executing/Evaluation
-----------------------
+Executing a graph in a tf.Session
+-----------------------------------
 我们构建的graph实际上就是一个client program，其和C++ runtime之间的连接由tf.Session来实现。
 
 Session

@@ -12,8 +12,8 @@ Welcome to tensorflow-notes's documentation!
    
    programming_model
    graph_session
-
-
+   tensor
+   variable
 
 Indices and tables
 ==================

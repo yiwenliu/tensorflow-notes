@@ -46,3 +46,6 @@ But as soon as you get out of the scope of your Session, the Graph returns to it
     print(sess.run(a)) #=>4
     print(type(sess.run(a))) #=><class 'numpy.int32'>
     print(a)  #=>Tensor("Add_5:0", shape=(), dtype=int32)
+
+Higher-level APIs
+-------------------
