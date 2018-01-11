@@ -14,13 +14,17 @@ tf.Graph包含两个相关联的信息：
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 其实就是一个dict，associate a list of objects with a key，这里的object可能指的就是node/operation。 
 
-collections的意义：Because disconnected parts of a TensorFlow program might want to create **variables**, it is sometimes useful to have a single way to access all of them 
+Because disconnected parts of a TensorFlow program might want to create **variables**, it is sometimes useful to have a single way to access all of them。
+
+在任意位置，任意层次都可以创造对象，存入相应collection中；创造完成后，统一从一个collection中取出一类变量，施加相应操作。
 
 例如，tf.Variable()这个API就实现了上述两个信息：
 
 1. Executing v = tf.Variable(0) adds to the graph a tf.Operation that will store a writeable tensor value that persists between tf.Session.run calls.
 
 2. when you create a tf.Variable, it is added by default to collections representing "global variables" and "trainable variables".
+
+`tf.GraphKeys <https://www.tensorflow.org/versions/r0.12/api_docs/python/framework/graph_collections#GraphKeys>`_ 包含了所有默认的集合名称。
 
 Operations
 ------------
@@ -54,12 +58,6 @@ tf.Graph中的operation以及其返回的tensor都要有唯一的名字。
 TensorFlow automatically chooses a unique name for each operation in your graph（默认name）。
 但是，有两种方式 `<https://www.tensorflow.org/programmers_guide/graphs#naming_operations>`_ 可以改变这个默认的name。
 
-3.命名规则
-
-`programming guid <https://www.tensorflow.org/programmers_guide/graphs#naming_operations>`_
-
-4、可以影响operation name的因素
-
 - graph context. 因为each operation in a single graph must have a unique name. 
 
 - tf.name_scope
@@ -79,6 +77,10 @@ TensorFlow automatically chooses a unique name for each operation in your graph�
   # Name scopes nest like paths in a hierarchical file system.
   with tf.name_scope("inner"):
     c_3 = tf.constant(3, name="c")  # => operation named "outer/inner/c"
+
+3.命名规则
+
+`programming guid <https://www.tensorflow.org/programmers_guide/graphs#naming_operations>`_
 
 running device
 ^^^^^^^^^^^^^^^^

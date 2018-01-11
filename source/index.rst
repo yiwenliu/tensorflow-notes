@@ -7,13 +7,16 @@ Welcome to tensorflow-notes's documentation!
 ============================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
    
+   installation
    programming_model
    graph_session
    tensor
    variable
+   importing_data
+   tensorflow-slim
 
 Indices and tables
 ==================
