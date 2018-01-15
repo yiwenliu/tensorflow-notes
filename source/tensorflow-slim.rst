@@ -1,8 +1,18 @@
 TF-Slim
 =========
+What's slim
+-------------
+`slim's main page on github <https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/slim>`_
+
+TF-Slim is a library that makes building, training and evaluation neural networks simple.
+
+TF-Slim is composed of several parts which were design to exist independently。这些component应该都分属于对模型的building, training and evaluation。
+
+Defining Model
+----------------
 
 create variables
-------------------
+^^^^^^^^^^^^^^^^^^^
 
 - tf
 
@@ -25,7 +35,7 @@ create variables
                            device='/CPU:0')
 
 variable collections
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 - tf
 
@@ -67,7 +77,47 @@ The vast majority of variables are regular variables: once created, they can be 
 How does this work? When you create a model variable via TF-Slim's layers or directly via the slim.model_variable function, TF-Slim adds the variable to a the tf.GraphKeys.MODEL_VARIABLES collection.
 
 定义一个卷积层
---------------
+^^^^^^^^^^^^^^^^^^^
+:ref:`component of a Convolutional layer <component_of_a_convoluntional_layer>`
 
 - tf
+
+.. code-block:: python
+  :linenos:
+
+  input = ...
+  with tf.name_scope('conv1_1') as scope:
+    kernel = tf.Variable(tf.truncated_normal([3, 3, 64, 128],
+              dtype=tf.float32,stddev=1e-1), name='weights')
+    conv = tf.nn.conv2d(input, kernel, [1, 1, 1, 1], padding='SAME')
+    biases = tf.Variable(tf.constant(0.0, shape=[128], dtype=tf.float32),
+                       trainable=True, name='biases')
+    bias = tf.nn.bias_add(conv, biases)
+    conv1 = tf.nn.relu(bias, name=scope)
+
 - slim
+
+.. code-block:: python
+  :linenos:
+
+  input = ...
+  net = slim.conv2d(input, 128, [3, 3], scope='conv1_1')
+
+slim.conv2d()中的几个参数包含了使用tf.nn.conv2d()时的操作：
+
+- activation_fn=tf.nn.relu, # 用于激活函数的指定，默认的为ReLU函数
+- weights_initializer=initializers.xavier_initializer(),
+- weights_regularizer=None,
+- biases_initializer=tf.zeros_initializer(),
+
+Scopes
+^^^^^^^^
+
+Training Models
+-----------------
+
+Fine-Tuning Existing Models
+----------------------------
+
+Evaluating Models
+---------------------
