@@ -19,6 +19,7 @@ Welcome to tensorflow-notes's documentation!
    tensorflow-slim
    NN
    CNN
+   FCN
 
 Indices and tables
 ==================
