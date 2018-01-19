@@ -17,6 +17,7 @@ Welcome to tensorflow-notes's documentation!
    variable
    importing_data
    tensorflow-slim
+   dataset
    NN
    CNN
    FCN
