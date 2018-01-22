@@ -97,3 +97,21 @@ Face Detection Data Set and Benchmark
 Home Page
 ^^^^^^^^^^^
 http://vis-www.cs.umass.edu/fddb/
+
+WIDER FACE
+-------------
+Intro
+^^^^^^^^^^^^
+WIDER FACE dataset is a face detection benchmark dataset
+
+http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/index.html
+
+.. image:: img/WIDER-1.jpg
+
+Annotation
+^^^^^^^^^^^^
+标注文件的每一行有两种可能的含义
+
+image-path left-top-X left-top-Y right-bottom-X right-bottom-Y
+
+image-path left-top-X left-top-Y width height
