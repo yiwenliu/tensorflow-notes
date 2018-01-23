@@ -110,8 +110,38 @@ http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/index.html
 
 Annotation
 ^^^^^^^^^^^^
-标注文件的每一行有两种可能的含义
+标注文件的每一行的含义
 
-image-path left-top-X left-top-Y right-bottom-X right-bottom-Y
+[image-path left-top-X left-top-Y right-bottom-X right-bottom-Y]
 
-image-path left-top-X left-top-Y width height
+其他标注文件可能存在[image-path left right up down]
+
+训练数据的处理
+^^^^^^^^^^^^^^^^
+本文https://zhuanlan.zhihu.com/p/31761796主要介绍人脸检测中常用的数据处理方法，包括
+
+- Bounding Box绘制，
+- IOU计算，
+- 滑动窗口生成，
+- 滑动窗口相对于ground truth boundary box的偏移值
+
+Face Point Landmark
+---------------------
+Home Page
+^^^^^^^^^^^
+http://mmlab.ie.cuhk.edu.hk/archive/CNN_FacePoint.htm
+
+Annotations
+^^^^^^^^^^^^^^
+数据集中trainImageList.txt的每一行如下：
+
+lfw_5590\Aaron_Eckhart_0001.jpg 84 161 92 169 106.250000 107.750000 146.750000 112.250000 125.250000 142.750000 105.250000 157.750000 139.750000 161.750000
+
+图片路径 **left right top bottom** landmark_1_X landmark_2_Y ...
+
+训练数据集的处理
+^^^^^^^^^^^^^^^^^^
+本文https://zhuanlan.zhihu.com/p/31761796主要介绍了人脸检测和对齐中常用的数据处理方法，包括
+
+- 面部轮廓关键点回归值计算
+- 面部轮廓关键点生成
