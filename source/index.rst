@@ -16,6 +16,7 @@ Welcome to tensorflow-notes's documentation!
    tensor
    variable
    importing_data
+   file_IO
    tensorflow-slim
    dataset
    NN

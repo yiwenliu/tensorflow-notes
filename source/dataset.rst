@@ -137,7 +137,7 @@ Annotations
 
 lfw_5590\Aaron_Eckhart_0001.jpg 84 161 92 169 106.250000 107.750000 146.750000 112.250000 125.250000 142.750000 105.250000 157.750000 139.750000 161.750000
 
-图片路径 **left right top bottom** landmark_1_X landmark_2_Y ...
+图片路径 **left right top bottom** landmark_1_X landmark_1_Y ...
 
 训练数据集的处理
 ^^^^^^^^^^^^^^^^^^
