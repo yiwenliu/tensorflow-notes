@@ -17,6 +17,7 @@ Welcome to tensorflow-notes's documentation!
    variable
    importing_data
    file_IO
+   protocol-buffer
    tensorflow-slim
    dataset
    NN

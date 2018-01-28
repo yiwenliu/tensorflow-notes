@@ -13,38 +13,6 @@ The C++ FileSystem API supports multiple file system implementations, including 
 -----------------
 tf.gfile.Exists()
 
-Protocol Buffers
-===================
-All of TensorFlow's file formats, including TFRecord-formatted files, are based on Protocol Buffers. We often refer to Protocol Buffers as protobufs. 
-
-(反)序列化
-------------
-- 序列化： 将**数据结构或对象**转换成 **二进制串** 的过程
-
-在python中常用的dict对象串行化（序列化）模块是**json**
-
-.. code-block:: python
-  :linenos:
-
-  import json
-  data = {
-    'name' : 'ACME',
-    'shares' : 100,
-    'price' : 542.23
-  }
-  json_str = json.dumps(data) #type(json_str) is str
-
-- 反序列化：将在序列化过程中所生成的**二进制串**转换成**数据结构或者对象**的过程
-
-可以新建一个文件**data.json**，其内容就是{'name' : 'ACME','shares' : 100,'price' : 542.23}, 执行下面的代码就能把这个.json文件读入内存，成为一个python dict对象
-
-.. code-block:: python
-  :linenos:
-
-  # Reading data back
-  with open('data.json', 'r') as f:
-    data = json.load(f)
-
 TFRecord-formatted files
 =============================
 
