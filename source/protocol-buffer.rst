@@ -19,10 +19,11 @@ How to use
 -编译后，定义的message成为了class
 -编译后，给编译得到的class添加了一些方法，e.g. ParseFromString()和SerializeToString()，这两个方法的典型用法见 `Writing A Message <https://developers.google.com/protocol-buffers/docs/pythontutorial#writing-a-message>`_
 
-3. 使用.py中的class
+3. 使用编译后的.py中的class
 
 `Writing A Message <https://developers.google.com/protocol-buffers/docs/pythontutorial#writing-a-message>`_
 
+4. 用数据填充好的class，序列化后，可以保存为一个文本文件（不同于.proto的定义文件）。
 
 (反)序列化
 ------------
@@ -77,3 +78,52 @@ How to use
 ------------------
 下述链接有编译后的.py文件，可以比较事先定义的.proto文件
 https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-buffer-api
+
+.. _example-proto:
+
+example.proto
+---------------
+Usage&Background
+^^^^^^^^^^^^^^^^^^
+训练MTCNN时，要构建tfrecord文件，这个文件中每一条record都是序列化后的Example Object
+
+Definition Of This File
+^^^^^^^^^^^^^^^^^^^^^^^^^
+https://github.com/tensorflow/tensorflow/blob/r1.5/tensorflow/core/example/example.proto
+
+.. code-block:: python
+  :linenos:
+
+  message Example {
+    Features features = 1;
+  };
+
+这个proto文件对应的类
+^^^^^^^^^^^^^^^^^^^^^
+这个proto文件定义了两个message type，于是又两个class与之对应
+
+- class `tf.train.Example <https://www.tensorflow.org/api_docs/python/tf/train/Example>`_
+- class `tf.train.SequenceExample <https://www.tensorflow.org/api_docs/python/tf/train/SequenceExample>`_
+
+How To Use
+^^^^^^^^^^^^
+.. code-block:: python
+  :linenos:
+
+  example = tf.train.Example(features=tf.train.Features(feature={
+        'image/encoded': _bytes_feature(image_buffer),
+        'image/label': _int64_feature(class_label),
+        'image/roi': _float_feature(roi), #ROI: region of interest
+        'image/landmark': _float_feature(landmark)
+  }))
+
+上述代码中，tf.train.Example()应该等同于example.Example()
+
+.. _feature-proto:
+
+feature.proto
+----------------
+Definition
+^^^^^^^^^^^^
+https://github.com/tensorflow/tensorflow/blob/r1.5/tensorflow/core/example/feature.proto
+

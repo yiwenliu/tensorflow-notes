@@ -18,6 +18,7 @@ Welcome to tensorflow-notes's documentation!
    importing_data
    file_IO
    protocol-buffer
+   tfrecord
    tensorflow-slim
    dataset
    NN
