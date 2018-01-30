@@ -7,9 +7,9 @@ Data Set
 数据集的组成
 -------------
 
-- training data
-- validation data
-- test data
+- training data，在训练集上训练模型
+- validation data，在验证集上检验效果并决定何时完成训练
+- test data，在测试集评测模型的效果
 
 PASCAL VOC
 ------------

@@ -7,7 +7,7 @@ Welcome to tensorflow-notes's documentation!
 ============================================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Contents:
    
    installation
@@ -15,6 +15,7 @@ Welcome to tensorflow-notes's documentation!
    graph_session
    tensor
    variable
+   tf_matrix_op
    importing_data
    file_IO
    protocol-buffer
