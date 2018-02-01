@@ -63,6 +63,9 @@ Train Model
 
 Loss Function
 ^^^^^^^^^^^^^^
+CNN的最后一层的实现及其意义决定了Loss Function
+
+- 最后一层是softmax，loss function就是cross entropy
 
 Optimization Algorithm
 ^^^^^^^^^^^^^^^^^^^^^^^^

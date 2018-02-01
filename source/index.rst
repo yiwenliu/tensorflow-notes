@@ -15,7 +15,6 @@ Welcome to tensorflow-notes's documentation!
    graph_session
    tensor
    variable
-   tf_matrix_op
    importing_data
    file_IO
    protocol-buffer

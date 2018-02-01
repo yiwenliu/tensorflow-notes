@@ -97,6 +97,7 @@ running device
 
 Tensor
 --------
+.. _tensor-name:
 
 name
 ^^^^^^
@@ -110,9 +111,15 @@ A tensor name has the form "<OP_NAME>:<i>" where:
 Collection
 -----------
 
-Executing a graph in a tf.Session
------------------------------------
+Executing a graph
+--------------------
 我们构建的graph实际上就是一个client program，其和C++ runtime之间的连接由tf.Session来实现。
+
+有三种方法执行一个图
+
+- in a tf.Session.run(operation/tensor)
+- operation.run()
+- tensor.eval()
 
 Session
 =========
