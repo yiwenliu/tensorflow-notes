@@ -1,5 +1,6 @@
 Neural Network
 ================
+
 Neuron Model
 -------------
 根据neuron的activation function不同，常见的neuron model有:
@@ -13,13 +14,6 @@ Rectified Linear Neuron
 Linear Neuron
 ^^^^^^^^^^^^^^^
 
-Learning method
------------------
-对于神经网络而言，有两种常用的学习方法：
-
-- full-batch method
-- mini-batch method
-
 Cost Function
 ----------------
 整个神经网络的cost function由最后一层的neuron model决定。例如，linear neuron和softmax neuron的loss function有很大的区别
@@ -32,20 +26,47 @@ Error Surface
 
 从上图可得：
 
+- 梯度下降法的作用就是不断调整参数，使得模型的误差由“碗沿”降到“碗底”，参数由椭圆外部移动到椭圆的中心附近。
 - weights每一个分量的变化(**gradient descent**)的矢量和就是cost function收敛的方向
 
 Cross Entropy(互熵)
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Optimization Algorithm
--------------------------
-最优算法就是让cost function最小化的算法，算法中所有考虑因素的落脚点只有两个：
+Look inside Optimization Algorithm
+------------------------------------
+最优算法就是让cost function最小化的算法，算法需要考虑的“因素”包括：
 
-- 学习速度/收敛速度
-- 收敛结果：全局最小值/局部最小值
+- learning method
+- learning rate(direction and distance of the weight movment)
+- weights and gradient(direction and distance of the weight movment)
+
+算法中所有考虑因素的“落脚点”只有两个：
+
+- convergence speed/学习速度
+- whether the learning goes wrong/收敛结果：全局最小值 or 局部最小值
+
+.. _learning-method:
+
+Learning method
+^^^^^^^^^^^^^^^^^^
+对于神经网络而言，依据训练集的数据特点，有三种常用的学习方法：
+
+- full-batch method
+
+适用于small **datasets** (e.g. 10,000 cases) or bigger datasets without much redundancy
+
+- mini-batch method
+
+适用于big, redundant **datasets**, e.g. CNN中使用的图片数据
+
+- online method
+
+update weights after each case
 
 Learning Rate
 ^^^^^^^^^^^^^^^
+learning rate的大小对learning的影响
+++++++++++++++++++++++++++++++++++++
 根据Gradient discent的公式，
 
 .. image:: img/nn-3.png
@@ -67,14 +88,23 @@ learning rate的取值大小通过直接影响Weights，进而影响cost functio
 
 .. image:: img/nn-2.png
 
-Initializing the Weights
-^^^^^^^^^^^^^^^^^^^^^^^^^
+调节learning rate的方法
++++++++++++++++++++++++++
+- 设置初值，根据learning speed再手工调节, e.g. SGD, Momentum
+- 自适应, e.g. RMSProp, Adam,
 
+weight&gradient
+^^^^^^^^^^^^^^^^^
+1. How to initialize and chang the weights.
+2. 梯度的一致性(consistent)，包括了方向和滑动平均角度的一致性
+
+Instance of the Optimization Algorithms
+------------------------------------------
 SGD
 ^^^^^^
 1. 随机梯度下降，Stochastic Gradient Descent，又可以称为mini-batch gradient descent
 2. 使用一小部分样本进行训练
-#. 利用了highly redundant dataset。例如，mnist training set只有55000个样本，下面的例子却使用总数为100万的训练样本数量
+#. mnist training set只有55000个样本，下面的例子却使用总数为100万的训练样本数量
 
 .. code-block:: python
   :linenos:
@@ -84,11 +114,18 @@ SGD
   for i in range(20000):
     batch = mnist.train.next_batch(50)
     train_step.run(feed_dict={x:batch[0], y_:batch[1]})
+
+4. manual adjust **learning rate** to mini-batch gradient descent
+
+- if the error keeps getting worse or oscillates wildly, **reduce** the learning rate
+- towards the end of learning it nearly always helps to **turn down** the learning rate
+- when error stops decreaseing, **turn down** the learning rate
+- if the error is falling fairly consistently bust slow, **increase** the learning rate
     
 
-传统的梯度下降
-^^^^^^^^^^^^^^^
-每次使用全部样本进行训练
+BGD
+^^^^^
+batch gradient descent，传统的梯度下降每次使用全部样本进行训练
 
 使用NN的一般流程
 ------------------

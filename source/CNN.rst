@@ -61,9 +61,9 @@ http://www.jianshu.com/p/c9f66bc8f96c
 Train Model
 -------------
 
-Loss Function
+cost Function
 ^^^^^^^^^^^^^^
-CNN的最后一层的实现及其意义决定了Loss Function
+CNN的最后一层的实现及其意义决定了cost Function
 
 - 最后一层是softmax，loss function就是cross entropy
 
