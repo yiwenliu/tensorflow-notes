@@ -81,14 +81,16 @@ https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-
 
 .. _example-proto:
 
+TF中的实例
+------------
 example.proto
----------------
+^^^^^^^^^^^^^^^^
 Usage&Background
-^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++
 训练MTCNN时，要构建tfrecord文件，这个文件中每一条record都是序列化后的Example Object
 
 Definition Of This File
-^^^^^^^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++++++++
 https://github.com/tensorflow/tensorflow/blob/r1.5/tensorflow/core/example/example.proto
 
 .. code-block:: python
@@ -99,14 +101,14 @@ https://github.com/tensorflow/tensorflow/blob/r1.5/tensorflow/core/example/examp
   };
 
 这个proto文件对应的类
-^^^^^^^^^^^^^^^^^^^^^
+++++++++++++++++++++++
 这个proto文件定义了两个message type，于是又两个class与之对应
 
 - class `tf.train.Example <https://www.tensorflow.org/api_docs/python/tf/train/Example>`_
 - class `tf.train.SequenceExample <https://www.tensorflow.org/api_docs/python/tf/train/SequenceExample>`_
 
 How To Use
-^^^^^^^^^^^^
++++++++++++++++
 .. code-block:: python
   :linenos:
 
@@ -122,8 +124,8 @@ How To Use
 .. _feature-proto:
 
 feature.proto
-----------------
+^^^^^^^^^^^^^^^
 Definition
-^^^^^^^^^^^^
+++++++++++++
 https://github.com/tensorflow/tensorflow/blob/r1.5/tensorflow/core/example/feature.proto
 

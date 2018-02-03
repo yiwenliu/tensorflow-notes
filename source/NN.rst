@@ -18,6 +18,8 @@ Cost Function
 ----------------
 整个神经网络的cost function由最后一层的neuron model决定。例如，linear neuron和softmax neuron的loss function有很大的区别
 
+.. _effor-surface:
+
 Error Surface
 ^^^^^^^^^^^^^^^
 在Hilton和Andrew的课中，多次提及这个概念。下图就是一个linear neuron的error surface的垂直截面图和水平截面图，水平轴是each weight，垂直轴是error。
@@ -34,16 +36,26 @@ Cross Entropy(互熵)
 
 Look inside Optimization Algorithm
 ------------------------------------
+
 最优算法就是让cost function最小化的算法，算法需要考虑的“因素”包括：
 
 - learning method
-- learning rate(direction and distance of the weight movment)
-- weights and gradient(direction and distance of the weight movment)
+- initialization of the weights
+- :ref:`the stride of the weight movment <learning-rate>`
+- :ref:`direction of the weight movment <direction-descent>`
 
 算法中所有考虑因素的“落脚点”只有两个：
 
-- convergence speed/学习速度
-- whether the learning goes wrong/收敛结果：全局最小值 or 局部最小值
+.. _convergence-speed:
+
+1. **convergence speed**
+
+该快的时候快，该慢的时候慢，例如：
+
+- move quickly in directions with small but consistent(一致性) gradients
+- move slowly in directions with big but inconsistent gradients.
+
+2. **whether the learning goes wrong: global minimum or local minimum**
 
 .. _learning-method:
 
@@ -57,11 +69,15 @@ Learning method
 
 - mini-batch method
 
-适用于big, redundant **datasets**, e.g. CNN中使用的图片数据
+适用于big, redundant **datasets**, e.g. CNN中使用的图片数据。
+
+最好使用 **big mini-batches** ,不仅计算效率高，而且也满足一些fancy optimiaztion algorithm的需要。
 
 - online method
 
 update weights after each case
+
+.. _learning-rate:
 
 Learning Rate
 ^^^^^^^^^^^^^^^
@@ -90,13 +106,32 @@ learning rate的取值大小通过直接影响Weights，进而影响cost functio
 
 调节learning rate的方法
 +++++++++++++++++++++++++
-- 设置初值，根据learning speed再手工调节, e.g. SGD, Momentum
-- 自适应, e.g. RMSProp, Adam,
+目前，有两种常用的调节learning rate的方法：
 
-weight&gradient
-^^^^^^^^^^^^^^^^^
-1. How to initialize and chang the weights.
-2. 梯度的一致性(consistent)，包括了方向和滑动平均角度的一致性
+- 设置初值，根据learning speed再手工调节, e.g. :ref:`SGD <sgd-lr>` , Momentum, Nesterov Momentum
+- 自适应, e.g. RMSProp, Adam, AdaGrad
+
+auto learning rate的依据和目的
+++++++++++++++++++++++++++++++
+依据是gradient的特征，目的是 :ref:`convergence speed <convergence-speed>`
+
+.. _direction-descent:
+
+Direction of the weights move
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Direction of steepest descent
+++++++++++++++++++++++++++++++++++
+1. cost function的值下降最快的方向就是梯度的反方向。
+
+2. 有两种gradient(From Hilton)
+
+- small but consistent(一致性) gradients
+- big but inconsistent gradients.
+
+（quickly和slowly是如何量化的呢？——learning rate）
+
+Other directions of cost function descent
++++++++++++++++++++++++++++++++++++++++++++++
 
 Instance of the Optimization Algorithms
 ------------------------------------------
@@ -104,7 +139,7 @@ SGD
 ^^^^^^
 1. 随机梯度下降，Stochastic Gradient Descent，又可以称为mini-batch gradient descent
 2. 使用一小部分样本进行训练
-#. mnist training set只有55000个样本，下面的例子却使用总数为100万的训练样本数量
+#. MNIST training set只有55000个样本，下面的例子却使用总数为100万的训练样本数量
 
 .. code-block:: python
   :linenos:
@@ -114,6 +149,8 @@ SGD
   for i in range(20000):
     batch = mnist.train.next_batch(50)
     train_step.run(feed_dict={x:batch[0], y_:batch[1]})
+
+.. _sgd-lr:
 
 4. manual adjust **learning rate** to mini-batch gradient descent
 
@@ -126,6 +163,11 @@ SGD
 BGD
 ^^^^^
 batch gradient descent，传统的梯度下降每次使用全部样本进行训练
+
+Momentum
+^^^^^^^^^^^
+1. 在求∇W时，没有采用"steepest descent"（问题是，没有沿着梯度的方向，为什么还能加速？）
+2. Hilton says(lecture 6c) it can speed up mini-batch learning, 但是代价是引入了一个新的“动量衰减参数”
 
 使用NN的一般流程
 ------------------

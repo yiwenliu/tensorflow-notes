@@ -27,7 +27,29 @@ Dataset有如下三个特点：
 
 预处理
 ---------
+Why
+^^^^
+按照Hilton的说法，对数据进行预处理的目的是：converts an axis aligned elliptical :ref:`error surface <effor-surface>` into a circular one for which the gradient points straight towards the minimum，如下图
 
+.. image:: img/dataset-1.png
+
+Tips
+^^^^^^
+当我们开始处理数据时，首先要做的事是观察数据并获知其特性。本部分将介绍一些通用的技术，在实际中应该针对具体数据选择合适的预处理技术。例如一种标准的预处理方法是对每一个数据点都减去它的均值（也被称为移除直流分量，局部均值消减，消减归一化），这一方法对诸如自然图像这类数据是有效的，但对非平稳的数据则不然。
+
+步骤
+^^^^^
+一般有两步：
+
+1. 第一步，normalization，归一化
+2. 第二步，whitening，白化
+
+根据不同的datasets features，每一步可以采用不同的方法, 
+`REFERENCE <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#MNIST_.E6.89.8B.E5.86.99.E6.95.B0.E5.AD.97>`_
+
+数据集预处理流程举例
+^^^^^^^^^^^^^^^^^^^^^
+`REFER <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#.E6.A0.87.E5.87.86.E6.B5.81.E7.A8.8B>`_
 
 常用数据集
 -----------
