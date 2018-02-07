@@ -36,15 +36,17 @@ Cross Entropy(互熵)
 
 Look inside Optimization Algorithm
 ------------------------------------
-
-最优算法就是让cost function最小化的算法，算法需要考虑的“因素”包括：
+Sum.
+^^^^^^
+最优算法就是寻找cost function最小值的算法，算法需要考虑的“因素”包括：
 
 - learning method
 - initialization of the weights
-- :ref:`the stride of the weight movment <learning-rate>`
-- :ref:`direction of the weight movment <direction-descent>`
+- :ref:`the stride of the weight movment <learning-rate>`, 即learning rate
+- :ref:`direction of the weight movment <direction-descent>`, e.g. steepest descent的梯度反方向
+- regularization, λ(Andrew Ng)
 
-算法中所有考虑因素的“落脚点”只有两个：
+算法中所有考虑因素的“落脚点”只有三个：
 
 .. _convergence-speed:
 
@@ -56,6 +58,7 @@ Look inside Optimization Algorithm
 - move slowly in directions with big but inconsistent gradients.
 
 2. **whether the learning goes wrong: global minimum or local minimum**
+3. Generalization(Andrew Ng)
 
 .. _learning-method:
 
@@ -92,6 +95,17 @@ learning rate的取值大小通过直接影响Weights，进而影响cost functio
 - weights在 **error surface** 中的移动方式，会影响收敛速度和收敛结果
 - learning rate太大，就湮没了不同weights分量的梯度的不同，因为是 **learing-rate * gradient**，进而导致收敛速度降低
 
+
+调节learning rate的方法
++++++++++++++++++++++++++
+目前，有两种常用的调节learning rate的方法：
+
+- 设置初值，根据learning speed再手工调节, e.g. :ref:`SGD <sgd-lr>` , Momentum, Nesterov Momentum
+- 自适应, e.g. RMSProp, Adam, AdaGrad
+
+Manual learning rate
++++++++++++++++++++++
+
 +-------------+-------------------------------------------------------------------+--------------+-----------------+
 |             |                               error                               | convergence  |   convergence   |
 |             |                                                                   |     speed    |      result     |
@@ -104,21 +118,17 @@ learning rate的取值大小通过直接影响Weights，进而影响cost functio
 
 .. image:: img/nn-2.png
 
-调节learning rate的方法
-+++++++++++++++++++++++++
-目前，有两种常用的调节learning rate的方法：
+Adaptive learning rate
+++++++++++++++++++++++++
+依据是gradient的特征
 
-- 设置初值，根据learning speed再手工调节, e.g. :ref:`SGD <sgd-lr>` , Momentum, Nesterov Momentum
-- 自适应, e.g. RMSProp, Adam, AdaGrad
-
-auto learning rate的依据和目的
-++++++++++++++++++++++++++++++
-依据是gradient的特征，目的是 :ref:`convergence speed <convergence-speed>`
+- gradient符号正负号的转换
+- gradient的量值
 
 .. _direction-descent:
 
-Direction of the weights move
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Descent Direction
+^^^^^^^^^^^^^^^^^^^
 The Direction of steepest descent
 ++++++++++++++++++++++++++++++++++
 1. cost function的值下降最快的方向就是梯度的反方向。
@@ -135,6 +145,8 @@ Other directions of cost function descent
 
 Instance of the Optimization Algorithms
 ------------------------------------------
+一个算法可能就出自一篇论文。
+
 SGD
 ^^^^^^
 1. 随机梯度下降，Stochastic Gradient Descent，又可以称为mini-batch gradient descent
@@ -168,6 +180,26 @@ Momentum
 ^^^^^^^^^^^
 1. 在求∇W时，没有采用"steepest descent"（问题是，没有沿着梯度的方向，为什么还能加速？）
 2. Hilton says(lecture 6c) it can speed up mini-batch learning, 但是代价是引入了一个新的“动量衰减参数”
+
+Rprop
+^^^^^^^
+1. Hilton lecture6
+2. use a full-batch method
+3. use adaptive learning rates
+
+引入了一个新的参数——local gain, g, α->α*g
+
+Rmsprop
+^^^^^^^^^
+1. Hilton lecture6
+2. use mini-batch method
+#. use adaptive learning rates
+
+Adam
+^^^^^
+1. use momentum
+2. use mini-batch method
+3. adaptive learning rates
 
 使用NN的一般流程
 ------------------
