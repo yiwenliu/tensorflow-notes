@@ -16,7 +16,7 @@ Linear Neuron
 
 Cost Function
 ----------------
-整个神经网络的cost function由最后一层的neuron model决定。例如，linear neuron和softmax neuron的loss function有很大的区别
+整个神经网络的cost function由最后一层的neuron model决定。例如，linear neuron和softmax neuron的cost function有很大的区别
 
 .. _effor-surface:
 
@@ -31,8 +31,10 @@ Error Surface
 - 梯度下降法的作用就是不断调整参数，使得模型的误差由“碗沿”降到“碗底”，参数由椭圆外部移动到椭圆的中心附近。
 - weights每一个分量的变化(**gradient descent**)的矢量和就是cost function收敛的方向
 
-Cross Entropy(互熵)
+典型的cost function
 ^^^^^^^^^^^^^^^^^^^^^^
+Cross Entropy(互熵)
++++++++++++++++++++++
 
 Look inside Optimization Algorithm
 ------------------------------------
@@ -70,15 +72,21 @@ Learning method
 
 适用于small **datasets** (e.g. 10,000 cases) or bigger datasets without much redundancy
 
+.. _mini-batch-method:
+
 - mini-batch method
 
 适用于big, redundant **datasets**, e.g. CNN中使用的图片数据。
 
-最好使用 **big mini-batches** ,不仅计算效率高，而且也满足一些fancy optimiaztion algorithm的需要。
+还可以从 :ref:`learning curve <large-scale-data-ps>` 的角度来理解mini-batch的可行性
+
+最好使用 **big mini-batches** ,不仅计算效率高、速度快，而且也满足一些fancy optimiaztion algorithm的需要。
 
 - online method
 
-update weights after each case
+update weights after each case，下图来自于Andrew Ng 10th-week
+
+.. image:: img/nn-4.png
 
 .. _learning-rate:
 
@@ -209,12 +217,12 @@ Adam
 
 - :ref:`How To Define CNN Graph <component_of_a_convoluntional_layer>`
 
-3. 定义loss function
+3. 定义cost function
 
-- loss function往往由整个CNN中最后一层的形态和意义来决定
+- cost function往往由整个CNN中最后一层的形态和意义来决定
 - 最好加入 penalty factor——λ，以免过拟合
 
-4. 定义使loss function最小化的优化算法
+4. 定义使cost function最小化的优化算法
 
 需要设置一个参数learning rate，用于余梯度下降时控制下降的速率。
 
