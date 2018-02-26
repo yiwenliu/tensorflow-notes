@@ -38,17 +38,9 @@ Cross Entropy(互熵)
 
 Look inside Optimization Algorithm
 ------------------------------------
-Sum.
-^^^^^^
-最优算法就是寻找cost function最小值的算法，算法需要考虑的“因素”包括：
-
-- learning method
-- initialization of the weights
-- :ref:`the stride of the weight movment <learning-rate>`, 即learning rate
-- :ref:`direction of the weight movment <direction-descent>`, e.g. steepest descent的梯度反方向
-- regularization, λ(Andrew Ng)
-
-算法中所有考虑因素的“落脚点”只有三个：
+What to Optimize
+^^^^^^^^^^^^^^^^^^^
+最优算法就是寻找cost function最小值的算法, “落脚点”只有三个：
 
 .. _convergence-speed:
 
@@ -59,22 +51,34 @@ Sum.
 - move quickly in directions with small but consistent(一致性) gradients
 - move slowly in directions with big but inconsistent gradients.
 
-2. **whether the learning goes wrong: global minimum or local minimum**
-3. Generalization(Andrew Ng)
+2. **whether the learning goes wrong: convergent or not, global or local minimum**
+3. Generalization(Andrew Ng), underfit(high bias) or overfit(high variance)
+
+What to concern
+^^^^^^^^^^^^^^^^^
+算法需要考虑的“因素”包括：
+
+- :ref:`learning method <learning-method>`
+- initialization of the weights
+- :ref:`the stride of the weight movment <learning-rate>`, 即learning rate
+- :ref:`direction of the weight movment <direction-descent>`, e.g. steepest descent的梯度反方向
+- regularization, λ(Andrew Ng)
 
 .. _learning-method:
 
 Learning method
 ^^^^^^^^^^^^^^^^^^
-对于神经网络而言，依据训练集的数据特点，有三种常用的学习方法：
+对于神经网络而言，依据训练集的数据特点，有四种常用的学习方法：
 
-- full-batch method
+full-batch method
+++++++++++++++++++++
 
 适用于small **datasets** (e.g. 10,000 cases) or bigger datasets without much redundancy
 
 .. _mini-batch-method:
 
-- mini-batch method
+mini-batch method
+++++++++++++++++++++
 
 适用于big, redundant **datasets**, e.g. CNN中使用的图片数据。
 
@@ -82,18 +86,26 @@ Learning method
 
 最好使用 **big mini-batches** ,不仅计算效率高、速度快，而且也满足一些fancy optimiaztion algorithm的需要。
 
-- online method
+stochastic method
+++++++++++++++++++++
 
-update weights after each case，下图来自于Andrew Ng 10th-week
+Frome Andrew Ng 10th Week，下图来自于Andrew Ng 10th-week
 
 .. image:: img/nn-4.png
+
+online method
+++++++++++++++++++
+
+(From Andrew Ng 10th week)The online learning setting allows us to model problems where we have a continuous flood or a continuous stream of data coming in and we would like an algorithm to learn from that. 
+
+Online method的算法和stochastic method类似，但是，前者不保存training examples，用过之后即丢弃。
 
 .. _learning-rate:
 
 Learning Rate
 ^^^^^^^^^^^^^^^
-learning rate的大小对learning的影响
-++++++++++++++++++++++++++++++++++++
+How α influence the learning 
++++++++++++++++++++++++++++++++
 根据Gradient discent的公式，
 
 .. image:: img/nn-3.png
@@ -104,8 +116,8 @@ learning rate的取值大小通过直接影响Weights，进而影响cost functio
 - learning rate太大，就湮没了不同weights分量的梯度的不同，因为是 **learing-rate * gradient**，进而导致收敛速度降低
 
 
-调节learning rate的方法
-+++++++++++++++++++++++++
+When&How to adjust α
+++++++++++++++++++++++
 目前，有两种常用的调节learning rate的方法：
 
 - 设置初值，根据learning speed再手工调节, e.g. :ref:`SGD <sgd-lr>` , Momentum, Nesterov Momentum
@@ -150,6 +162,10 @@ The Direction of steepest descent
 
 Other directions of cost function descent
 +++++++++++++++++++++++++++++++++++++++++++++
+
+Checking for convergence
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plot J :subscript:`train` (θ) as a function of the number of iterations of gradient descent.
 
 Instance of the Optimization Algorithms
 ------------------------------------------
