@@ -51,3 +51,4 @@ But as soon as you get out of the scope of your Session, the Graph returns to it
 
 Higher-level APIs
 -------------------
+:ref:`TF-slim <tf-slim>`

@@ -7,24 +7,26 @@ TensorFlow provides **a default graph** that is an implicit argument(隐式参�
 
 tf.Graph包含两个相关联的信息：
 
-1. Graph structure
-^^^^^^^^^^^^^^^^^^^^
+Graph structure
+^^^^^^^^^^^^^^^^^
 
-2. Graph collections
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-其实就是一个dict，associate a list of objects with a key，这里的object可能指的就是node/operation。 
+Graph collections
+^^^^^^^^^^^^^^^^^^^
+1. 本质就是一个dict，associate a list of objects with a key，这里的object指的就是node/operation。 
 
-Because disconnected parts of a TensorFlow program might want to create **variables**, it is sometimes useful to have a single way to access all of them。
+2. 意义就是可以批量操作ops&tensors. Because disconnected parts of a TensorFlow program might want to create **variables**, it is sometimes useful to have a single way to access all of them。
 
 在任意位置，任意层次都可以创造对象，存入相应collection中；创造完成后，统一从一个collection中取出一类变量，施加相应操作。
 
 例如，tf.Variable()这个API就实现了上述两个信息：
 
-1. Executing v = tf.Variable(0) adds to the graph a tf.Operation that will store a writeable tensor value that persists between tf.Session.run calls.
+- Executing v = tf.Variable(0) adds to the graph a tf.Operation that will store a writeable tensor value that persists between tf.Session.run calls.
 
-2. when you create a tf.Variable, it is added by default to collections representing "global variables" and "trainable variables".
+- when you create a tf.Variable, it is added by default to collections representing "global variables" and "trainable variables".
 
-`tf.GraphKeys <https://www.tensorflow.org/versions/r0.12/api_docs/python/framework/graph_collections#GraphKeys>`_ 包含了所有默认的集合名称。
+3. `tf.GraphKeys <https://www.tensorflow.org/versions/r0.12/api_docs/python/framework/graph_collections#GraphKeys>`_ 包含了所有默认的集合名称。
+
+4. 实现方式就是新建ops object时，传入 **collections** 参数。
 
 Operations
 ------------
@@ -44,6 +46,8 @@ TensorFlow provides a "default graph" that is implicitly passed to all API funct
 2. 多graph时设置graph context
 
 `programming with multiple graphs <https://www.tensorflow.org/programmers_guide/graphs#programming_with_multiple_graphs>`_
+
+.. _ops-name:
 
 name 
 ^^^^^
@@ -75,8 +79,8 @@ TensorFlow automatically chooses a unique name for each operation in your graph�
     c_2 = tf.constant(2, name="c")  # => operation named "outer/c"
 
   # Name scopes nest like paths in a hierarchical file system.
-  with tf.name_scope("inner"):
-    c_3 = tf.constant(3, name="c")  # => operation named "outer/inner/c"
+    with tf.name_scope("inner"):
+      c_3 = tf.constant(3, name="c")  # => operation named "outer/inner/c"
 
 3.命名规则
 
@@ -94,22 +98,6 @@ running device
 /job:<JOB_NAME>/task:<TASK_INDEX>/device:<DEVICE_TYPE>:<DEVICE_INDEX>
 
 其中，device:<DEVICE_TYPE>:<DEVICE_INDEX>好理解，那么，前半部分是什么意思？`distributed tensorflow <https://www.tensorflow.org/deploy/distributed>`_
-
-Tensor
---------
-.. _tensor-name:
-
-name
-^^^^^^
-和operation name 是对应着的。 按照一定的规则，由operation's name来决定。
-
-A tensor name has the form "<OP_NAME>:<i>" where:
-
-- "<OP_NAME>" is the name of the operation that produces it.
-- "<i>" is an integer representing the index of that tensor among the operation's outputs.
-
-Collection
------------
 
 Executing a graph
 --------------------

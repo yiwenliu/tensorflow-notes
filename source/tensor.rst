@@ -34,9 +34,9 @@ Evaluating tensor和executing a graph是一个意思。
 
 name
 -----
-按照一定的规则，由operation's name来决定。
+按照一定的规则，由 :ref:`operation's name <ops-name>` 来决定。
 
-:ref:`A tensor name <tensor-name>` has the form "<OP_NAME>:<i>" where:
+A tensor name has the form "<OP_NAME>:<i>" where:
 
 - "<OP_NAME>" is the name of the operation that produces it.
 - "<i>" is an integer representing the index of that tensor among the operation's outputs.

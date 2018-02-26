@@ -15,6 +15,7 @@ Welcome to tensorflow-notes's documentation!
    graph_session
    tensor
    variable
+   scope
    importing_data
    file_IO
    protocol-buffer
@@ -22,6 +23,7 @@ Welcome to tensorflow-notes's documentation!
    tensorflow-slim
    dataset
    NN
+   opt_ algorithm
    CNN
    FCN
 

@@ -1,3 +1,5 @@
+.. _tf-slim:
+
 TF-Slim
 =========
 What's slim
@@ -6,10 +8,15 @@ What's slim
 
 TF-Slim is a library that makes building, training and evaluation neural networks simple.
 
-TF-Slim is composed of several parts which were design to exist independently。这些component应该都分属于对模型的building, training and evaluation。
+TF-Slim is composed of several parts which were design to exist independently。这些component，模块(.py文件)或者是包(文件夹)，分别实现对神经网络的building, training and evaluation。
 
 Defining Model
 ----------------
+slim components中定义模型的模块或者包有：
+
+- variables.py
+- layers.py
+- arg_scope.py
 
 create variables
 ^^^^^^^^^^^^^^^^^^^
@@ -76,7 +83,7 @@ The vast majority of variables are regular variables: once created, they can be 
 
 How does this work? When you create a model variable via TF-Slim's layers or directly via the slim.model_variable function, TF-Slim adds the variable to a the tf.GraphKeys.MODEL_VARIABLES collection.
 
-定义一个卷积层
+Create a Layer
 ^^^^^^^^^^^^^^^^^^^
 :ref:`component of a Convolutional layer <component_of_a_convoluntional_layer>`
 
@@ -110,8 +117,11 @@ slim.conv2d()中的几个参数包含了使用tf.nn.conv2d()时的操作：
 - weights_regularizer=None,
 - biases_initializer=tf.zeros_initializer(),
 
+.. _arg-scope:
+
 Scopes
 ^^^^^^^^
+arg_scope.py模块，涉及到一个新的 :ref:`scope mechanisms <scope>` 的概念，在 `github page <https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/slim#scopes>`_ 中详述了其意义和用法，另可见 `tf tutorial <https://www.tensorflow.org/api_docs/python/tf/contrib/framework/arg_scope>`_
 
 Training Models
 -----------------

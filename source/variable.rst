@@ -51,9 +51,13 @@ automatically initialize variables for you before training a model.
 
   print(session.run(tf.report_uninitialized_variables()))
 
+
+.. _variable-name:
+
 name
 ------
-Variable从本质上是一个operation，在设定variable的name scope时，使用了和设定operation name scope时不一样的函数(见graph/operation/name章节)。
+Variable从本质上是一个operation，在设定variable的name scope时，
+使用了和设定 :ref:`operation name scope <ops-name>` 时不一样的函数。
 
 在某个tf.Graph中，不应出现同名的variable。
 
