@@ -12,7 +12,7 @@ TF-Slim is composed of several parts which were design to exist independently。
 
 Defining Model
 ----------------
-slim components中定义模型的模块或者包有：
+slim components中用于定义模型的模块或者包有：
 
 - variables.py
 - layers.py
@@ -85,7 +85,7 @@ How does this work? When you create a model variable via TF-Slim's layers or dir
 
 Create a Layer
 ^^^^^^^^^^^^^^^^^^^
-:ref:`component of a Convolutional layer <component_of_a_convoluntional_layer>`
+由layers.py模块实现。
 
 - tf
 
@@ -110,7 +110,7 @@ Create a Layer
   input = ...
   net = slim.conv2d(input, 128, [3, 3], scope='conv1_1')
 
-slim.conv2d()中的几个参数包含了使用tf.nn.conv2d()时的操作：
+slim.conv2d(), `tutorial <https://www.tensorflow.org/api_docs/python/tf/contrib/layers/conv2d>`_ ,中的几个参数包含了使用tf.nn.conv2d()时的操作：
 
 - activation_fn=tf.nn.relu, # 用于激活函数的指定，默认的为ReLU函数
 - weights_initializer=initializers.xavier_initializer(),
@@ -121,7 +121,7 @@ slim.conv2d()中的几个参数包含了使用tf.nn.conv2d()时的操作：
 
 Scopes
 ^^^^^^^^
-arg_scope.py模块，涉及到一个新的 :ref:`scope mechanisms <scope>` 的概念，在 `github page <https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/slim#scopes>`_ 中详述了其意义和用法，另可见 `tf tutorial <https://www.tensorflow.org/api_docs/python/tf/contrib/framework/arg_scope>`_
+arg_scope.py模块，涉及到一个新的 :ref:`scope mechanisms <scope>` 的概念，在 `github page <https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/slim#scopes>`_ 中详述了arg_scope()函数的意义和用法，另可见 `def arg_scope() in tf tutorial <https://www.tensorflow.org/api_docs/python/tf/contrib/framework/arg_scope>`_
 
 Training Models
 -----------------

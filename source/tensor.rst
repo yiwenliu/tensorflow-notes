@@ -28,21 +28,65 @@ tensor shape and tensor rank
 |   2  |    2-D    |   矩阵(数据表)   | m = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] | [3,3] |
 +------+-----------+------------------+---------------------------------------+-------+
 
-Evaluating Tensors
----------------------
-Evaluating tensor和executing a graph是一个意思。
+Manipulate the Shape
+----------------------
+Get the Size of Tensor
+^^^^^^^^^^^^^^^^^^^^^^^^
+得到tensor所有元素的总个数， `tf.size() <https://www.tensorflow.org/api_docs/python/tf/size>`_
 
-name
------
-按照一定的规则，由 :ref:`operation's name <ops-name>` 来决定。
+Change the Tensor Shape 
+^^^^^^^^^^^^^^^^^^^^^^^^^
+- `tf.reshape() <https://www.tensorflow.org/api_docs/python/tf/reshape>`_
+- tf.squeeze()，把tensor的shape中值为1的维度去掉
 
-A tensor name has the form "<OP_NAME>:<i>" where:
+返回tensor's shape
+^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
+  :linenos:
 
-- "<OP_NAME>" is the name of the operation that produces it.
-- "<i>" is an integer representing the index of that tensor among the operation's outputs.
+  t = tf.constant([[[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]]])
+  tf.shape(t)  # [2, 2, 3]
 
-Matrix Operation
--------------------
+返回tensor's rank
+^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
+  :linenos:
+
+  # shape of tensor 't' is [2, 2, 3]
+  t = tf.constant([[[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]]])
+  tf.rank(t)  # 3
+
+Manipulate the Type
+--------------------
+Cast the Type of Tensor
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+- `tf.cast() <https://www.tensorflow.org/api_docs/python/tf/cast>`_
+- tf.to_int32()
+
+.. code-block:: python
+  :linenos:
+
+  x = tf.constant([1.8, 2.2], dtype=tf.float32)
+  tf.cast(x, tf.int32)  # [1, 2], dtype=tf.int32
+
+Manipulate the Element
+------------------------
+获得tensor某个维度上的最值的index
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
+  :linenos:
+
+  tf.argmax(input_tensor, axis)
+
+从Tensor中摘取数据
+^^^^^^^^^^^^^^^^^^^
+- tf.gather()，从一个tensor的指定维度的指定位置获取element，组合成一个tensor
+- tf.where(
+    condition,
+    x=None,
+    y=None,
+    name=None),从两个tensor,x,y,中选取element/row，组合成一个tensor
+
 矩阵相乘
 ^^^^^^^^^
 .. code-block:: python
@@ -72,13 +116,6 @@ Matrix Operation
 - axis=1, 按行
 - axis=None, all dimensions are reduced, and a tensor with a single element is returned. 
 
-获得tensor某个维度上的最值的index
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. code-block:: python
-  :linenos:
-
-  tf.argmax(input_tensor, axis)
-
 element-wise 比较两个tensor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: python
@@ -90,27 +127,30 @@ element-wise 比较两个tensor
       name=None
   )
 
-返回tensor's rank
-^^^^^^^^^^^^^^^^^^^
-.. code-block:: python
-  :linenos:
+找出tensor中每行最大的几个数
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tf.nn.top_k(), tutorial and `examples <https://www.jianshu.com/p/343c2eaacd18>`_
 
-  # shape of tensor 't' is [2, 2, 3]
-  t = tf.constant([[[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]]])
-  tf.rank(t)  # 3
+Evaluating Tensors
+---------------------
+Evaluating tensor和executing a graph是一个意思。
 
-返回tensor's shape
-^^^^^^^^^^^^^^^^^^^^
-.. code-block:: python
-  :linenos:
+name
+-----
+按照一定的规则，由 :ref:`operation's name <ops-name>` 来决定。
 
-  t = tf.constant([[[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]]])
-  tf.shape(t)  # [2, 2, 3]
+A tensor name has the form "<OP_NAME>:<i>" where:
 
-转换tensor element's type
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-..code-block:: python
-  :linenos:
+- "<OP_NAME>" is the name of the operation that produces it.
+- "<i>" is an integer representing the index of that tensor among the operation's outputs.
 
-  x = tf.constant([1.8, 2.2], dtype=tf.float32)
-  tf.cast(x, tf.int32)  # [1, 2], dtype=tf.int32
+
+
+Create a Tensor
+-----------------
+- tf.range()
+- tf.zeros(shape,dtype=tf.float32,name=None)
+- tf.zeros_like(tensor,
+    dtype=None,
+    name=None,
+    optimize=True)

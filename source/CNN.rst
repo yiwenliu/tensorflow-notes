@@ -35,7 +35,7 @@ How to 抗形变
 
 1. 激活函数
 
-激活函数本身就是neuron model的一部分，不是从属于CNN或者是RNN。
+激活函数本身就是 :ref:`neuron model <neuron>` 的一部分，不是从属于CNN或者是RNN。
 
 2. 池化
 
@@ -46,6 +46,13 @@ How to 抗形变
 卷积层的层数
 ^^^^^^^^^^^^^
 较浅的卷积层（靠前的）的感受域比较小，学习感知细节部分的能力强，较深的隐藏层 (靠后的)感受域相对较大，适合学习较为整体的、相对更宏观一些的特征。
+
+Padding
+^^^^^^^^^
+padding的本意是“填充”，在tf的卷积和池化函数中，都会出现padding这个参数，且参数值都是二选一，"VALID","SAME"，会对卷积和池化操作的输出的图片的尺寸产生影响, `Rerfence <http://blog.csdn.net/jasonzzj/article/details/53930074>`_ 中有计算公式。
+
+- padding="VALID", 卷积核和池化核的右侧移出图像矩阵区域，操作终止
+- padding="SAME", 卷积核和池化核的左侧移出图像矩阵区域，操作终止
 
 Dropout
 ----------
