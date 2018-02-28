@@ -11,21 +11,7 @@ Welcome to tensorflow-notes's documentation!
    :caption: Contents:
    
    installation
-   programming_model
-   graph_session
-   tensor
-   variable
-   scope
-   importing_data
-   file_IO
-   protocol-buffer
-   tfrecord
-   tensorflow-slim
-   dataset
-   NN
-   opt_ algorithm
-   CNN
-   FCN
+
 
 Indices and tables
 ==================
