@@ -10,7 +10,8 @@ Evaluation the Algorithm
 
 .. _convergence-speed:
 
-1. **convergence speed**
+Convergence Speed
+^^^^^^^^^^^^^^^^^^^
 
 该快的时候快，该慢的时候慢，例如：
 
@@ -20,8 +21,8 @@ Evaluation the Algorithm
 2. **whether the learning goes wrong: convergent or not, global or local minimum**
 3. Generalization(Andrew Ng), underfit(high bias) or overfit(high variance)
 
-Convergence
-^^^^^^^^^^^^^
+Convergent or Not
+^^^^^^^^^^^^^^^^^^
 Plot J :subscript:`train` (θ) as a function of the number of iterations of gradient descent.
 
 - 坐标图中只需要一条曲线就可以判断

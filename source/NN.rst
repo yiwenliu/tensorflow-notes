@@ -42,18 +42,40 @@ Parametric Rectified Linear Unit，增加了参数修正的ReLU，来自于论�
 
 Linear Neuron
 ^^^^^^^^^^^^^^^
-
 Cost Function
-----------------
-整个神经网络的cost function由最后一层的neuron model决定。例如，linear neuron和softmax neuron的cost function有很大的区别
-
-公式
-^^^^^^
-对于linear neuron而言，典型的cost function公式如下（from Andrew Ng Week6）
+++++++++++++++++
+公式如下（from Andrew Ng Week6）
 
 .. image:: img/cost-func.png
 
-.. _effor-surface:
+Softmax
+^^^^^^^^^
+Activation function
+++++++++++++++++++++
+
+Cost Function
+++++++++++++++++
+Cross Entropy(互熵)
+
+.. image:: img/softmax-loss-1.jpg
+
+首先L是损失。Sj是softmax的输出向量S的第j个值，前面已经介绍过了，表示的是这个样本属于第j个类别的概率。yj前面有个求和符号，j的范围也是1到类别数T，因此y是一个1*T的向量，里面的T个值，而且只有1个值是1，其他T-1个值都是0。那么哪个位置的值是1呢？答案是真实标签对应的位置的那个值是1，其他都是0。所以这个公式其实有一个更简单的形式：
+
+.. image:: img/softmax-loss-2.jpg
+
+当然此时要限定j是指向当前样本的真实标签。
+
+来举个例子吧。假设一个5分类问题，然后一个样本I的标签y=[0,0,0,1,0]，也就是说样本I的真实标签是4，假设模型预测的结果概率（softmax的输出）p=[0.2,0.3,0.4,0.6,0.5]，可以看出这个预测是对的，那么对应的损失L=-log(0.6)，也就是当这个样本经过这样的网络参数产生这样的预测p时，它的损失是-log(0.6)。那么假设p=[0.2,0.3,0.4,0.1,0.5]，这个预测结果就很离谱了，因为真实标签是4，而你觉得这个样本是4的概率只有0.1（远不如其他概率高，如果是在测试阶段，那么模型就会预测该样本属于类别5），对应损失L=-log(0.1)。那么假设p=[0.2,0.3,0.4,0.3,0.5]，这个预测结果虽然也错了，但是没有前面那个那么离谱，对应的损失L=-log(0.3)。我们知道log函数在输入小于1的时候是个负数，而且log函数是递增函数，所以-log(0.6) < -log(0.3) < -log(0.1)。简单讲就是你预测错比预测对的损失要大，预测错得离谱比预测错得轻微的损失要大。
+
+Network Loss
+----------------
+Definition
+^^^^^^^^^^^^
+整个神经网络的loss由output layer的neuron model的cost function决定，是每个neuron的loss的均值。
+
+OHEM(Online Hard Sample Mining)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+在MTCNN的face/nonface classification task中，使用了这个概念对训练的loss进行修改。
 
 Error Surface
 ^^^^^^^^^^^^^^^
@@ -65,11 +87,6 @@ Error Surface
 
 - 梯度下降法的作用就是不断调整参数，使得模型的误差由“碗沿”降到“碗底”，参数由椭圆外部移动到椭圆的中心附近。
 - weights每一个分量的变化(**gradient descent**)的矢量和就是cost function收敛的方向
-
-典型的cost function
-^^^^^^^^^^^^^^^^^^^^^^
-Cross Entropy(互熵)
-+++++++++++++++++++++
 
 Generalization
 ---------------
@@ -89,9 +106,19 @@ L2 Regularization
 
 Dropout
 ^^^^^^^^^
+`article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“Dropout”部分讲的很好
 
 Data Augmentation
 ^^^^^^^^^^^^^^^^^^
+`this article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“数据集扩增”部分讲的很好，还有相关论文，暂时没有时间看。
+
+`the article <https://zhuanlan.zhihu.com/p/31761796>`_ 详述了MTCNN中data augmentation的过程
+
+Training
+----------
+Definition
+^^^^^^^^^^^^
+其实，神经网络的训练过程就是使用Optimization Algorithm最小化Loss的过程。
 
 使用NN的一般流程
 ------------------

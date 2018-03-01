@@ -127,8 +127,8 @@ element-wise 比较两个tensor
       name=None
   )
 
-找出tensor中每行最大的几个数
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+找出tensor中每行(last dimension)最大的k个数
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 tf.nn.top_k(), tutorial and `examples <https://www.jianshu.com/p/343c2eaacd18>`_
 
 Evaluating Tensors

@@ -64,15 +64,3 @@ Intro
 ^^^^^^^
 下面的链接很好的解释了Dropout的概念及其本质。
 http://www.jianshu.com/p/c9f66bc8f96c
-
-Train Model
--------------
-
-cost Function
-^^^^^^^^^^^^^^
-CNN的最后一层的实现及其意义决定了cost Function
-
-- 最后一层是softmax，loss function就是cross entropy
-
-Optimization Algorithm
-^^^^^^^^^^^^^^^^^^^^^^^^
