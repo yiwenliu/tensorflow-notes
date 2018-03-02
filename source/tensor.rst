@@ -80,7 +80,10 @@ Manipulate the Element
 
 从Tensor中摘取数据
 ^^^^^^^^^^^^^^^^^^^
-- tf.gather()，从一个tensor的指定维度的指定位置获取element，组合成一个tensor
+- tf.gather()，从一个tensor(params)的指定维度(axis)的指定位置(indices)获取element，组合成一个tensor
+
+.. image:: img/tf.gather.png
+
 - tf.where(
     condition,
     x=None,

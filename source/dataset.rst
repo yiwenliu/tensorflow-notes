@@ -37,7 +37,7 @@ Dataset
 ---------
 Why
 ^^^^
-按照Hilton的说法，对数据进行预处理的目的是：converts an axis aligned elliptical :ref:`error surface <effor-surface>` into a circular one for which the gradient points straight towards the minimum，如下图
+按照Hilton的说法，对数据进行预处理的目的是：converts an axis aligned elliptical :ref:`error surface <error-surface>` into a circular one for which the gradient points straight towards the minimum，如下图
 
 .. image:: img/dataset-1.png
 
@@ -82,6 +82,10 @@ Problems&Solutions
 .. image:: img/dataset-2.png
 
 2. Map-reduce
+
+Data Augmentation
+-------------------
+详见 :ref:`Neural Network-Generalization-Data Augmentation <data-aug>`
 
 常用数据集
 -----------
@@ -207,11 +211,11 @@ http://mmlab.ie.cuhk.edu.hk/archive/CNN_FacePoint.htm
 
 Annotations
 +++++++++++++
-数据集中trainImageList.txt的每一行如下：
+数据集中trainImageList.txt的每一行格式如下：
+
+[图片路径][left] [right] [top] [bottom] [landmark_1_X] [landmark_1_Y] ...
 
 lfw_5590\Aaron_Eckhart_0001.jpg 84 161 92 169 106.250000 107.750000 146.750000 112.250000 125.250000 142.750000 105.250000 157.750000 139.750000 161.750000
-
-图片路径 **left right top bottom** landmark_1_X landmark_1_Y ...
 
 训练数据集的处理
 +++++++++++++++++

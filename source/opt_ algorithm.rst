@@ -58,11 +58,9 @@ full-batch method
 mini-batch method
 +++++++++++++++++++++
 
-适用于big, redundant **datasets**, e.g. CNN中使用的图片数据。
+(from Hilton)适用于big, redundant **datasets**, e.g. CNN中使用的图片数据。最好使用 **big mini-batches** ,不仅计算效率高、速度快，而且也满足一些fancy optimiaztion algorithm的需要。
 
 还可以从 :ref:`learning curve <large-scale-data-ps>` 的角度来理解mini-batch的可行性
-
-最好使用 **big mini-batches** ,不仅计算效率高、速度快，而且也满足一些fancy optimiaztion algorithm的需要。
 
 stochastic method
 +++++++++++++++++++

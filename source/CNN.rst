@@ -54,6 +54,8 @@ padding的本意是“填充”，在tf的卷积和池化函数中，都会出�
 - padding="VALID", 卷积核和池化核的右侧移出图像矩阵区域，操作终止
 - padding="SAME", 卷积核和池化核的左侧移出图像矩阵区域，操作终止
 
+.. _dropout:
+
 Dropout
 ----------
 Usage
@@ -64,3 +66,5 @@ Intro
 ^^^^^^^
 下面的链接很好的解释了Dropout的概念及其本质。
 http://www.jianshu.com/p/c9f66bc8f96c
+
+`this article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“Dropout”部分讲的很好
