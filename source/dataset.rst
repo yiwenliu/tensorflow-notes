@@ -135,7 +135,7 @@ xml文件包括图片的基本信息、图中所含object的name和bndbox等，�
 #. test.txt: Test data. The test set is not provided in the development kit. It will be released in good time before the deadline for submission of results.
 
 
-Segmentation Competition & FCN
+Segmentation Competition
 +++++++++++++++++++++++++++++++
 图像的语义分割是像素级别的分类问题。
 

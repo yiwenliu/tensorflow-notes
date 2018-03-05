@@ -62,6 +62,17 @@ mini-batch method
 
 还可以从 :ref:`learning curve <large-scale-data-ps>` 的角度来理解mini-batch的可行性
 
+相关概念：
+
+- epoch
+- iteration
+- batch size
+- number of batches
+
+当一个完整的数据集通过了神经网络一次并且返回了一次，这个过程称为一个 epoch。
+
+迭代是 batch 需要完成一个 epoch 的次数。记住：在一个 epoch 中，batch 数和迭代数是相等的。比如对于一个有 2000 个训练样本的数据集。将 2000 个样本分成大小为 500 的 batch，那么完成一个 epoch 需要 4 个 iteration。
+
 stochastic method
 +++++++++++++++++++
 

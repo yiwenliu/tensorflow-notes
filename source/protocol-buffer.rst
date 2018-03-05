@@ -2,22 +2,53 @@ Protocol Buffers
 ===================
 All of TensorFlow's file formats, including TFRecord-formatted files, are based on Protocol Buffers. We often refer to Protocol Buffers as protobufs. 
 
-Basics tutorial
------------------
-`Protocol Buffer Basics: Python 
+Reference
+----------
+Google提供了一个官方的帮助页面（本小节的内容多出自于此处）， `Protocol Buffer Basics: Python
 <https://developers.google.com/protocol-buffers/docs/pythontutorial>`_
+
+What to
+--------
+serialize and retrieve structured data.
+
+Why Protocl Buffer 
+---------------------
+在 `Google Protocol Buffer Basics <https://developers.google.com/protocol-buffers/docs/pythontutorial#why-use-protocol-buffers>`_ 中，给出了三种（反）序列化的方法，分别描述了各自的不足，并给出了要创造protocol buffer的原因， the protocol buffer compiler解决了所有的不足。
+
+为什么要用.proto，而不直接在.py中定义class？但是，思考如果用python普通的定义class的方法来实现 `Basics-tutorial <https://developers.google.com/protocol-buffers/docs/pythontutorial>`_ 中给出的例子，会有多麻烦，因为要体现类的继承、包含和引用的关系，还要定义相应的方法。
+
+下述链接有编译后的.py文件，可以比较事先定义的.proto文件
+https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-buffer-api
 
 How to use
 -------------
 1. 写.proto文件
 
-- 写.proto文件类似于定义struct或者定义class。但是，思考如果用python普通的定义class的方法来实现 `Basics-tutorial <https://developers.google.com/protocol-buffers/docs/pythontutorial>`_ 中给出的例子，会有多麻烦。因为要体现类的继承、包含和引用的关系。
+- add a **message** for each data structure you want to serialize, then specify a name and a type for each field in the message, 类似于定义struct或者定义class。
+
+.. code-block:: none
+
+  #start with a package declaration which helps to prevent naming conflicts between #different projects
+  package xxx;  
+
+  # a message definition
+  message message-type-name {
+    #define a field in the message
+    #modifier: required/optional/repeated
+    #field-type: 1)simple data types including bool, int32, float, double, and string;
+    #            2)other message types as field types
+    #tag: the unique "tag" that field uses in the binary encoding
+    modifier field-type field-name = tag;
+  }
+
+You'll find a complete guide to writing .proto files – including all the possible field types – in the `Protocol Buffer Language Guide <https://developers.google.com/protocol-buffers/docs/proto>`_.
+
 - 定义message时，只定义了属性，并未定义方法。
 
 2. 编译，generate the classes, a .py file
 
--编译后，定义的message成为了class
--编译后，给编译得到的class添加了一些方法，e.g. ParseFromString()和SerializeToString()，这两个方法的典型用法见 `Writing A Message <https://developers.google.com/protocol-buffers/docs/pythontutorial#writing-a-message>`_
+- 编译后，定义的message成为了class
+- 编译后，并没有直接给编译得到的class添加方法，e.g. 常用的ParseFromString()和SerializeToString()，这两个方法的典型用法见 `Writing A Message <https://developers.google.com/protocol-buffers/docs/pythontutorial#writing-a-message>`_ 。而是使用了metaclass，见 `The Protocol Buffer API <https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-buffer-api>`_ 中的讲解
 
 3. 使用编译后的.py中的class
 
@@ -53,32 +84,6 @@ How to use
   with open('data.json', 'r') as f:
     data = json.load(f)
 
-.proto file format
-----------------------
-
-.. code-block:: none
-
-  #start with a package declaration
-  package xxx;  
-
-  # a message definition
-  message message-type-name {
-    #define a field in the message
-    modifier field-type field-name = tag;
-  }
-
-  #define enum type
-  enum type-name {
-    MOBILE = 0;
-    HOME = 1;
-    WORK = 2;
-  }
-
-.proto v.s. .py
-------------------
-下述链接有编译后的.py文件，可以比较事先定义的.proto文件
-https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-buffer-api
-
 .. _example-proto:
 
 TF中的实例
@@ -99,6 +104,31 @@ https://github.com/tensorflow/tensorflow/blob/r1.5/tensorflow/core/example/examp
   message Example {
     Features features = 1;
   };
+
+  message Features {
+    // Map from feature name to feature.
+    map<string, Feature> feature = 1;
+  };
+
+  message Feature {
+  // Each feature can be exactly one kind.
+    oneof kind {
+      BytesList bytes_list = 1;
+      FloatList float_list = 2;
+      Int64List int64_list = 3;
+    }
+  };
+
+  // Containers to hold repeated fundamental values.
+  message BytesList {
+    repeated bytes value = 1;
+  }
+  message FloatList {
+    repeated float value = 1 [packed = true];
+  }
+  message Int64List {
+    repeated int64 value = 1 [packed = true];
+  }
 
 这个proto文件对应的类
 ++++++++++++++++++++++
