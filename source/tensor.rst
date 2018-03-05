@@ -8,6 +8,10 @@ Very briefly, a tensor is an N-dimensional array containing the same type of dat
 1. its data type and 
 2. the value of each of the N dimension.
 
+Tensor Type
+--------------
+Represents the type of the elements in a Tensor. `tf.DType <https://www.tensorflow.org/api_docs/python/tf/DType>`_
+
 Tensor-like objects
 --------------------
 tf中有5种 `tensor-like objects <https://www.tensorflow.org/programmers_guide/graphs#tensor-like_objects>`_ ,它们在进入operation进行计算时，都将被转换为tf.Tensor

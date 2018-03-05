@@ -6,6 +6,8 @@ Background
 
 适用场景
 ----------
+:ref:`Importing Data <importing-data>`
+
 A TFRecords file represents a sequence of (binary) strings. The format is not random access, so it is suitable for streaming large amounts of data but not suitable if fast sharding or other non-sequential access is desired.
 
 Why Use
@@ -24,6 +26,12 @@ Module&File API
 -----------------
 `tf.python_io module 
 <https://www.tensorflow.org/api_docs/python/tf/python_io>`_ including python functions for directly manipulating TFRecord-formatted files.
+
+- class TFRecordCompressionType: The type of compression for the record.
+
+- class TFRecordOptions: Options used for manipulating TFRecord files.
+
+- class TFRecordWriter: A class to write records to a TFRecords file.
 
 tfrecord格式文件的组成
 -----------------------
@@ -66,6 +74,11 @@ class Example的结构定义在 :ref:`example.proto <example-proto>`
 
 How to read a TFRecords file
 -------------------------------
+参考 `Read the TFRecords file <http://www.machinelearninguru.com/deep_learning/tensorflow/basics/tfrecord/tfrecord.html>`_, 这篇文章给出了读取TFRecords文件的一般性步骤，其代码在github上也有，可以用来测试。
+
+图例可以参见 :ref:`Importing Data <importing-data>`
+
+可以把python读取文件的过程与tf读取tfrecord文件的过程进行对比，有利于理解和记忆。
 
 Image Transforming
 ---------------------
@@ -73,7 +86,7 @@ Steps
 ^^^^^^^
 一个image要想存入tfrecord file，要经过如下几步：
 
-.png/.jpg  ---> array ---> string ---> BytesList obj ---> Feature object
+.png/.jpg  ---> array ---> Python bytes ---> BytesList obj ---> Feature object
 
 注意：during the first operation, the information about the dimensions of the image is lost and we have to use it to recover the original image in the second. So we will have to store the raw image representation along with the **dimensions of the original image**.
 
@@ -108,7 +121,39 @@ Steps
 	# reconstructed array to the original one.
 	np.allclose(cat_img, reconstructed_cat_img)
 
+Python标注数据类型：Bytes
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Bytes是Python提供一种“序列”，类似于string, list等，不是tensorflow提供的，是image转变过程中的关键中间类型。
+
+https://segmentfault.com/a/1190000004450876
+
+.. code-block:: none
+	:linenos:
+
+	>>> import numpy as np
+	>>> a = np.arange(12).reshape(3, 4)
+	>>> a
+	array([[ 0,  1,  2,  3],
+	       [ 4,  5,  6,  7],
+	       [ 8,  9, 10, 11]])
+	>>> s = a.tostring()
+	>>> aa = np.fromstring(s)
+	>>> aa
+	array([  0.00000000e+000,   4.94065646e-324,   9.88131292e-324,
+	         1.48219694e-323,   1.97626258e-323,   2.47032823e-323,
+	         2.96439388e-323,   3.45845952e-323,   3.95252517e-323,
+	         4.44659081e-323,   4.94065646e-323,   5.43472210e-323])
+	>>> aa = np.fromstring(a, dtype=int)
+	>>> aa
+	array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
+	>>> aa = np.fromstring(a, dtype=int).reshape(3, 4)
+	>>> aa
+	array([[ 0,  1,  2,  3],
+	       [ 4,  5,  6,  7],
+	       [ 8,  9, 10, 11]])
+
 图像处理模块
 ^^^^^^^^^^^^^
 - PIL
 - skimage
+- cv2

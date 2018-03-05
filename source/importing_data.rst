@@ -1,3 +1,5 @@
+.. _importing-data:
+
 Importing Data
 ================
 
@@ -15,6 +17,8 @@ tf三种读取数据的方式
 - 从文件（tfrecord, cvs等文件）读取数据：建立输入管线（input pipeline）从文件中读取数据，其中tfrecord是tensorflow官方推荐的标准格式，tfrecord其实是一种数据存储形式，将图像数据和标签统一存储的二进制文件。
 
 .. image:: img/AnimatedFileQueues.gif
+
+上图中涉及的步骤都有对应的API实现，例如，最后一步enqueue其实就是construct batch，可以参见 `How to write into and read from a TFRecords file in TensorFlow <http://www.machinelearninguru.com/deep_learning/tensorflow/basics/tfrecord/tfrecord.html>`_ 中"Read the TFRecords file"的部分。
 
 其中，涉及到了pipeline和queue的概念，管道通信方式的中间介质是文件，通常称这种文件为管道文件。两个进程利用管道文件进行通信时，一个进程为写进程，另一个进程为读进程。写进程通过写端（发送端）往管道文件中写入信息；读进程通过读端（接收端）从管道文件中读取信息。两个进程协调不断地进行写、读，便会构成双方通过管道传递信息的流水线。
 
