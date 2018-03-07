@@ -37,7 +37,7 @@ Dataset
 ---------
 Why
 ^^^^
-按照Hilton的说法，对数据进行预处理的目的是：converts an axis aligned elliptical :ref:`error surface <error-surface>` into a circular one for which the gradient points straight towards the minimum，如下图
+按照Hilton的说法，对数据进行预处理的目的是：converts an axis aligned elliptical :ref:`error surface <error-surface>` into a circular one for which the gradient points straight towards the minimum，如下图error surface的等高线所示。等高线的形状对 **optimization Algorithm** 的选择也会产生影响。
 
 .. image:: img/dataset-1.png
 

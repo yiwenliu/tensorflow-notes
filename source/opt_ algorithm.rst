@@ -12,17 +12,21 @@ Evaluation the Algorithm
 
 Convergence Speed
 ^^^^^^^^^^^^^^^^^^^
+“Convergence Speed”可以定义为：经过多少次iterations，cost function达到最小值。一个拥有更快收敛速度的算法，在error surface的等高线图中的移动路径，可以从Momentum对SGD的改进中看出来。
 
-该快的时候快，该慢的时候慢，例如：
+.. image:: img/high-line.png
+
+不同的优化算法比较speed时，可以比较在相同iterations数量下，哪个算法使cost function更加接近最小值，参见 :ref:`SGD v.s. Momentum <sgd-momentum>`
+
+提高某个算法的收敛速度——该快的时候快，该慢的时候慢，例如：
 
 - move quickly in directions with small but consistent(一致性) gradients
 - move slowly in directions with big but inconsistent gradients.
 
-2. **whether the learning goes wrong: convergent or not, global or local minimum**
-3. Generalization(Andrew Ng), underfit(high bias) or overfit(high variance)
-
 Convergent or Not
 ^^^^^^^^^^^^^^^^^^
+**whether the learning goes wrong: convergent or not, global or local minimum**
+
 Plot J :subscript:`train` (θ) as a function of the number of iterations of gradient descent.
 
 - 坐标图中只需要一条曲线就可以判断
@@ -30,13 +34,15 @@ Plot J :subscript:`train` (θ) as a function of the number of iterations of grad
 
 Generalization
 ^^^^^^^^^^^^^^^
+Generalization(Andrew Ng), underfit(high bias) or overfit(high variance)
+
 在学习（迭代）的过程中，需要同时画两条曲线，通过对比才能判断。
 
 Accuracy, Precision, Recall&F1 score
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-What to concern
------------------
+Parameters to concern
+-----------------------
 算法需要考虑的“因素”包括：
 
 - :ref:`learning method <learning-method>`
@@ -139,8 +145,17 @@ Adaptive learning rate
 
 Descent Direction
 ^^^^^^^^^^^^^^^^^^^^
+Gradient Oscillation
+++++++++++++++++++++++
+- 在Hilton的课中多次提到gradient oscillation，我认为就是梯度的正负号的变化。
+- gradient oscillation会改变descent direction，进而影响收敛速度。
+- Gradient Oscillation可以在error surface的等高线图中可以清晰的表示出来， `this article <https://zhuanlan.zhihu.com/p/21486826>`_ 在对不同的learning rate的SGD之间，以及SGD和Momentum之间进行比较时，图示了Gradient Oscillation
+- 梯度之所以为oscillation的原因，在上述链接的例子中，当y移动到负值时，根据梯度公式，cost function在这一点的梯度就取负值了。
+
 The Direction of steepest descent
 ++++++++++++++++++++++++++++++++++++++
+0. network's cost function下降的方向是由每个Δw决定的，可由等高线, :ref:`Error Surface <error-surface>` ,上w的移动看出来。
+
 1. cost function的值下降最快的方向就是梯度的反方向。
 
 2. 有两种gradient(From Hilton)
@@ -156,6 +171,10 @@ Other directions of cost function descent
 Instance 
 ----------
 一个算法可能就出自一篇论文。
+
+总览
+^^^^^
+`An overview of gradient descent optimization algorithms <http://ruder.io/optimizing-gradient-descent/index.html>`_
 
 SGD
 ^^^^^^
@@ -188,8 +207,35 @@ batch gradient descent，传统的梯度下降每次使用全部样本进行训�
 
 Momentum
 ^^^^^^^^^^^
-1. 在求∇W时，没有采用"steepest descent"（问题是，没有沿着梯度的方向，为什么还能加速？）
-2. Hilton says(lecture 6c) it can speed up mini-batch learning, 但是代价是引入了一个新的“动量衰减参数”
+
+1. Momentum改进自SGD算法。
+2. 计算公式的改变之处可以参见《Hilton lecture6》或者 `An overview of gradient descent <http://ruder.io/optimizing-gradient-descent/index.html#momentum>`_ , 这两者在求取v(t)时所使用的signs相反，应该无影响。
+
+- 在求ΔW时，没有采用"steepest descent"（问题是，没有沿着梯度的方向，为什么还能加速？）
+- Hilton says(lecture 6c) it can speed up mini-batch learning, 但是代价是引入了一个新的“动量衰减参数”
+- 一个已经完成的梯度+步长的组合不会立刻消失，只是会以一定的形式衰减，剩下的能量将继续发挥余热。
+
+3. Momentum相比于SGD速度更快且振动减小了，体现在两个方面，如下图
+
+.. image:: img/high-line.png
+
+- 从横轴看，The momentum term increases for dimensions whose gradients point in the same directions
+- 从纵轴看，The momentum term reduces updates for dimensions whose gradients change directions. 
+
+.. _sgd-momentum:
+
+SGD&Momentum&NAG
+++++++++++++++++++
+`this article <https://zhuanlan.zhihu.com/p/21486826>`_ 给出了SGD&Momentum&NAG的比较，提炼如下：
+
+- 用了一个等高线是椭圆的cost function作为取最值的对象，而可以通过对dataset的预处理让等高线尽量圆一点。
+- 用等高线坐标系中weights的移动轨迹使优化的过程可视化。
+- 给出了三幅图，说明使用SGD时，如果只是单纯的加大learning rate，1)收敛速度不一定会增加，反而可能根本无法收敛;2)gradient oscillation并没有改变。
+- 比较SGD和Momentum的weights的运动轨迹时，最大的区别就是“使得梯度下降的的时候转弯掉头的幅度不那么大了，于是就能够更加平稳、快速地冲向局部最小点”。
+
+NAG
+^^^^^
+Nesterov Accelerated Gradient，简称NAG。它仅仅是在Momentum算法的基础上做了一点微小的工作，形式上发生了一点看似无关痛痒的改变，却能够显著地提高优化效果。
 
 Rprop
 ^^^^^^^

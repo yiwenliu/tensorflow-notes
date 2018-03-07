@@ -81,9 +81,11 @@ Definition
 
 .. _error-surface:
 
-Error Surface
-^^^^^^^^^^^^^^^
-在Hilton和Andrew的课中，多次提及这个概念。下图就是一个linear neuron的error surface的垂直截面图和水平截面图，水平轴是each weight，垂直轴是error。
+Error Surface&等高线
+^^^^^^^^^^^^^^^^^^^^^
+- 在Hilton和Andrew的课中，多次提及这个概念。
+- 在图中，可以看出weights的运行轨迹。
+- 下图就是一个linear neuron的error surface的垂直截面图和水平截面图，水平轴是each weight，垂直轴是error。
 
 .. image:: img/nn-1.png
 
@@ -134,6 +136,17 @@ Training
 Definition
 ^^^^^^^^^^^^
 其实，神经网络的训练过程就是使用Optimization Algorithm最小化Loss的过程。
+
+Epoch&Iteration
+^^^^^^^^^^^^^^^^^
+- epoch
+- iteration
+- batch size
+- number of batches
+
+当一个完整的数据集通过了神经网络一次并且返回了一次，这个过程称为一个 epoch。
+
+迭代是 batch 需要完成一个 epoch 的次数。记住：在一个 epoch 中，batch 数和迭代数是相等的。比如对于一个有 2000 个训练样本的数据集。将 2000 个样本分成大小为 500 的 batch，那么完成一个 epoch 需要 4 个 iteration。
 
 使用NN的一般流程
 ------------------
