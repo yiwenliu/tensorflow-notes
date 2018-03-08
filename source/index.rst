@@ -21,6 +21,7 @@ Welcome to tensorflow-notes's documentation!
    protocol-buffer
    tfrecord
    tensorflow-slim
+   tf-visual
    dataset
    NN
    opt_ algorithm

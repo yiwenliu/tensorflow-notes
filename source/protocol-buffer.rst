@@ -126,8 +126,17 @@ generate the classes, a .py file
 
 .. _example-proto:
 
-TF中的实例
+TF中的应用
 ------------
+General
+^^^^^^^^^
+All of TensorFlow's file formats which store data on disk are based on Protocol Buffers, including:
+
+- tfrecord file
+- Event files, involving summaries and events to analyze and visualize TensorFlow
+- saving a Graph object
+- Model files
+
 example.proto
 ^^^^^^^^^^^^^^^^
 Usage&Background
@@ -199,3 +208,13 @@ Definition
 ++++++++++++
 https://github.com/tensorflow/tensorflow/blob/r1.5/tensorflow/core/example/feature.proto
 
+event.proto
+^^^^^^^^^^^^^^
+Protocol buffer representing an event that happened during the execution of a Brain model.
+
+在tensorflow visualization中使用到。
+
+event.proto中定义的message“包含”了summary.proto中定义的message。
+
+summary.proto
+^^^^^^^^^^^^^^^

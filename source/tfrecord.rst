@@ -74,11 +74,11 @@ class Example的结构定义在 :ref:`example.proto <example-proto>`
 
 How to read a TFRecords file
 -------------------------------
+可以把python读取文件的过程与tf读取tfrecord文件的过程进行对比，有利于理解和记忆。
+
 参考 `Read the TFRecords file <http://www.machinelearninguru.com/deep_learning/tensorflow/basics/tfrecord/tfrecord.html>`_, 这篇文章给出了读取TFRecords文件的一般性步骤，其代码在github上也有，可以用来测试。
 
-图例可以参见 :ref:`Importing Data <importing-data>`
-
-可以把python读取文件的过程与tf读取tfrecord文件的过程进行对比，有利于理解和记忆。
+读取文件的过程可以参见 :ref:`Importing Data <importing-data>` 中的gif动图。
 
 Image Transforming
 ---------------------

@@ -235,6 +235,8 @@ SGD&Momentum&NAG
 
 NAG
 ^^^^^
+https://zhuanlan.zhihu.com/p/22810533
+
 Nesterov Accelerated Gradient，简称NAG。它仅仅是在Momentum算法的基础上做了一点微小的工作，形式上发生了一点看似无关痛痒的改变，却能够显著地提高优化效果。
 
 Rprop
