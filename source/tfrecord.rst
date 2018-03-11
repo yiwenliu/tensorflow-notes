@@ -72,13 +72,36 @@ Steps
 class Example的结构定义在 :ref:`example.proto <example-proto>` 
 和 :ref:`feature.proto <feature-proto>` 中
 
+.. code-block:: python
+	:linenos:
+
+	example = tf.train.Example(features=tf.train.Features(feature={
+	    'image/encoded': _bytes_feature(image_buffer),
+	    'image/label': _int64_feature(class_label),
+	    'image/roi': _float_feature(roi), #ROI: region of interest
+	    'image/landmark': _float_feature(landmark)
+	}))
+
 How to read a TFRecords file
 -------------------------------
 可以把python读取文件的过程与tf读取tfrecord文件的过程进行对比，有利于理解和记忆。
 
-参考 `Read the TFRecords file <http://www.machinelearninguru.com/deep_learning/tensorflow/basics/tfrecord/tfrecord.html>`_, 这篇文章给出了读取TFRecords文件的一般性步骤，其代码在github上也有，可以用来测试。
+Steps
+^^^^^^
+`This article <http://www.machinelearninguru.com/deep_learning/tensorflow/basics/tfrecord/tfrecord.html#read>`_ 给出了读取TFRecords文件的一般性步骤，其代码在github上也有，可以用来测试。
 
 读取文件的过程可以参见 :ref:`Importing Data <importing-data>` 中的gif动图。
+
+当把gif图和步骤对照起来看，还是有一些不清晰之处：
+
+1. gif图中有多个reader，但是在tf.TFRecordReader()中没有体现？
+2. 从gif图中可以看出decoder和reader是一一对应的关系
+3. decoder的过程分为两步
+
+  - tf.parse_single_example(serialized_example, features=feature)，把byte形式的record解析成一个dict（而不是解析成一个Example object），注意，传入此函数的features dict中的key必须要和构建Example时的key相同。
+  - 转换数据类型。
+  
+4. gif图中最后一步"eneqeue"是不是就是"Batching"？
 
 Image Transforming
 ---------------------
@@ -121,7 +144,7 @@ Steps
 	# reconstructed array to the original one.
 	np.allclose(cat_img, reconstructed_cat_img)
 
-Python标注数据类型：Bytes
+Python数据类型：Bytes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 Bytes是Python提供一种“序列”，类似于string, list等，不是tensorflow提供的，是image转变过程中的关键中间类型。
 

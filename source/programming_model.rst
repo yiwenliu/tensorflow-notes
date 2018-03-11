@@ -6,10 +6,6 @@ tf has two programming model:
 
 2. Higher-level APIs
 
-Why dataflow graph
--------------------
-Dataflow is a common programming model for **parallel computing**. In computer programming, **dataflow programming** is a **programming paradigm** that models a program as a directed graph of the data flowing between operations, thus implementing dataflow principles and architecture. 
-
 .. _programming-model:
 
 Low-level Programming Model

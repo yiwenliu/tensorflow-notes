@@ -12,6 +12,7 @@ Welcome to tensorflow-notes's documentation!
    
    installation
    programming_model
+   dataflow
    graph_session
    tensor
    variable
