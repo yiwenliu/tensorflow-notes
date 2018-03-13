@@ -22,33 +22,64 @@ Preloaded data
 
 Input Pipeline
 ^^^^^^^^^^^^^^^^
-What's a pipeline
-++++++++++++++++++
-Pipeline不是pipe。
+Look inside "input pipeline"
++++++++++++++++++++++++++++++
+Input pipeline是一个整体概念，虽然tf提供了两种实现“input pipeline”的方式，
 
-A pipeline represents a Directed Acyclic Graph(有向非循环图) of steps. 
-
-A pipeline is a group of jobs that get executed in stages(batches).All of the jobs in a stage are executed in parallel (if there are enough concurrent Runners), and if they all succeed, the pipeline moves on to the next stage. If one of the jobs fails, the next stage is not (usually) executed. 
-
-Stages的用法举例，可以参见 `stages <https://docs.gitlab.com/ee/ci/yaml/README.html#stages>`_
-
-In the following image you can see that the pipeline consists of four stages (build, test, staging, production) each one having one or more jobs.
-
-.. image:: img/pipelines.png
+- 但是应该都遵循了相同的设计原则和思路，可以从 :ref:`Four Concepts about Dataflow <4-dataflow>` and :ref:`four basic problems of pipeline deisgn <pipeline-design>` 来观察。
+- 两种不同的"input pipeline"实现方式的区别应该在于连接stages的方式不同。
+- 具体到MTCNN中，input pipeline的`Beginning <https://www.tensorflow.org/api_guides/python/io_ops#beginning_of_an_input_pipeline>`_/"data source"就是tfrecord files，`End <https://www.tensorflow.org/api_guides/python/io_ops#batching_at_the_end_of_an_input_pipeline>`_/"data sink"就是batch。
 
 QueueRunner(Before TF 1.4)
 +++++++++++++++++++++++++++++
-QueueRunner(`Guide <https://www.tensorflow.org/api_guides/python/reading_data#_QueueRunner_>`_): **a queue-based input pipeline** reads the data from files at the beginning of a TensorFlow graph。 例如，从文件（tfrecord, cvs等文件）读取数据，建立输入管线（input pipeline）从文件中读取数据，其中tfrecord是tensorflow官方推荐的标准格式，tfrecord其实是一种数据存储形式，将图像数据和标签统一存储的二进制文件。
+1. Definition
 
-采用这种input pipeline的读取数据的流程见 `API Guide <https://www.tensorflow.org/api_guides/python/reading_data#_QueueRunner_>`_
+QueueRunner(`Guide <https://www.tensorflow.org/api_guides/python/reading_data#_QueueRunner_>`_): **a queue-based input pipeline** reads the data from files at the beginning of a TensorFlow graph which means that **a few pipeline stages are connected by queues**.
+
+2. 流程图
 
 .. image:: img/AnimatedFileQueues.gif
 
-上图中涉及的步骤都有对应的API实现，例如，最后一步enqueue其实就是construct batch，可以参见 `How to write into and read from a TFRecords file in TensorFlow <http://www.machinelearninguru.com/deep_learning/tensorflow/basics/tfrecord/tfrecord.html>`_ 中"Read the TFRecords file"的部分。
+由上面的gif流程可得，有两个主要的 :ref:`stages <pipeline-stage>`, 如下图
+
+.. image:: img/stage-queue.png
+
+- The first stage will generate filenames to read and enqueue them in the filename queue. 
+- The second stage consumes filenames (using a Reader), produces examples, and enqueues them in an example queue.
+
+3. Construct the Pipeline
+
+构建pipeline的过程在本质上和构建深度网络的过程是相同的。
+
+The helpers in tf.train that create these queues and enqueuing operations add a **tf.train.QueueRunner** to the **graph** using the **tf.train.add_queue_runner function**。从MTCNN的代码中看出，tf.train.add_queue_runner() 并没有被显示的调用。
+
+**Each QueueRunner is responsible for one stage**, and holds the list of enqueue operations that need to be run in threads. 
+
+4. Run the Pipeline
+
+Once the graph is constructed, the tf.train.start_queue_runners function asks each QueueRunner in the graph to start its threads running the enqueuing operations.
+
+.. code-block:: python
+	:linenos:
+
+	coord = tf.train.Coordinator()
+	threads = tf.train.start_queue_runners(sess=sess, coord=coord)
+	try:
+		for step in range(MAX_STEP):
+			i = i + 1
+			if coord.should_stop():
+			    break
+			image_batch_array, label_batch_array, bbox_batch_array,landmark_batch_array = sess.run([image_batch, label_batch, bbox_batch,landmark_batch])
+			_,_,summary = sess.run([train_op, lr_op ,summary_op], feed_dict={input_image: image_batch_array, label: label_batch_array, bbox_target: bbox_batch_array,landmark_target:landmark_batch_array})
+
+从上述代码可以看出：
+
+1. 需要对input pipeline单独调用一次sess.run()，且必须先执行tf.train.start_queue_runners()
+2. 生成training batch和a training iteration在traning loop的同一次iteration中，这个和tf自带的mnist的使用相同，见《tf实战》p83。
 
 tf.data API(From TF 1.4)
 +++++++++++++++++++++++++++
-The API can easily construct a complex input pipeline. (**preferred method**). This is **an improved version of the old input methods---feeding and QueueRunner**
+`See guide <https://www.tensorflow.org/api_guides/python/reading_data#_tf_data_API>`_,The API can easily construct a complex input pipeline. (**preferred method**). This is **an improved version of the old input methods---feeding and QueueRunner**
 
 从不同格式的文件读取数据
 ------------------------
@@ -68,9 +99,9 @@ The API can easily construct a complex input pipeline. (**preferred method**). T
 | 一个字节的标签，后面是3072字节的图像数据。 |                              |                                     |
 +--------------------------------------------+------------------------------+-------------------------------------+
 
-Pipe and Queue
-----------------
-在本节的内容中，从文件中读取数据时，tf的实现方式就是基于queue的，有必要了解一些python实现pipe和queue的基本知识。在2016年实现的亚太主要英文媒体的舆情监控系统中其实已经用到了multiprocessing.Queue。
+Pipe and Queue in Python
+---------------------------
+有必要了解一些python实现pipe和queue的基本知识。在2016年实现的亚太主要英文媒体的舆情监控系统中其实已经用到了multiprocessing.Queue。
 
 pipe和queue是“进程间通信”的两种方式，隐含了进程间的协作关系，“生产者”和“消费者”、“同步”和“互斥”的意义和实现，例如，queue满了后，发送进程会阻塞。所以应优先考虑Pipe和Queue，避免使用Lock/Event/Semaphore/Condition等同步方式 (因为它们占据的不是用户进程的资源)。
 
@@ -100,3 +131,7 @@ Attention
 `on api_guides <https://www.tensorflow.org/api_guides/python/threading_and_queues#Queue_usage_overview>`_
 
 In versions of TensorFlow before 1.2, we recommended using multi-threaded, queue-based input pipelines for performance. Beginning with TensorFlow 1.4, however, we recommend using the tf.data module instead. The tf.data module offers **an easier-to-use interface for constructing efficient input pipelines**. Furthermore, we've stopped developing the old multi-threaded, queue-based input pipelines.
+
+What's Queue
+^^^^^^^^^^^^^^
+Queue is a stable node just like variable.

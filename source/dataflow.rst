@@ -9,9 +9,11 @@ Why dataflow graph
 - parallel computing
 - large-scale data processing
 
+.. _4-dataflow:
+
 Four Concepts about Dataflow
 -----------------------------
-`details of four major concepts on Google Cloud Platform <https://cloud.google.com/dataflow/model/programming-model>`_
+`Details of four major concepts on Google Cloud Platform <https://cloud.google.com/dataflow/model/programming-model>`_
 
 - Pipelines, 等同于tf中的subgraph
 - PCollections, 等同于tf中的tensor
@@ -22,11 +24,31 @@ Four Concepts about Dataflow
 
 .. image:: img/pipeline.png
 
+.. _pipeline-stage:
+
+Look inside a pipeline
+-------------------------
+1. composition
+
+从上一小节看出，a pipeline等同于tf中的subgraph，有四个组件：input, transform, pcollections, output。Each pipeline represents a single, potentially repeatable job, from start to finish, in the Dataflow service.
+
+2. stages
+
+pipeline的stages类似于tf中的collections，pipeline中的transforms are grouped into different stages and transforms of the same stage are executed in parallel.
+
+3. connections between stages
+
+在用QueueRunner实现的tf "input pipeline"中，stages之间由queue来连接。
+
+4. direction
+
+一个stage中的所有transform执行成功后，才执行下一个stage的transform
+
+.. _pipeline-design:
+
 Pipeline Design Principles
 ----------------------------
-详见 `Pipeline Design Principles on Google Cloudplatform <https://cloud.google.com/dataflow/pipelines/design-principles>`_
-
-请结合上文中提及的四个基本问题来认识pipeline的五种形态。
+对照上一小节“Four Concepts about Dataflow”，详见 `Pipeline Design Principles on Google Cloudplatform <https://cloud.google.com/dataflow/pipelines/design-principles>`_, 请结合文中提及的四个基本问题来认识pipeline的五种形态。
 
 Apache Beam
 --------------
