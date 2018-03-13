@@ -10,27 +10,32 @@ How to write event file
 --------------------------
 1. 定义可视化参数
 
-其实，就是使用Summary Ops(`on tf-guide <https://www.tensorflow.org/api_guides/python/summary#Generation_of_Summaries>`_)向Graph的GraphKeys.SUMMARIES这个collection中添加需要可视化的operations and tensors
+Create Summary Ops(`on tf-guide <https://www.tensorflow.org/api_guides/python/summary#Generation_of_Summaries>`_) and add them to the collection of GraphKeys.SUMMARIES
+
+.. image:: img/summary.png
 
 .. code-block:: python
 	:linenos:
 
-	tf.summary.scalar("cls_loss",cls_loss_op)#cls_loss
-	tf.summary.scalar("bbox_loss",bbox_loss_op)#bbox_loss
-	tf.summary.scalar("landmark_loss",landmark_loss_op)#landmark_loss
-	tf.summary.scalar("cls_accuracy",accuracy_op)#cls_acc
-	summary_op = tf.summary.merge_all()
+	tf.summary.scalar(name="cls_loss", tensor=cls_loss_op)
+	tf.summary.scalar(name="bbox_loss", tensor=bbox_loss_op)
+	tf.summary.scalar(name="landmark_loss", tensor=landmark_loss_op)
+	tf.summary.scalar(name="cls_accuracy", tensor=accuracy_op)
+	summary_op = tf.summary.merge_all(key=tf.GraphKeys.SUMMARIES, scope=None)
 
 2. Creates a FileWriter
 
 The FileWriter class provides a mechanism to create an event file in a given directory.
 
-注意：并非tf.event.FileWriter()或者tf.EventWriter()，和tf.TFRecordWriter()比较。
+注意：(和tf.TFRecordWriter()的命名比较)并非tf.event.FileWriter()或者tf.EventWriter()。
 
 .. code-block:: python
 	:linenos:
     
-	writer = tf.summary.FileWriter(logs_dir,sess.graph)
+	# Launch the graph in a session.
+	sess = tf.Session()
+	# Create a summary writer, add the 'graph' to the event file.
+	writer = tf.summary.FileWriter(<some-directory>, sess.graph)
 
 3. Add data to summaries
 
@@ -39,13 +44,17 @@ The FileWriter class provides a mechanism to create an event file in a given dir
 .. code-block:: python
 	:linenos:
 
-	_,_,summary = sess.run([summary_op])
+	for step in range(MAX_STEP):
+	  _,_,summary = sess.run([summary_op])#for each iteration
 
 4. Write event protocol buffers to event files
 
-class FileWriter updates the file contents asynchronously. This allows a training program to call methods to add data to the file directly from the training loop, without slowing down training.
+class FileWriter updates the file contents asynchronously. This allows a training program to call methods, **add_xxx()**, to add data to the file directly from the training loop, without slowing down training.
 
-注意:add_summary仅仅是向FileWriter对象的缓存中存放event data。 而向disk上写数据是由FileWrite对象控制的。
+注意:
+
+- add_xxx()仅仅是向FileWriter对象的缓存中存放event data, 而向disk上写数据是由FileWrite对象控制的。
+- add_xxx()并非在sess.run()中执行。
 
 .. code-block:: python
 	:linenos:
@@ -59,3 +68,7 @@ class FileWriter updates the file contents asynchronously. This allows a trainin
 
 	#Call this method to make sure that all pending events have been written to disk.
 	writer.flush()
+
+6. 涉及的protcol buffer
+
+.. image:: img/summary-2.png

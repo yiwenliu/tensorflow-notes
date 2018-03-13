@@ -99,39 +99,3 @@ tf.data API(From TF 1.4)
 | 一个字节的标签，后面是3072字节的图像数据。 |                              |                                     |
 +--------------------------------------------+------------------------------+-------------------------------------+
 
-Pipe and Queue in Python
----------------------------
-有必要了解一些python实现pipe和queue的基本知识。在2016年实现的亚太主要英文媒体的舆情监控系统中其实已经用到了multiprocessing.Queue。
-
-pipe和queue是“进程间通信”的两种方式，隐含了进程间的协作关系，“生产者”和“消费者”、“同步”和“互斥”的意义和实现，例如，queue满了后，发送进程会阻塞。所以应优先考虑Pipe和Queue，避免使用Lock/Event/Semaphore/Condition等同步方式 (因为它们占据的不是用户进程的资源)。
-
-由package multiprocessing实现， `on github <https://github.com/python/cpython/tree/3.5/Lib/multiprocessing/>`_, `on docs <https://docs.python.org/3.5/library/multiprocessing.html#pipes-and-queues>`_
-
-+------------+-------------------+-------------+
-|            | pipe              | queue       |
-+------------+-------------------+-------------+
-| 实现基础   | socket            | pipe        |
-+------------+-------------------+-------------+
-| 实现方式   | def Pipe()        | class Queue |
-+------------+-------------------+-------------+
-| 容量       | 1                 | maxsize     |
-+------------+-------------------+-------------+
-| 传输方向   | duplex/single;    | 无          |
-|            | send end&recv end |             |
-+------------+-------------------+-------------+
-| 关联进程数 | 一端只能一个进程  | 多进程读写  |
-+------------+-------------------+-------------+
-
-`This link <http://www.cnblogs.com/vamei/archive/2012/10/12/2721484.html>`_ 中的“Pipe和Queue”部分有例程可以参考。
-
-Threading and Queues in TF
------------------------------
-Attention
-^^^^^^^^^^^^
-`on api_guides <https://www.tensorflow.org/api_guides/python/threading_and_queues#Queue_usage_overview>`_
-
-In versions of TensorFlow before 1.2, we recommended using multi-threaded, queue-based input pipelines for performance. Beginning with TensorFlow 1.4, however, we recommend using the tf.data module instead. The tf.data module offers **an easier-to-use interface for constructing efficient input pipelines**. Furthermore, we've stopped developing the old multi-threaded, queue-based input pipelines.
-
-What's Queue
-^^^^^^^^^^^^^^
-Queue is a stable node just like variable.
