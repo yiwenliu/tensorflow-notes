@@ -135,3 +135,33 @@ Using tf.get_variable()
     v1 = tf.get_variable('ws3', [2,2,3,32]) 
   print(v.name) #=>vs/ws3:0
   print(v1.name) #=>vs/ws3:0
+
+Saving
+--------
+Procedure
+^^^^^^^^^^^^
+保存variables其实就是保存Model。
+
+.. code-block:: python
+  :linenos:
+
+  sess = tf.Session()
+  saver = tf.train.Saver(max_to_keep=0)
+  for step in range(MAX_STEP):
+    ...
+    saver.save(sess, prefix, global_step=epoch*2)
+
+从上述代码看出，
+
+- 这个过程比写 :ref:`write event file <write-event-file>` 都简单
+- 虽然没有显示调用session.run()，但是在def save()的 `source code <https://github.com/tensorflow/tensorflow/blob/r1.6/tensorflow/python/training/saver.py>`_ 中调用了它, line1652
+
+Result
+^^^^^^^^^
+写了两个文件：
+
+1. checkpoints file
+
+模型数据保存在这个文件中 which map the variable name to tensor value
+
+2. a protocol buffer file

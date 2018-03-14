@@ -6,6 +6,8 @@ Package **summary**, `on github <https://github.com/tensorflow/tensorflow/tree/r
 
 这个包用于TensorFlow Event Processing, and  is primarily being developed to support **TensorBoard**, but it can be used by anyone who wishes to analyze or visualize TensorFlow **events files**.
 
+.. _write-event-file:
+
 How to write event file
 --------------------------
 1. 定义可视化参数
