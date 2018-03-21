@@ -75,6 +75,8 @@ pipe和queue是“进程间通信”的两种方式，隐含了进程间的协�
 
 `This link <http://www.cnblogs.com/vamei/archive/2012/10/12/2721484.html>`_ 中的“Pipe和Queue”部分有例程可以参考。
 
+.. _queue:
+
 Threading and Queues in TF
 -----------------------------
 Attention

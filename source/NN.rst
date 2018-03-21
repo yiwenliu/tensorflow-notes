@@ -1,5 +1,9 @@
 Neural Network
 ================
+大脑神经网络的结构
+------------------
+`The synapse <https://www.khanacademy.org/science/biology/human-biology/neuron-nervous-system/a/the-synapse>`_
+
 .. _neuron:
 
 Neuron Model

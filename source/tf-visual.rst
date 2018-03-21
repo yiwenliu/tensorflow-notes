@@ -51,7 +51,7 @@ The FileWriter class provides a mechanism to create an event file in a given dir
 
 4. Write event protocol buffers to event files
 
-class FileWriter updates the file contents asynchronously. This allows a training program to call methods, **add_xxx()**, to add data to the file directly from the training loop, without slowing down training.
+class FileWriter updates the file contents asynchronously based on :ref:`queues <queue>`. This allows a training program to call methods, **add_xxx()**, to add data to the file directly from the training loop, without slowing down training.
 
 注意:
 
