@@ -29,7 +29,7 @@ ubuntu中自带python，而还需要安装anaconda的原因是，在安装tensor
 +--------------------+--------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------+
 |                    | direct rendering                                                                     | indirect rendering                                                                   |
 |                    |                                                                                      |                                                                                      |
-|                    | ( all 3D rendering commands are handled by the client application                    | ( all rendering commands are sent to the X server)                                   |
+|                    | ( all 3D rendering commands are handled by the X client application                  | ( all rendering commands are sent to the X server)                                   |
 |                    |                                                                                      |                                                                                      |
 |                    |                                                                                      |                                                                                      |
 |                    | ,so that the X server is free to service requests from other applications.)          |                                                                                      |
@@ -89,9 +89,9 @@ options nouveau modeset=0
 
   安装Nvidia驱动需要结束x-window服务，据说这一步很重要。
 
-$sudo service lightdm stop
-
 按Ctrl + Alt + F1 进入tty1控制台，输入用户名密码登录，然后键入命令后执行（数字不能用小键盘输入）：
+
+$sudo service lightdm stop
 
 7. 安装驱动
 
@@ -129,6 +129,8 @@ nvidia-settings 显卡设置
 	$glxinfo | grep render
 	#输出：OpenGL renderer string: GeForce GTX 1080 Ti/PCIe/SSE2
 
+11. 安装驱动成功后，界面的分辨率更高了，字号更小了。
+
 安装CUDA
 ^^^^^^^^^^^
 CUDA安装包里集成了显卡驱动，下载时请选择cuda8.0，否则在import tensorflow时，会报错“找不到*.so.8”。
@@ -139,11 +141,18 @@ CUDA安装包里集成了显卡驱动，下载时请选择cuda8.0，否则在imp
 
 安装cuDNN
 ^^^^^^^^^^
-安装过程见《tf实战》p44，在书中的下载页面中登录后，作出如下图的选择，因为如此，下载的就是.tgz格式而非.dep格式的文件：
+安装过程见《tf实战》p44，在书中的下载页面中登录后，作出如下图的选择，因为
+
+- 如此，下载的就是.tgz格式而非.dep格式的文件
+- import tensorflow就不会报错“找不到libcudnn.so.6”
 
 .. image:: img/cudnn-1.png
 
-其实，安装cuDNN就是把几个libcudnn.so.*文件放入CUDA的安装路径的库文件夹/usr/local/cuda/lib64下
+其实，安装cuDNN就是把三个libcudnn.so.*文件放入CUDA的安装路径的库文件夹/usr/local/cuda/lib64下
+
+设置CUDA的路径
+^^^^^^^^^^^^^^^
+过程见《tf实战》p44
 
 安装tensorflow
 ^^^^^^^^^^^^^^^^
