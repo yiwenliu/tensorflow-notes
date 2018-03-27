@@ -85,7 +85,9 @@ Problems&Solutions
 
 Data Augmentation
 -------------------
-详见 :ref:`Neural Network-Generalization-Data Augmentation <data-aug>`
+目的：在不增加data set规模的前提下，采用数学方法从data set中得到更多的training set，进而改善的模型的generalization performance. 
+
+详见本笔记中 :ref:`Neural Network-Generalization-Data Augmentation <data-aug>`
 
 常用数据集
 -----------
@@ -194,9 +196,9 @@ Annotation
 
 其他标注文件可能存在[image-path left right up down]
 
-训练数据的处理
-++++++++++++++++
-本文https://zhuanlan.zhihu.com/p/31761796主要介绍人脸检测中常用的数据处理方法，包括
+Generate training set by augmentation
+++++++++++++++++++++++++++++++++++++++++
+`本文 <https://zhuanlan.zhihu.com/p/31761796>`_ 主要介绍人脸检测中常用的数据处理方法，包括
 
 - Bounding Box绘制，
 - IOU计算，
@@ -217,9 +219,9 @@ Annotations
 
 lfw_5590\Aaron_Eckhart_0001.jpg 84 161 92 169 106.250000 107.750000 146.750000 112.250000 125.250000 142.750000 105.250000 157.750000 139.750000 161.750000
 
-训练数据集的处理
-+++++++++++++++++
-本文https://zhuanlan.zhihu.com/p/31761796主要介绍了人脸检测和对齐中常用的数据处理方法，包括
+Generate training set by augmentation
+++++++++++++++++++++++++++++++++++++++++
+`本文 <https://zhuanlan.zhihu.com/p/31761796>`_ 主要介绍了人脸检测和对齐中常用的数据处理方法，包括
 
 - 面部轮廓关键点回归值计算
 - 面部轮廓关键点生成

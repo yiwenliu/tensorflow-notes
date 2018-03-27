@@ -47,14 +47,16 @@ variable collections
 - tf
 
 Note that in native TensorFlow, there are two types of variables:
+
 1. regular variables and
 2. local (transient) variables.
+
 The vast majority of variables are regular variables: once created, they can be saved to disk using a saver. Local variables are those variables that only exist for the duration of a session and are not saved to disk.
 
 .. code-block:: python
   :linenos:
 
-  weight = tf.Variable(initial_value) #defaul is a regular variable
+  weight = tf.Variable(initial_value) #defaul collection is GraphKeys.GLOBAL_VARIABLES and is a regular variable
   #使用不同的collection参数，这个Variable object就有很多不同了
   count = tf.Varialbe(initial_value, collections=LOCAL_VARIABLES) 
 

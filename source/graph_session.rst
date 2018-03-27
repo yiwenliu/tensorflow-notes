@@ -28,14 +28,15 @@ Graph collections
 
 4. 实现方式就是新建ops object时，传入 **collections** 参数。
 
+.. _ops:
+
 Operations
 ------------
-input
-^^^^^^
-tensor OR `Tensor-like objects <https://www.tensorflow.org/programmers_guide/graphs#tensor-like_objects>`_
+input&output
+^^^^^^^^^^^^^^^
+计算图中每一个节点都可以有任意多个输入和任意多个输出，每一个节点描述了一种运算操作，节点可以算是运算操作的实例化（instance）。
 
-output
-^^^^^^^
+tensor OR `Tensor-like objects <https://www.tensorflow.org/programmers_guide/graphs#tensor-like_objects>`_
 
 graph context
 ^^^^^^^^^^^^^^^
@@ -108,6 +109,10 @@ Executing a graph
 - in a tf.Session.run(operation/tensor)
 - operation.run()
 - tensor.eval()
+
+Saving and Restoring Models
+------------------------------
+`官方文档 <https://www.tensorflow.org/programmers_guide/saved_model#overview_of_saving_and_restoring_models>`_
 
 Session
 =========

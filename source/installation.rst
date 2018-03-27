@@ -186,3 +186,13 @@ tensorflow的一些运行结果需要快速验证，e.g.对于tensor的变换操
 2. 配置python interpreter
 
 .. image:: img/install-tf-1.jpg
+
+MTCNN在PC/GPU-machine中的路径
+-------------------------------
+- PC
+
+D:\spyder_project\github\mtcnn\MTCNN-Tensorflow
+
+- GPU-machine
+
+~/tf_action/MTCNN-Tensorflow

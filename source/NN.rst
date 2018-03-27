@@ -102,8 +102,8 @@ OHEM(Online Hard Sample Mining)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 在MTCNN的face/nonface classification task中，使用了这个概念对训练的loss进行修改。
 
-Hard Sample&Easy Sample
-++++++++++++++++++++++++
+Hard Sample & Easy Sample
++++++++++++++++++++++++++++
 有一篇论文详述了 `SAMPLE IMPORTANCE IN TRAINING DEEP NEURAL
 NETWORKS <https://openreview.net/pdf?id=r1IRctqxg>`_
 
@@ -133,7 +133,7 @@ Data Augmentation
 ^^^^^^^^^^^^^^^^^^
 `this article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“数据集扩增”部分讲的很好，还有相关论文，暂时没有时间看。
 
-`the article <https://zhuanlan.zhihu.com/p/31761796>`_ 详述了MTCNN中data augmentation的过程
+`the article <https://zhuanlan.zhihu.com/p/31761796>`_ 详述了对MTCNN中所使用的"data set"进行data augmentation的过程
 
 Training
 ----------
