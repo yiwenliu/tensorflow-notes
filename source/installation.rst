@@ -100,7 +100,7 @@ $sudo sh ./NVIDIA*.run
 （如果安装不正常则带 --uninstall 参数卸载）
 
 - 报错The distribution-provided pre-install script failed!不必理会，继续安装；
-- 最重要的一步，安装程序问你是否使用nv的xconfig文件，这里一点要选yes，否则在启动x-window时不会使用nv驱动。
+- 最重要的一步，安装程序问你是否使用nv的xconfig文件，nvidia-xconfig, 这里一点要选yes，否则在启动x-window时不会使用nv驱动。
 
 8. 重启X 服务
 
@@ -110,6 +110,9 @@ $sudo service lightdm start
 9. 卸载驱动
 
 sudo sh ~/NVIDIA-Linux-x86_64-367.44.run --uninstall
+
+系统会提示，是否使用nvidia-xconfig --restore-original-backup来恢复以前的x configuration file？
+选择Yes
 
 10. 检查
 

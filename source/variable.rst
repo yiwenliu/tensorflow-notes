@@ -136,15 +136,12 @@ Using tf.get_variable()
   print(v.name) #=>vs/ws3:0
   print(v1.name) #=>vs/ws3:0
 
-Saving&Restoring
+Saving
 -------------------
-Procedure
+How to
 ^^^^^^^^^^^^
-Saving and restoring model is more complicated than variables.
 
-Tensorflow支持检查点(checkpoint)的保存和恢复，每一个variable node都会链接一个save node，每隔几轮迭代就会保存一次数据到持久化的存储系统。同样，每一个variable node都会链接一个restore node，在每次重启时会被调用并恢复数据。
-
-**The save and restore ops** are added by tf.train.Saver constructor to the graph for all, or a specified list, of the variables in the graph. 
+**The save and restore ops** are added by tf.train.Saver constructor to the graph for all, or a specified list, of the variables in the graph. 每一个variable node都会链接一个save node，每隔几轮迭代就会保存一次数据到持久化的存储系统。同样，每一个variable node都会链接一个restore node，在每次重启时会被调用并恢复数据。Tensorflow支持检查点(checkpoint)的保存和恢复，
 
 .. code-block:: python
   :linenos:
@@ -162,16 +159,27 @@ Tensorflow支持检查点(checkpoint)的保存和恢复，每一个variable node
 - 初始化一个saver object，就自动给varaible node加上了save node & restore node，这个过程的Graph图示可以参见 :ref:`write event file <write-event-file>`
 - save()动作是在BP过程之外单独执行的，虽然没有显示调用session.run()，但是在def save()的 `source code <https://github.com/tensorflow/tensorflow/blob/r1.6/tensorflow/python/training/saver.py>`_ 中调用了它, line1652
 
+.. _checkpoint:
+
 Result
 ^^^^^^^^^
-在MTCNN训练完PNet中，每次执行saver.save()生成三个文件：PNet-8.meta, PNet-8.index, PNet-8.data-00000-of-00001。最后，还有一个名为checkpoint的单独的文件。
+在MTCNN训练完PNet中，每次执行saver.save()生成三个文件：PNet-8.meta, PNet-8.index, PNet-8.data-00000-of-00001。最后，还会生成一个名为checkpoint的单独的文件。
 
- If the saver is sharded(分片), this string(path prefix used for the checkpoint files) ends with: '-?????-of-nnnnn' where 'nnnnn' is the number of shards created. 
+If the saver is sharded(分片), this string(path prefix used for the checkpoint files) ends with: '-?????-of-nnnnn' where 'nnnnn' is the number of shards created. 
 
-写了两个文件：
+- The protocol buffer file named checkpoint
 
-1. checkpoints file
+TensorFlow saves variables in binary checkpoint files that, roughly speaking, map variable names to tensor values. 
 
-TensorFlow saves variables in binary checkpoint files that, roughly speaking, map variable names to tensor values.
+.. code-block:: none
+  :linenos:
 
-2. a protocol buffer file
+  $more checkpoint
+  model_checkpoint_path: "PNet-30"
+  all_model_checkpoint_paths: "PNet-30"
+
+有一个 `checkpoint_state.proto <https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/training/checkpoint_state.proto>`_ 与之对应
+
+Restoring
+------------
+`Restoring variables <https://www.tensorflow.org/programmers_guide/saved_model#restoring_variables>`_

@@ -218,3 +218,11 @@ event.proto中定义的message“包含”了summary.proto中定义的message。
 
 summary.proto
 ^^^^^^^^^^^^^^^
+
+checkpoint file when saving variable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+:ref:`The result when saving variables <checkpoint>`
+
+config when initializing a session
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+:ref:`配置session参数 <session-config>`
