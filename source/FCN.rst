@@ -6,7 +6,7 @@ FCN
 
 背景和数据集
 -------------------
-2015年，在CVPR会议上提出FCN，使用的识别库是 PASCAL VOC，在 PASCAL VOC 中有 20种物体分类，另外一个 background 分类，一个分类对应一种颜色，一共有21种颜色。
+2015年，在CVPR会议上提出FCN（全卷积网络），使用的识别库是 PASCAL VOC，在 PASCAL VOC 中有 20种物体分类，另外一个 background 分类，一个分类对应一种颜色，一共有21种颜色。
 
 .. image:: img/fcn-1.jpg
 
