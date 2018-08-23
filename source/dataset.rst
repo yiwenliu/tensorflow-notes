@@ -4,13 +4,6 @@ Dataset
 
 显然，使用了数据集的都是监督型机器学习和深度学习。
 
-数据集的组成
--------------
-
-- training data，在训练集上训练模型
-- validation data，在验证集上检验效果并决定何时完成训练
-- test data，在测试集评测模型的效果
-
 特点及影响
 -----------
 1. Dataset有如下三个特点：
@@ -33,11 +26,39 @@ Dataset
 |   数据量的多少  |                    -                     |   -   |       -        |
 +-----------------+------------------------------------------+-------+----------------+
 
+
+数据集的分割
+-------------
+把数据集分割成如下3个部分，可能是拿到数据集后的第一步操作。
+
+- training data，在训练集上训练模型
+- validation data，在验证集上检验效果并决定何时完成训练
+- test data，在测试集评测模型的效果
+
+Data Augmentation
+---------------------
+意义
+^^^^^^
+这是一个可选的步骤。
+
+目的在不增加data set规模的前提下，采用数学方法从data set中得到更多的training set，进而改善的模型的generalization performance. 
+
+详见本笔记中 :ref:`Neural Network-Generalization-Data Augmentation <data-aug>`
+
+是否需要数据强化
+^^^^^^^^^^^^^^^^^
+存在两个场景：
+
+1. 不augmentation，结果不理想，例如，容易overfit。在MTCNN中，对于人脸对齐这个回归任务，就需要对iou>0.65的回归框，进行mirro, inverse和rotation等操作，增加标注了landmark坐标的图片的数量。
+2. 不Augmentation无法进行运算，例如，在MTCNN中，对于人脸分类这个单一任务，依据WIDER FACE数据集的annotation只有抠出人脸数据，所以必须利用滑动窗口从原始数据集中获得正样本，负样本和中间样本。
+
 预处理
 ---------
+“预处理”，可能是拿到数据集后的第二步操作。
+
 Why
 ^^^^
-按照Hilton的说法，对数据进行预处理的目的是：converts an axis aligned elliptical :ref:`error surface <error-surface>` into a circular one for which the gradient points straight towards the minimum，如下图error surface的等高线所示。等高线的形状对 **optimization Algorithm** 的选择也会产生影响。
+按照Hilton的说法，对数据进行预处理的目的是：converts an axis aligned elliptical :ref:`error surface <error-surface>` into a circular one for which the gradient points straight towards the minimum，即加快了收敛速度，如下图error surface的等高线所示。等高线的形状对 **optimization Algorithm** 的选择也会产生影响。
 
 .. image:: img/dataset-1.png
 
@@ -49,8 +70,13 @@ How&Steps
 ^^^^^^^^^^^
 一般有两步：
 
-1. 第一步，normalization，归一化
-2. 第二步，whitening，白化
+1. 第一步，normalization，`归一化 <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#.E6.95.B0.E6.8D.AE.E5.BD.92.E4.B8.80.E5.8C.96>`_ , 使得最终的数据向量落在 [0,1]或[ − 1,1] 的区间内（根据数据情况而定）
+
+例如，MTCNN中，对于augmentation后的数据进行回归框预测时，考虑到直接采用坐标信息，,(top-left-x, top-left-y, bottom-right-x, bottom-right-y)，进行回归框预测，网络收敛比较慢。所以在回归框预测的时候一般采用回归框的坐标偏移进行预测，相当于归一化的一种方式。
+
+.. image:: img/bbx-norm.png
+
+2. 第二步，whitening，`白化 <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#PCA.2FZCA.E7.99.BD.E5.8C.96>`_
 
 根据不同的datasets features，每一步可以采用不同的方法, 
 `REFERENCE <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#MNIST_.E6.89.8B.E5.86.99.E6.95.B0.E5.AD.97>`_
@@ -82,12 +108,6 @@ Problems&Solutions
 .. image:: img/dataset-2.png
 
 2. Map-reduce
-
-Data Augmentation
--------------------
-目的：在不增加data set规模的前提下，采用数学方法从data set中得到更多的training set，进而改善的模型的generalization performance. 
-
-详见本笔记中 :ref:`Neural Network-Generalization-Data Augmentation <data-aug>`
 
 常用数据集
 -----------
