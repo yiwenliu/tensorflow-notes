@@ -3,7 +3,7 @@ Protocol Buffers
 
 Protocol Buffers实际上是关于结构化数据（structured data）序列化和检索（serialize and retrieve）的整套解决方案，它包括了：
 
-1. 数据结构的定义，.proto文件（类似于定义python class的.py文件）
+1. use the protocol buffer language to 数据结构的定义，.proto文件（类似于定义python class的.py文件）
 2. compiler
 3. 定义了一个实例序列化成二进制串的格式，就像.xml文件必须写成<xml></xml>。
 4. 提供了实例序列化和反序列化的API
@@ -72,6 +72,10 @@ Why Protocl Buffer
 3. takes care of the details of reading and writing the protocol buffer as a unit.
 4. supports the idea of extending the format over time in such a way that the code can still read data encoded with the old format. 
 
+message实例序列化后的二进制串格式
+---------------------------------
+`protocol buffers encoding <https://developers.google.com/protocol-buffers/docs/encoding>`_ ，和上一小节中提及的"an ad-hoc way"类似。
+
 How to use
 -------------
 既然如此，google提供一个把class或者dict序列化为protobuf的module不就完了吗，但是google做的更多，甚至把定义class的.py文件替换为.proto，并且提供了complier（complier的好处见上一小节），极大简化了数据结构的定义过程——思考如果用python普通的定义class的方法来实现 `Basics-tutorial <https://developers.google.com/protocol-buffers/docs/pythontutorial>`_ 中给出的例子，会有多麻烦，因为要体现类的继承、包含和引用的关系，还要定义相应的方法。
@@ -101,26 +105,64 @@ https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-
 
 You'll find a complete guide to writing .proto files – including all the possible field types – in the `Protocol Buffer Language Guide <https://developers.google.com/protocol-buffers/docs/proto>`_.
 
+field types有3种，`scalar types <https://developers.google.com/protocol-buffers/docs/proto#scalar>`_, `enumerations <https://developers.google.com/protocol-buffers/docs/proto#enum>`_ and other message type
+
+- `enumeration <https://developers.google.com/protocol-buffers/docs/proto#enum>`_ 可以定义在message内部，也可以定义在message外部，定义语法如下。但是，还是有一些不明之处：“字符串”并没有用引号括起来；起作用的是“字符串”还是等号右边的数字？
+
+.. code-block:: none
+
+  enum enum-type-name {
+    字符串1 = 0;
+    字符串2 = 1;
+    字符串3 = 3;
+    ...
+  }
+
+tag就是field numbers,对于这个数字的大小以及意义，见 `Assigning Field Numbers <https://developers.google.com/protocol-buffers/docs/proto#assigning-field-numbers>`_
+
+- 可以给optional field设定默认值，如果没有设定，系统会根据field type给一个默认值，详见 `Optional Fields And Default Values <https://developers.google.com/protocol-buffers/docs/proto#optional>`_
+
+modifier就是Field Rules,3个取值的意义见 `Specifying Field Rules <https://developers.google.com/protocol-buffers/docs/proto#specifying-field-rules>`_ ,到底在实际实例化时的应用还要看例子。
+
 - 定义message时，只定义了属性，并未定义方法。
 
 2. 编译
 ^^^^^^^^
+`What's Generated From Your .proto? <https://developers.google.com/protocol-buffers/docs/proto#whats-generated-from-your-proto>`_
 
-generate the classes, a .py file
+- 由message编译而来的class，和自己写的class到底牛逼在哪里呢？从 `protocol buffer api <https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-buffer-api>`_ 给出的例子可以看出：1）If you were to try to assign a field that isn't defined in the .proto file, an AttributeError would be raised；2）If you assign a field to a value of the wrong type, a TypeError will be raised.
+- 使用了两个python的特色技术—— **descriptor and metaclass** 来为class添加方法，这些方法称为 `The Protocol Buffer API <https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-buffer-api>`_
 
-- 编译后，定义的message成为了class
-- 编译后，并没有直接给编译得到的class添加方法，e.g. 常用的ParseFromString()和SerializeToString()，这两个方法的典型用法见 `Writing A Message <https://developers.google.com/protocol-buffers/docs/pythontutorial#writing-a-message>`_ 。而是使用了metaclass，见 `The Protocol Buffer API <https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-buffer-api>`_ 中的讲解
+.. code-block:: none
+
+  #有以下的message定义，addressbook.proto
+  message Person {
+    required string name = 1;
+    required int32 id = 2;
+  }
+  message AddressBook {
+    repeated Person people = 1;
+  }
+
+  #编译以后，向AddressBook中添加Person的API是怎样的呢？
+  #并非先实例化一个Person，在把这个实例add如AddressBook.people
+  address_book = addressbook_pb2.AddressBook()
+  person = address_book.people.add()
+  person.name = "ben"
+  person.id = 1
+  #遍历AddressBook中的people的API如下
+  for person in address_book.people:
+    ...
+
+- a special **EnumDescriptor** class for Python that's used to create a set of symbolic constants（符号常量） with integer values in the runtime-generated class.
 
 3. 使用编译后的.py中的class
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+这一小节中使用的方法均来自编译时为class加入的protocol buffer api。
 
-`Writing A Message <https://developers.google.com/protocol-buffers/docs/pythontutorial#writing-a-message>`_
+`Writing a Message to a File <https://developers.google.com/protocol-buffers/docs/pythontutorial#writing-a-message>`_
 
-4. 实例化
-^^^^^^^^^^^
-用数据填充好的class，序列化后，可以保存为一个文本文件（不同于.proto的定义文件）。
-
-5. Reading a Message
+4. Reading a Message
 ^^^^^^^^^^^^^^^^^^^^^^
 目前碰到了两种途径：
 
@@ -154,6 +196,11 @@ generate the classes, a .py file
   )
 
 .. _example-proto:
+
+oneof
+------
+oneof既不是modifier，也是不是filed-type。它更像是多个optional的一种简写形式。
+详见 `Oneof <https://developers.google.com/protocol-buffers/docs/proto#oneof>`_
 
 TF中的应用
 ------------
