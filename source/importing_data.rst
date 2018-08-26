@@ -5,10 +5,10 @@ Importing Data
 
 Backgroud
 ----------
-在学习mtcnn实现的数据准备阶段，negative， positive, part和landmark的图片文件和标注文件都准备好了，接下来的问题是，如何把这些文件和数据提交给模型来运算呢？
 
-- 在《tf实战》一书中使用的都是tf已经封装好的MNIST数据，直接import就行，并且提供了丰富的访问方法，见P46
-- 自有的庞大数据该如何处理？
+在《tf实战》一书中使用的都是tf已经封装好的MNIST数据，直接import就行，并且提供了丰富的访问方法，见P46
+
+在学习mtcnn实现的数据准备阶段，negative， positive, part和landmark的图片文件和标注文件都准备好了，接下来的问题是，如何把这些成千上万的图片文件和其标注数据提交给模型来运算呢，选择不同的 :ref:`learning method <learning-method>`，就有不同的数据读取方式？
 
 tf三种读取数据的方式
 ---------------------
@@ -20,15 +20,12 @@ Preloaded data
 ^^^^^^^^^^^^^^^^
 预加载数据(Preloaded data)：如果数据量不太大，定义tf.Variable() or tf.constant(),可以在程序中定义常量或者变量来保存所有的数据。
 
+.. _input-pipeline:
+
 Input Pipeline
 ^^^^^^^^^^^^^^^^
-Look inside "input pipeline"
-+++++++++++++++++++++++++++++
-Input pipeline是一个整体概念，虽然tf提供了两种实现“input pipeline”的方式，
 
-- 但是应该都遵循了相同的设计原则和思路，可以从 :ref:`Four Concepts about Dataflow <4-dataflow>` and :ref:`four basic problems of pipeline deisgn <pipeline-design>` 来观察。
-- 两种不同的"input pipeline"实现方式的区别应该在于连接stages的方式不同。
-- 具体到MTCNN中，input pipeline的`Beginning <https://www.tensorflow.org/api_guides/python/io_ops#beginning_of_an_input_pipeline>`_/"data source"就是tfrecord files，`End <https://www.tensorflow.org/api_guides/python/io_ops#batching_at_the_end_of_an_input_pipeline>`_/"data sink"就是batch。
+在实际训练模型时，应该多会采用这种方式。
 
 QueueRunner(Before TF 1.4)
 +++++++++++++++++++++++++++++
@@ -44,8 +41,8 @@ QueueRunner(`Guide <https://www.tensorflow.org/api_guides/python/reading_data#_Q
 
 .. image:: img/stage-queue.png
 
-- The first stage will generate filenames to read and enqueue them in the filename queue. 
-- The second stage consumes filenames (using a Reader), produces examples, and enqueues them in an example queue.
+- The stage1 will generate filenames to read and enqueue them in the filename queue. 
+- The stage2 consumes filenames (using a Reader), produces examples, and enqueues them in an example queue.
 
 3. Construct the Pipeline
 
@@ -77,13 +74,7 @@ Once the graph is constructed, the tf.train.start_queue_runners function asks ea
 1. 需要对input pipeline单独调用一次sess.run()，且必须先执行tf.train.start_queue_runners()
 2. 生成training batch和a training iteration在traning loop的同一次iteration中，这个和tf自带的mnist的使用相同，见《tf实战》p83。
 
-tf.data API(From TF 1.4)
-+++++++++++++++++++++++++++
-`See guide <https://www.tensorflow.org/api_guides/python/reading_data#_tf_data_API>`_,The API can easily construct a complex input pipeline. (**preferred method**). This is **an improved version of the old input methods---feeding and QueueRunner**
-
-从不同格式的文件读取数据
-------------------------
-显然，采用的是QueueRunner的Input Pipeline形式。
+5. 从不同格式的文件读取数据
 
 +--------------------------------------------+------------------------------+-------------------------------------+
 |                  文件格式                  |            阅读器            |              记录解析器             |
@@ -99,3 +90,15 @@ tf.data API(From TF 1.4)
 | 一个字节的标签，后面是3072字节的图像数据。 |                              |                                     |
 +--------------------------------------------+------------------------------+-------------------------------------+
 
+
+tf.data API(From TF 1.4)
++++++++++++++++++++++++++++
+`See guide <https://www.tensorflow.org/api_guides/python/reading_data#_tf_data_API>`_,The API can easily construct a complex input pipeline. (**preferred method**). This is **an improved version of the old input methods---feeding and QueueRunner**
+
+两种实现的比较
++++++++++++++++++++++++++++++
+Input pipeline是一个整体概念，虽然tf提供了两种实现“input pipeline”的方式，
+
+- 但是应该都遵循了相同的设计原则和思路，可以从 :ref:`Four Concepts about Dataflow <4-dataflow>` and :ref:`four basic problems of pipeline deisgn <pipeline-design>` 来观察。
+- 两种不同的"input pipeline"实现方式的区别应该在于连接stages的方式不同。
+- 具体到MTCNN中，input pipeline的 `Beginning <https://www.tensorflow.org/api_guides/python/io_ops#beginning_of_an_input_pipeline>`_ "data source"就是tfrecord files，`End <https://www.tensorflow.org/api_guides/python/io_ops#batching_at_the_end_of_an_input_pipeline>`_ "data sink"就是batch。

@@ -1,19 +1,34 @@
 Protocol Buffers
 ===================
-All of TensorFlow's file formats, including TFRecord-formatted files, are based on Protocol Buffers. We often refer to Protocol Buffers as protobufs. 
+
+Protocol Buffers实际上是关于结构化数据（structured data）序列化和检索（serialize and retrieve）的整套解决方案，它包括了：
+
+1. 数据结构的定义，.proto文件（类似于定义python class的.py文件）
+2. compiler
+3. 定义了一个实例序列化成二进制串的格式，就像.xml文件必须写成<xml></xml>。
+4. 提供了实例序列化和反序列化的API
+
+All of TensorFlow's file formats, including TFRecord-formatted files, are based on Protocol Buffers. We often refer to Protocol Buffers as protobufs. Protobufs is to Serialize and retrieve structured data. 
 
 Reference
 ----------
 Google提供了一个官方的帮助页面（本小节的内容多出自于此处）， `Protocol Buffer Basics: Python
 <https://developers.google.com/protocol-buffers/docs/pythontutorial>`_
 
-What to
---------
-Serialize and retrieve structured data.
+相关概念
+------------
+
+结构化数据
+^^^^^^^^^^^^
+例如，Each person in a address book has a name, an ID, an email address, and a contact phone number.
+
+例如，MTCNN的训练数据集中，每一条数据包括图片本身，face bondary box四个点的坐标，face landmark五个点的坐标。
 
 (反)序列化
-^^^^^^^^^^^
-- 序列化： 将**数据结构或对象**转换成 **二进制串** 的过程
+^^^^^^^^^^^^
+(反)序列化涉及的核心问题是二进制串的格式。
+
+- 序列化： 将**数据结构或对象**转换成 **二进制串** 的过程，并不包括把这个二进制串写在硬盘上。
 
 在python中常用的dict对象串行化（序列化）模块是**json**
 
@@ -41,15 +56,29 @@ Serialize and retrieve structured data.
 
 Why Protocl Buffer 
 ---------------------
-在 `Google Protocol Buffer Basics <https://developers.google.com/protocol-buffers/docs/pythontutorial#why-use-protocol-buffers>`_ 中，给出了三种（反）序列化的方法，分别描述了各自的不足，并给出了要创造protocol buffer的原因， the protocol buffer compiler解决了所有的不足。
++------------+----------------------+---------------------------------------------------------------------+
+|            | 在python中的数据结构 | 保存数据的方法                                                      |
++------------+----------------------+---------------------------------------------------------------------+
+| 结构化数据 | 1. dict              | 1. 数据库，mysql, mangodb                                           |
+|            | 2. class             | 2. 序列化后保存成文件，文件格式包括protobuf,json,xml,python pickle  |
++------------+----------------------+---------------------------------------------------------------------+
 
-为什么要用.proto，而不直接在.py中定义class？但是，思考如果用python普通的定义class的方法来实现 `Basics-tutorial <https://developers.google.com/protocol-buffers/docs/pythontutorial>`_ 中给出的例子，会有多麻烦，因为要体现类的继承、包含和引用的关系，还要定义相应的方法。
+在 `Google Protocol Buffer Basics <https://developers.google.com/protocol-buffers/docs/pythontutorial#why-use-protocol-buffers>`_ 中，给出了结构化数据序列化成二进制串的3种格式（xml, python pickling&an ad-hoc way)，分别描述了各自的不足，并给出了要创造protocol buffer的原因， the protocol buffer compiler解决了所有的不足。
+
+因为，the protocol buffer **compiler** creates a class with following features:
+
+1. implements automatic encoding and parsing of the protocol buffer data with an efficient binary format. 
+2. provides getters and setters for the fields that make up a protocol buffer and
+3. takes care of the details of reading and writing the protocol buffer as a unit.
+4. supports the idea of extending the format over time in such a way that the code can still read data encoded with the old format. 
+
+How to use
+-------------
+既然如此，google提供一个把class或者dict序列化为protobuf的module不就完了吗，但是google做的更多，甚至把定义class的.py文件替换为.proto，并且提供了complier（complier的好处见上一小节），极大简化了数据结构的定义过程——思考如果用python普通的定义class的方法来实现 `Basics-tutorial <https://developers.google.com/protocol-buffers/docs/pythontutorial>`_ 中给出的例子，会有多麻烦，因为要体现类的继承、包含和引用的关系，还要定义相应的方法。
 
 下述链接有编译后的.py文件，可以比较事先定义的.proto文件
 https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-buffer-api
 
-How to use
--------------
 1. 写.proto文件
 ^^^^^^^^^^^^^^^^^^
 

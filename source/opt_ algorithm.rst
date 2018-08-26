@@ -41,8 +41,8 @@ Generalization(Andrew Ng), underfit(high bias) or overfit(high variance)
 Accuracy, Precision, Recall&F1 score
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Parameters to concern
------------------------
+Concerns of an Algorithm
+---------------------------
 算法需要考虑的“因素”包括：
 
 - :ref:`learning method <learning-method>`
@@ -60,7 +60,7 @@ Learning method
 full-batch method
 ++++++++++++++++++
 
-适用于small **datasets** (e.g. 10,000 cases) or bigger datasets without much redundancy
+适用于small **datasets** (e.g. 10,000 cases) or bigger datasets without much redundancy（冗余）
 
 .. _mini-batch-method:
 
@@ -88,6 +88,12 @@ stochastic method
 Frome Andrew Ng 10th Week，下图来自于Andrew Ng 10th-week
 
 .. image:: img/nn-4.png
+
+上图中，
+
+- m是数据集的大小。
+- Repeat内部的for循环，表示针对每条训练数据，weights都会发生改变。
+- 外层的Repeat循环表示上述过程要重复的次数。
 
 online method
 ++++++++++++++++
@@ -147,7 +153,7 @@ Descent Direction
 ^^^^^^^^^^^^^^^^^^^^
 Gradient Oscillation
 ++++++++++++++++++++++
-- 在Hilton的课中多次提到gradient oscillation，我认为就是梯度的正负号的变化。
+- 在Hilton的课中多次提到gradient oscillation（振荡），我认为就是梯度的正负号的变化。
 - gradient oscillation会改变descent direction，进而影响收敛速度。
 - Gradient Oscillation可以在error surface的等高线图中可以清晰的表示出来， `this article <https://zhuanlan.zhihu.com/p/21486826>`_ 在对不同的learning rate的SGD之间，以及SGD和Momentum之间进行比较时，图示了Gradient Oscillation
 - 梯度之所以为oscillation的原因，在上述链接的例子中，当y移动到负值时，根据梯度公式，cost function在这一点的梯度就取负值了。

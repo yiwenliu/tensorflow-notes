@@ -1,14 +1,13 @@
 TFRecord-formatted files
 =============================
-Background
-------------
-准备MTCNN训练数据时，把图像数据和annotations一起写入一个 **.tfrecord** 文件中。
 
 适用场景
 ----------
-:ref:`Importing Data <importing-data>`
+:ref:`Importing Data <importing-data>` 中提及了神经网络读取数据的3种方法，TFRecord应该是很适合Input Pipeline的。
 
-A TFRecords file represents a sequence of (binary) strings. The format is not random access, so it is suitable for streaming large amounts of data but not suitable if fast sharding or other non-sequential access is desired.
+TFRecord在"input pipeline"中的地位应该是，前者为后者提供了Reader和Decoder。
+
+A TFRecords file represents a sequence of (binary) strings. The format is not random access, so it is suitable for streaming large amounts of data but not suitable if fast sharding or other non-sequential access is desired.这个描述和 :ref:`learning method <learning-method>` 对数据集的使用方式是契合的。
 
 Why Use
 --------
@@ -20,7 +19,7 @@ Binary files are sometimes easier to use, because you don’t have to specify di
 
 - time saving
 
-Openning a file is a considerably time-consuming operation especially if you use hdd and not ssd, because it involves moving the disk reader head and that takes quite some time. Overall, by using binary files you make it easier to distribute and make the data better aligned for efficient reading.
+Openning a file is a considerably time-consuming operation especially if you use hdd and not ssd, because it involves moving the disk reader head and that takes quite some time. Overall, by using binary files you make it easier to distribute and make the data better aligned（对齐） for efficient reading.
 
 Module&File API
 -----------------
@@ -32,6 +31,8 @@ Module&File API
 - class TFRecordOptions: Options used for manipulating TFRecord files.
 
 - class TFRecordWriter: A class to write records to a TFRecords file.
+
+这些模块为 :ref:`input pipeline <input-pipeline>` 提供了"Reader"&"Decoder"。
 
 tfrecord格式文件的组成
 -----------------------
@@ -50,7 +51,9 @@ Look inside 'byte data'
 ^^^^^^^^^^^^^^^^^^^^^^^^
 上述tfrecord format中 **byte   data[length]** 就是一个record，真正的payload。
 
-byte data是由结构化数据通过序列化而成，采用的是Google自家的 **Protocol Buffer**
+byte data是由结构化数据通过序列化而成，采用的是Google自家的 **Protocol Buffer**。之所以是结构化的数据，对于MTCNN而言，应该是为了快速分别得到图片文件和其annotation。
+
+上述的“结构化数据”为什么不是python内置的dict=["img":图片数据, "annotation":[xx,xx,xx...]]，把这个dict序列化成json string作为tfrecord文件的payload？
 
 How to write a TFRecords file
 -------------------------------
@@ -84,7 +87,9 @@ class Example的结构定义在 :ref:`example.proto <example-proto>`
 
 How to read a TFRecords file
 -------------------------------
-可以把python读取文件的过程与tf读取tfrecord文件的过程进行对比，有利于理解和记忆。
+（可以把python读取文件的过程与tf读取tfrecord文件的过程进行对比，有利于理解和记忆。）
+
+应该由 :ref:`Input pipeline <input-pipeline>` 来调用读取TFRecords文件的方法。
 
 Steps
 ^^^^^^
