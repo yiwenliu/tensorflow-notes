@@ -24,6 +24,7 @@ Welcome to tensorflow-notes's documentation!
    tensorflow-slim
    tf-visual
    dataset
+   ml2nn
    NN
    opt_ algorithm
    CNN

@@ -96,7 +96,7 @@ https://developers.google.com/protocol-buffers/docs/pythontutorial#the-protocol-
   # a message definition
   message message-type-name {
     #define a field in the message
-    #modifier: required/optional/repeated
+    #modifier: required/optional/repeated，in proto3,only sigular(可省)/repeated
     #field-type: 1)simple data types including bool, int32, float, double, and string;
     #            2)other message types as field types
     #tag: the unique "tag" that field uses in the binary encoding
@@ -199,8 +199,12 @@ modifier就是Field Rules,3个取值的意义见 `Specifying Field Rules <https:
 
 oneof
 ------
-oneof既不是modifier，也是不是filed-type。它更像是多个optional的一种简写形式。
+oneof在field的定义中的位置是filed-type所占的位置，它是多个optional的一种简写形式。
 详见 `Oneof <https://developers.google.com/protocol-buffers/docs/proto#oneof>`_
+
+map
+-----
+map在field的定义中的位置是filed-type所占的位置，详见 `Maps <https://developers.google.com/protocol-buffers/docs/proto#maps>`_
 
 TF中的应用
 ------------
