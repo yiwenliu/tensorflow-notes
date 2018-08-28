@@ -25,6 +25,7 @@ Welcome to tensorflow-notes's documentation!
    tf-visual
    dataset
    ml2nn
+   neuron
    NN
    opt_ algorithm
    CNN

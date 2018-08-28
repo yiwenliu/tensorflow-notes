@@ -29,7 +29,8 @@ Andrew Ng在ch2讲解用ML解决回归问题时，用到的例子是“猜房价
 -----------
 
 1. 在Andres Ng讲解logistic regression时，引入了decision bondary这个概念，从本质上讲，就是features之间的数学关系。当这个数序关系复杂到无法用“多项式”来表示时，只好用神经网络的模型来表示了。
-2. 符合不同数学关系的features就属于不同的类别。
+2. Neural network are very powerful models that can form highly complex decision boudaries.
+3. 符合不同数学关系的features就属于不同的类别。
 
 +-----------+-----------------------------------------------+------------------+
 |           | ML                                            | NN               |

@@ -155,7 +155,7 @@ Gradient Oscillation
 ++++++++++++++++++++++
 - 在Hilton的课中多次提到gradient oscillation（振荡），我认为就是梯度的正负号的变化。
 - gradient oscillation会改变descent direction，进而影响收敛速度。
-- Gradient Oscillation可以在error surface的等高线图中可以清晰的表示出来， `this article <https://zhuanlan.zhihu.com/p/21486826>`_ 在对不同的learning rate的SGD之间，以及SGD和Momentum之间进行比较时，图示了Gradient Oscillation
+- Gradient Oscillation可以在error surface的等高线图中可以清晰的表示出来， `this <https://zhuanlan.zhihu.com/p/21486826>`_ 在对不同的learning rate的SGD之间，以及SGD和Momentum之间进行比较时，图示了Gradient Oscillation
 - 梯度之所以为oscillation的原因，在上述链接的例子中，当y移动到负值时，根据梯度公式，cost function在这一点的梯度就取负值了。
 
 The Direction of steepest descent
@@ -173,6 +173,51 @@ The Direction of steepest descent
 
 Other directions of cost function descent
 ++++++++++++++++++++++++++++++++++++++++++++
+Generalization
+---------------
+How To Judge
+^^^^^^^^^^^^^^
+有很多防止overfit的方法，但是首先要判断是否发生了overfit，并辨别成因，使用对应的解决方法。
+
+显然，只有把train set和validation set的cost function曲线放在一起，才能判断是否发生了ovefit。
+
+L1 Regularization
+^^^^^^^^^^^^^^^^^^^
+.. image:: img/l1-reg.png
+
+L2 Regularization
+^^^^^^^^^^^^^^^^^^^
+.. image:: img/l2-reg.png
+
+Dropout
+^^^^^^^^^
+详见 :ref:`CNN-Dropout <dropout>`
+
+.. _data-aug:
+
+Data Augmentation
+^^^^^^^^^^^^^^^^^^
+`this article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“数据集扩增”部分讲的很好，还有相关论文，暂时没有时间看。
+
+`the article <https://zhuanlan.zhihu.com/p/31761796>`_ 详述了对MTCNN中所使用的"data set"进行data augmentation的过程
+
+Training
+----------
+Definition
+^^^^^^^^^^^^
+其实，神经网络的训练过程就是使用Optimization Algorithm最小化Loss的过程。
+
+Epoch&Iteration
+^^^^^^^^^^^^^^^^^
+- epoch
+- iteration
+- batch size
+- number of batches
+
+当一个完整的数据集通过了神经网络一次并且返回了一次，这个过程称为一个 epoch。
+
+迭代是 batch 需要完成一个 epoch 的次数。记住：在一个 epoch 中，batch 数和迭代数是相等的。比如对于一个有 2000 个训练样本的数据集。将 2000 个样本分成大小为 500 的 batch，那么完成一个 epoch 需要 4 个 iteration。
+
 
 Instance 
 ----------
@@ -232,7 +277,7 @@ Momentum
 
 SGD&Momentum&NAG
 ++++++++++++++++++
-`this article <https://zhuanlan.zhihu.com/p/21486826>`_ 给出了SGD&Momentum&NAG的比较，提炼如下：
+`ref <https://zhuanlan.zhihu.com/p/21486826>`_ 给出了SGD&Momentum&NAG的比较，提炼如下：
 
 - 用了一个等高线是椭圆的cost function作为取最值的对象，而可以通过对dataset的预处理让等高线尽量圆一点。
 - 用等高线坐标系中weights的移动轨迹使优化的过程可视化。
