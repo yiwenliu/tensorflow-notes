@@ -53,6 +53,10 @@ Rectified Linear Neuron
 
 .. image:: img/rln.png
 
+首次应用
+^^^^^^^^^^
+AlexNet，成功解决了sigmoid在网络较深时的梯度弥撒问题
+
 PReLU
 ----------------
 Parametric Rectified Linear Unit，增加了参数修正的ReLU，来自于论文 `Delving Deep into Rectifiers:Surpassing Human-Level Performance on ImageNet Classification <https://arxiv.org/pdf/1502.01852.pdf>`_

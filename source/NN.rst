@@ -31,8 +31,8 @@ Backpropagation Algorithm
 ---------------------------
 这一小节的内容摘自Andrew Ng Week5 p24b-24c, p34-36
 
-深度神经网络面临的问题
-^^^^^^^^^^^^^^^^^^^^^^^^
+神经网络求解weight matrix面临的问题
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 对于神经网络（hidden layer>=1）而言，求得整个网络的loss对每一层的每一个 θ :subscript:`ij` 的偏导数，就无法用与在机器学习中所用到的相同的方法求得了。BP算法就是为求这个偏导数而生的。
 
 BP算法的思想
@@ -51,6 +51,11 @@ weight matrix initialization
 2. dimension of weight matrix from layer j to layer j+1
 3. weight matrix的计算公式
 
+BP算法的弱点
+^^^^^^^^^^^^^^^
+1. 梯度弥散（vanishing gradient problem）
+
+当使用反向传播方法计算导数的时候，随着网络的深度的增加，反向传播的梯度（从输出层到网络的最初几层）的幅度值会急剧地减小。结果就造成了整体的损失函数相对于最初几层的权重的导数非常小。这样，当使用梯度下降法的时候，最初几层的权重变化非常缓慢，以至于它们不能够从样本中进行有效的学习。
 
 Network Cost Function
 ------------------------

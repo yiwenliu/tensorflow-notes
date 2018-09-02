@@ -173,6 +173,7 @@ The Direction of steepest descent
 
 Other directions of cost function descent
 ++++++++++++++++++++++++++++++++++++++++++++
+
 Generalization
 ---------------
 How To Judge
@@ -200,6 +201,12 @@ Data Augmentation
 `this article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“数据集扩增”部分讲的很好，还有相关论文，暂时没有时间看。
 
 `the article <https://zhuanlan.zhihu.com/p/31761796>`_ 详述了对MTCNN中所使用的"data set"进行data augmentation的过程
+
+LRN
+^^^^^^^
+LRN,局部响应归一化，AlexNet首次引入。用在神经网络结构中的哪里呢？
+
+作用：对局部神经元的活动创建竞争机制，使得其中响应比较大的值变得相对更大，并抑制其他反馈较小的neuron，增强了模型的泛化能力。
 
 Training
 ----------

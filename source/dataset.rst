@@ -27,7 +27,7 @@ Dataset
 +-----------------+------------------------------------------+-------+----------------+
 
 
-数据集的分割
+数据集的切分
 -------------
 把数据集分割成如下3个部分，可能是拿到数据集后的第一步操作。
 
@@ -54,36 +54,41 @@ Data Augmentation
 
 预处理
 ---------
-“预处理”，可能是拿到数据集后的第二步操作。
+“预处理”，可能是拿到数据集后的第3步操作（第2步可选）。
 
-Why
-^^^^
+为什么需要预处理
+^^^^^^^^^^^^^^^^^^^
 按照Hilton的说法，对数据进行预处理的目的是：converts an axis aligned elliptical :ref:`error surface <error-surface>` into a circular one for which the gradient points straight towards the minimum，即加快了收敛速度，如下图error surface的等高线所示。等高线的形状对 **optimization Algorithm** 的选择也会产生影响。
 
 .. image:: img/dataset-1.png
 
-Tips
-^^^^^^
-当我们开始处理数据时，首先要做的事是观察数据并获知其特性。本部分将介绍一些通用的技术，在实际中应该针对具体数据选择合适的预处理技术。例如一种标准的预处理方法是对每一个数据点都减去它的均值（也被称为移除直流分量，局部均值消减，消减归一化），这一方法对诸如自然图像这类数据是有效的，但对非平稳的数据则不然。
+How&Examples
+^^^^^^^^^^^^^^^^
 
-How&Steps
-^^^^^^^^^^^
-一般有两步：
+对于监督学习的training set而言，可以对features和target result都进行预处理。
 
-1. 第一步，normalization，`归一化 <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#.E6.95.B0.E6.8D.AE.E5.BD.92.E4.B8.80.E5.8C.96>`_ , 使得最终的数据向量落在 [0,1]或[ − 1,1] 的区间内（根据数据情况而定）
+预处理常用的有两种方法：
 
-例如，MTCNN中，对于augmentation后的数据进行回归框预测时，考虑到直接采用坐标信息，,(top-left-x, top-left-y, bottom-right-x, bottom-right-y)，进行回归框预测，网络收敛比较慢。所以在回归框预测的时候一般采用回归框的坐标偏移进行预测，相当于归一化的一种方式。
+1. normalization，`归一化 <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#.E6.95.B0.E6.8D.AE.E5.BD.92.E4.B8.80.E5.8C.96>`_ , 使得最终的数据向量落在 [0,1]或[ − 1,1] 的区间内。这种方法主要针对的是处在同一列的或者意义相同的features或者targets。
+
+例子1，targets的归一化。MTCNN中，对于augmentation后的数据进行回归框预测时，考虑到如果直接采用坐标信息——(top-left-x, top-left-y, bottom-right-x, bottom-right-y)，进行回归框预测，网络收敛比较慢。所以在回归框预测的时候一般采用回归框的坐标偏移进行预测。从坐标公式可以看出，是针对的top-left-x, top-left-y, bottom-right-x和bottom-right-y四列的纵向计算。
 
 .. image:: img/bbx-norm.png
 
-2. 第二步，whitening，`白化 <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#PCA.2FZCA.E7.99.BD.E5.8C.96>`_
+例子2，features的归一化。在Andrew Ng的lecture2中，用linear regression预测房价时用到的"feature scaling"，如下图，也是针对size,"number of bedrooms"两列的数据进行纵向计算。
+
+.. image:: img/feature-scaling.png
+
+2. `PCA/ZCA白化 <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#PCA.2FZCA.E7.99.BD.E5.8C.96>`_ 
+
+例如，AlexNet对图像的RGB进行PCA，并对主成分做一个标准差为0.1的高斯扰动，增加一些噪声，让错误率下降了1%
 
 根据不同的datasets features，每一步可以采用不同的方法, 
 `REFERENCE <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#MNIST_.E6.89.8B.E5.86.99.E6.95.B0.E5.AD.97>`_
 
-Examples
-^^^^^^^^^
-`REFER <http://ufldl.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86#.E6.A0.87.E5.87.86.E6.B5.81.E7.A8.8B>`_
+Tips
+^^^^^^
+当我们开始处理数据时，首先要做的事是观察数据并获知其特性。本部分将介绍一些通用的技术，在实际中应该针对具体数据选择合适的预处理技术。例如一种标准的预处理方法是对每一个数据点都减去它的均值（也被称为移除直流分量，局部均值消减，消减归一化），这一方法对诸如自然图像这类数据是有效的，但对非平稳的数据则不然。
 
 Large scale dataset
 ----------------------
