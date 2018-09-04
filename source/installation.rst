@@ -1,12 +1,8 @@
 Installing
 ==============
-Installation with GPU
------------------------
-安装ubuntu
-^^^^^^^^^^^^^
 
 安装python环境
-^^^^^^^^^^^^^^^
+----------------------
 ubuntu中自带python，而还需要安装anaconda的原因是，在安装tensorflow时，建议最好使用anaconda。
 
 安装方法：《tensorflow实战》3.1.1
@@ -16,7 +12,29 @@ ubuntu中自带python，而还需要安装anaconda的原因是，在安装tensor
 当在cmd中运行python时，会寻找到anaconda的python，因为/home/anaconda/bin添加到了PATH的最前面，shell在找到anaconda的python后，就不会继续寻找unbuntu系统自带的python了。
 
 安装NVIDIA驱动(可省略)
-^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------
+检查是否安装成功
+^^^^^^^^^^^^^^^^^^^^^^
+甭管系统中是否自带驱动，运行下列命令，如果不能正常显示，那么就得重新安装显卡驱动。
+
+$nvidia-smi #可显示显卡一些信息，显卡的个数等
+
+$nvidia-settings #可以打开显卡设置的图像界面(NVIDIA X Server Settings)
+
+另外还有命令：
+
+.. code-block:: none
+	:linenos:
+
+	#显示系统中所有PCI总线设备或连接到该总线上的所有设备的工具
+	$lspci | grep VGA 或 lspci | grep NVIDIA
+	#已载入系统的模块
+	$lsmod | grep nvidia
+	$glxinfo | grep render
+	#输出：OpenGL renderer string: GeForce GTX 1080 Ti/PCIe/SSE2
+
+on ubuntu16
+^^^^^^^^^^^^^^^^^^
 1. 查看ubuntu的默认驱动
 
 .. code-block:: none
@@ -134,16 +152,77 @@ nvidia-settings 显卡设置
 
 11. 安装驱动成功后，界面的分辨率更高了，字号更小了。
 
+on ubuntu18
+^^^^^^^^^^^^^^^
+这个方法来自于 `How to install the NVIDIA drivers on Ubuntu 18.04 Bionic Beaver Linux <https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux>`_
+
+First, detect the model of your nvidia graphic card and the recommended driver. To do so execute:
+
+.. code-block:: none
+    :linenos:
+
+    $ ubuntu-drivers devices
+	== /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 ==
+	modalias : pci:v000010DEd00001180sv00001458sd0000353Cbc03sc00i00
+	vendor   : NVIDIA Corporation
+	model    : GK104 [GeForce GTX 680]
+	driver   : nvidia-304 - distro non-free
+	driver   : nvidia-340 - distro non-free
+	driver   : nvidia-384 - distro non-free recommended
+	driver   : xserver-xorg-video-nouveau - distro free builtin
+
+	== cpu-microcode.py ==
+	driver   : intel-microcode - distro free
+
+From the above output we can conclude that the current system has NVIDIA GeForce GTX 680 graphic card installed and the recommend driver to install is nvidia-384. If you agree with the recommendation feel free to use ubuntu-drivers command again to install all recommended drivers:
+
+**$ sudo ubuntu-drivers autoinstall**
+
+Once the installation is concluded, reboot your system and you are done.
+
 安装CUDA
-^^^^^^^^^^^
+----------------------------
+
+在下述的ubuntu的两个版本中，在cuda的下载页面都是选择.run安装文件，
+
+on ubuntu16
+^^^^^^^^^^^^^^^^^
 CUDA安装包里集成了显卡驱动，下载时请选择cuda8.0，否则在import tensorflow时，会报错“找不到*.so.8”。
 
 安装路径/usr/local/cuda-8.0
 
 安装过程见《tf实战》p43
 
+on ubuntu18
+^^^^^^^^^^^^^^^^
+
+.. code-block:: none
+    :linenos:
+
+	# CUDA 9 requires gcc 6
+	sudo apt install gcc-6
+	sudo apt install g++-6
+
+	# downoad one of the "runfile (local)" installation packages from cuda toolkit archive 
+	wget https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/cuda_9.0.176_384.81_linux-run
+
+	# make the download file executable
+	chmod +x cuda_9.0.176_384.81_linux-run 
+	sudo ./cuda_9.0.176_384.81_linux-run --override
+
+	# answer following questions while installation begin
+	# You are attempting to install on an unsupported configuration. Do you wish to continue? y
+	# Install NVIDIA Accelerated Graphics Driver for Linux-x86_64 384.81? n
+	# Install the CUDA 9.0 Toolkit? y
+	# 建立了符号链接 /usr/local/cuda -> /usr/local/cuda-9.2
+
+	# set up symlinks for gcc/g++
+	sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc
+	sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++
+
+
 安装cuDNN
-^^^^^^^^^^
+----------------------------
 安装过程见《tf实战》p44，在书中的下载页面中登录后，作出如下图的选择，因为
 
 - 如此，下载的就是.tgz格式而非.dep格式的文件
@@ -154,11 +233,11 @@ CUDA安装包里集成了显卡驱动，下载时请选择cuda8.0，否则在imp
 其实，安装cuDNN就是把三个libcudnn.so.*文件放入CUDA的安装路径的库文件夹/usr/local/cuda/lib64下
 
 设置CUDA的路径
-^^^^^^^^^^^^^^^
+----------------------------
 过程见《tf实战》p44
 
 安装tensorflow
-^^^^^^^^^^^^^^^^
+----------------------------
 请参考官方文档 `Installing TensorFlow on Ubuntu <https://www.tensorflow.org/install/install_linux>`_ 下"Installing with Anaconda"
 
 windows anaconda环境下安装tf

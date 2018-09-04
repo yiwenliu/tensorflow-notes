@@ -8,6 +8,8 @@ Very briefly, a tensor is an N-dimensional array containing the same type of dat
 1. its data type and 
 2. the value of each of the N dimension.
 
+In python, tensor is a class, <class 'tensorflow.python.framework.ops.Tensor'>. The data flowing in the graph are instance of Tensor.
+
 Tensor Type
 --------------
 Represents the type of the elements in a Tensor. `tf.DType <https://www.tensorflow.org/api_docs/python/tf/DType>`_
