@@ -10,6 +10,7 @@ Welcome to tensorflow-notes's documentation!
    :maxdepth: 2
    :caption: Contents:
    
+   nv-driver
    installation
    programming-model
    dataflow
