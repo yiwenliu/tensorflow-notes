@@ -1,6 +1,6 @@
-tf的编程模型(programming model)
+tf应用程序的编程模型
 ================================
-tf has two programming model:
+tf application has two programming model:
 
 1. Low-level programming model
 

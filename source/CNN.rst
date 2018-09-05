@@ -43,7 +43,7 @@ CNN的好处
 -------------
 1. 卷积核:feature detector
 2. feature map：每个卷积核生成的另一幅图像
-3. 通道：被卷积的原始图像的特征，例如，RGB就是3通道, ARGB就是4通道
+3. 通道：包括in_channel, out_channels, 卷积前的图像，例如，RGB就是3通道, ARGB就是4通道；out_channels是卷积后的，out_channels==kernel_numbers
 4. replicated feature approach: use many diffrent copies of the same feature detector with **different positions**.
 5. CNN中的“C”，应该是代表了replicated feature approach。把图像的多维数据摊开到一维，移动卷积核，与图像数据相乘求和，这种计算过程，和两个离散信号求卷积的过程相同。
 

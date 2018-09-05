@@ -11,11 +11,13 @@ Welcome to tensorflow-notes's documentation!
    :caption: Contents:
    
    installation
-   programming_model
+   programming-model
    dataflow
+   app_programming_model
    graph
    session
    tensor
+   operation
    variable
    scope
    importing_data

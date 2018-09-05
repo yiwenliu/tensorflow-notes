@@ -161,18 +161,18 @@ First, detect the model of your nvidia graphic card and the recommended driver. 
 .. code-block:: none
     :linenos:
 
-    $ ubuntu-drivers devices
-	== /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 ==
-	modalias : pci:v000010DEd00001180sv00001458sd0000353Cbc03sc00i00
-	vendor   : NVIDIA Corporation
-	model    : GK104 [GeForce GTX 680]
-	driver   : nvidia-304 - distro non-free
-	driver   : nvidia-340 - distro non-free
-	driver   : nvidia-384 - distro non-free recommended
-	driver   : xserver-xorg-video-nouveau - distro free builtin
+    $ubuntu-drivers devices
+    == /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 ==
+    modalias : pci:v000010DEd00001180sv00001458sd0000353Cbc03sc00i00
+    vendor   : NVIDIA Corporation
+    model    : GK104 [GeForce GTX 680]
+    driver   : nvidia-304 - distro non-free
+    driver   : nvidia-340 - distro non-free
+    driver   : nvidia-384 - distro non-free recommended
+    driver   : xserver-xorg-video-nouveau - distro free builtin
 
-	== cpu-microcode.py ==
-	driver   : intel-microcode - distro free
+    == cpu-microcode.py ==
+    driver   : intel-microcode - distro free
 
 From the above output we can conclude that the current system has NVIDIA GeForce GTX 680 graphic card installed and the recommend driver to install is nvidia-384. If you agree with the recommendation feel free to use ubuntu-drivers command again to install all recommended drivers:
 
@@ -219,6 +219,11 @@ on ubuntu18
 	# set up symlinks for gcc/g++
 	sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc
 	sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++
+
+	# setup your paths
+	echo 'export PATH=/usr/local/cuda-9.0/bin:$PATH' >> ~/.bashrc
+	echo 'export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+	source ~/.bashrc
 
 
 安装cuDNN

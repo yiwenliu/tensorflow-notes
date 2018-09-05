@@ -5,9 +5,16 @@ what is tf.Variable
 --------------------
 本质上讲，variables是tensorflow :ref:`operation <ops>`
 
+In python, Variable is a class object
+
 creating/using/sharing variables
 ---------------------------------
-无论是creating, using, 还是sharing variables，都推荐使用同一个函数，tf.get_variable()。这个函数使用了一个关键参数name，可以回顾graph/operation/name章节中的内容。
+有两个方法可以create a variable operation:
+
+- tf.get_variable()
+- tf.Variable()，肯定会创建新的variable operations
+
+但是，无论是creating, using, 还是sharing variables，都推荐使用同一个函数，tf.get_variable()。这个函数使用了一个关键参数name，可以回顾graph/operation/name章节中的内容。
 
 tf.get_variable()干了两件事，都和tf.variable_scope()有关：
 
@@ -56,16 +63,11 @@ automatically initialize variables for you before training a model.
 
 name
 ------
-Variable从本质上是一个operation，在设定variable的name scope时，
-使用了和设定 :ref:`operation name scope <ops-name>` 时不一样的函数。
-
 在某个tf.Graph中，不应出现同名的variable。
 
--从variable最终的名字上看，避免出现重名
+Variable从本质上是一个operation，所以tf.name_scope()也会在使用tf.Variable()创建variable operation时给name加上prefix。那么，又提供tf.varaible_scope()的原因何在呢？支持"sharing variables"，tf.get_variable()不会考虑tf.name_scope()给variable operation name加的prefix，所以使用tf.get_variable()甚至可以共享不同name scope下的variable operation.
 
-使用tf.variable_scope()，给variable name加上prefix，就算创建variable的name参数相同也没事，避免重名
-
--传给tf.get_variable()或者tf.Variable()的name参数是否允许相同
+使用tf.variable_scope()，给variable name加上prefix，就算创建variable的name参数相同也没事，避免重名（传给tf.get_variable()或者tf.Variable()的name参数是否允许相同）
 
 .. code-block:: python
   :linenos:
@@ -98,14 +100,14 @@ Variable从本质上是一个operation，在设定variable的name scope时，
   print(v.name) #=>vs/ws3:0
   print(v1.name) #=>vs/ws3:0
 
-sharing
---------
+Sharing variable
+---------------------
 
 使用variable name来分辨不同的variable，所谓sharing，就是返回同名的已经创建的variable。
 
 Using tf.Variable()
 ^^^^^^^^^^^^^^^^^^^^
-如果使用tf.Variable(), 即使传入的name参数相同，sharing variable也无从谈起。
+如果使用tf.Variable(), 即使传入的name参数相同，tf也自动处理同名进而会创建新的variable operation, sharing variable也无从谈起。
 
 .. code-block:: python
   :linenos:
