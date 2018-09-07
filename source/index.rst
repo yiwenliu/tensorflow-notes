@@ -11,6 +11,7 @@ Welcome to tensorflow-notes's documentation!
    :caption: Contents:
    
    nv-driver
+   cuda
    installation
    programming-model
    dataflow
