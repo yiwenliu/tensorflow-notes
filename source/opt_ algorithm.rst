@@ -190,6 +190,8 @@ L2 Regularization
 ^^^^^^^^^^^^^^^^^^^
 .. image:: img/l2-reg.png
 
+从《tf实战》5.3的例子看出，在一个神经网络中，并非要对每一层的weights进行penalization。书中的例子，只对全连接层进行了penalization,而对于前面的卷积层、后面的softmax都没有进行这个操作。
+
 Dropout
 ^^^^^^^^^
 详见 :ref:`CNN-Dropout <dropout>`

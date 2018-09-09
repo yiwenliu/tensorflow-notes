@@ -52,6 +52,13 @@ Data Augmentation
 1. 不augmentation，结果不理想，例如，容易overfit。在MTCNN中，对于人脸对齐这个回归任务，就需要对iou>0.65的回归框，进行mirro, inverse和rotation等操作，增加标注了landmark坐标的图片的数量。
 2. 不Augmentation无法进行运算，例如，在MTCNN中，对于人脸分类这个单一任务，依据WIDER FACE数据集的annotation只有抠出人脸数据，所以必须利用滑动窗口从原始数据集中获得正样本，负样本和中间样本。
 
+tf中对于data augmentation的支持
+------------------------------------
+- tf.image.random_flip_left_right(),随机的水平翻转
+- tf.random_crop(),随机剪切24x24大小的图片
+- tf.image.random_brightness(), tf.image.random_contrast()设置随机的亮度和对比度
+- tf.iamge.per_image_whitening(),对数据进行标准化
+
 预处理
 ---------
 “预处理”，可能是拿到数据集后的第3步操作（第2步可选）。

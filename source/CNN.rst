@@ -110,6 +110,8 @@ e.g. a hand-written 2 can have a large loop or just a cusp（尖头），这两�
 
 3. （副作用）丢失物体的精准位置信息，在一些识别场景——需要用到"precise spatial relationship between high-level parts"中，就有问题。例如，识别眼睛和鼻子
 
+4. 池化的尺寸和步长不一致，可以增加数据的丰富性，一般，尺寸>步长
+
 多层结构的意义
 ^^^^^^^^^^^^^^^^^^^^
 较浅的卷积层（靠前的）的感受域比较小，学习感知细节部分的能力强，较深的隐藏层 (靠后的)感受域相对较大，适合学习较为整体的、相对更宏观一些的特征。
@@ -145,3 +147,12 @@ Intro
 http://www.jianshu.com/p/c9f66bc8f96c
 
 `this article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“Dropout”部分讲的很好
+
+Implementation In TF
+----------------------------
+可以参考《tf实战》p88, p101。
+
+有几点需要注意：
+
+1. 激活函数不能丢
+2. 卷积后还要加上bias，才能作为激活函数的输入

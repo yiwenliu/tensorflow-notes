@@ -59,16 +59,47 @@ BP算法的弱点
 
 例如，在AlexNet中，使用ReLU neuron替代了sigmoid neuron，成功解决了Sigmoid在网络较深时的梯度弥撒问题。
 
+Construct a NN in TF
+---------------------------
+
 Network Cost Function
 ------------------------
 Definition
 ^^^^^^^^^^^^
-- output layer的neuron model的cost function是整个神经网络的loss的主要组成部分
-- 对于mini batch learning method而言，整个神经网络的cost function被定义为“mini batch中每个sample的loss的均值”，e.g.
+- output layer的neuron model决定了整个神经网络的loss的计算方式
+- 对于mini/full batch learning method而言，整个神经网络的cost function被定义为“batch中每个sample的loss的均值”
+
+回归场景的loss
+^^^^^^^^^^^^^^^^^^^^
+Euclidean(欧几里德) loss
 
 （from Andrew Ng Week6）
 
 .. image:: img/cost-func.png
+
+二分类场景的loss
+^^^^^^^^^^^^^^^^^^^^
+使用sigmoid neuron作为output layer
+
+.. image:: img/sigmoid-loss.png
+
+多分类场景的loss
+^^^^^^^^^^^^^^^^^^^^
+一个softmax group包括多个neurons，它们作为一个整体作为output layer时的loss称为“Cross Entropy(互熵)”。下图是“一条训练数据”的loss计算方法。
+
+.. image:: img/softmax-loss-1.jpg
+
+首先L是损失。Sj是softmax的输出向量S的第j个值，前面已经介绍过了，表示的是这个样本属于第j个类别的概率。yj前面有个求和符号，j的范围也是1到类别数T，因此y是一个1*T的向量，里面的T个值，而且只有1个值是1，其他T-1个值都是0。那么哪个位置的值是1呢？答案是真实标签对应的位置的那个值是1，其他都是0。所以这个公式其实有一个更简单的形式：
+
+.. image:: img/softmax-loss-2.jpg
+
+当然此时要限定j是指向当前样本的真实标签。
+
+来举个例子吧。假设一个5分类问题，然后一个样本I的标签y=[0,0,0,1,0]，也就是说样本I的真实标签是4，假设模型预测的结果概率（softmax的输出）p=[0.2,0.3,0.4,0.6,0.5]，可以看出这个预测是对的，那么对应的损失L=-log(0.6)，也就是当这个样本经过这样的网络参数产生这样的预测p时，它的损失是-log(0.6)。那么假设p=[0.2,0.3,0.4,0.1,0.5]，这个预测结果就很离谱了，因为真实标签是4，而你觉得这个样本是4的概率只有0.1（远不如其他概率高，如果是在测试阶段，那么模型就会预测该样本属于类别5），对应损失L=-log(0.1)。那么假设p=[0.2,0.3,0.4,0.3,0.5]，这个预测结果虽然也错了，但是没有前面那个那么离谱，对应的损失L=-log(0.3)。我们知道log函数在输入小于1的时候是个负数，而且log函数是递增函数，所以-log(0.6) < -log(0.3) < -log(0.1)。简单讲就是你预测错比预测对的损失要大，预测错得离谱比预测错得轻微的损失要大。
+
+Implementation in TF
++++++++++++++++++++++++++++
+《tf实战》p90 def loss()
 
 .. _error-surface:
 

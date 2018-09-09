@@ -21,6 +21,10 @@ How to choose neuron
 
 选择不同的神经元，意味着选了不同的激励函数，这到底对神经网络和计算过程会产生怎样的影响？
 
+Activation functions in TF
+-----------------------------
+https://www.tensorflow.org/api_guides/python/nn#Activation_Functions
+
 Linear Neuron
 ----------------
 
@@ -29,23 +33,16 @@ Activation Function
 
 .. image:: img/linear-neuron.png
 
-Loss
-^^^^^^^^^
-Euclidean(欧几里德) loss
 
 Sigmoid Neuron
 ----------------
+这种神经元常用于二分类的深度学习的output layer
+
 Activation Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 这种神经元就具有如下4个特征：非线性，单调，可微，值受限。所以，就很好啊，使用很广。
 
 .. image:: img/sigmoid-neurons.png
-
-Loss
-^^^^^^
-这种神经元常用于二分类的深度学习中，所以单个神经元的loss的计算公式是，
-
-.. image:: img/sigmoid-loss.png
 
 ReLU
 ----------------
@@ -55,7 +52,14 @@ Rectified Linear Neuron
 
 首次应用
 ^^^^^^^^^^
-AlexNet，成功解决了sigmoid在网络较深时的梯度弥撒问题
+AlexNet中，除了最后一层softmax，所有的卷积以及全连接输出，都一ReLU为激活函数。以此成功解决了sigmoid在网络较深时的梯度弥撒问题。见，《tf实战》p101
+
+
+In TF
+^^^^^^^^
+tf.nn.relu(
+    features,
+    name=None)
 
 PReLU
 ----------------
@@ -83,16 +87,45 @@ Activation function
 
 .. image:: img/softmax-neuron.png
 
-Loss
+IN TF
++++++++++
+tf.nn.softmax(
+    logits,
+    axis=None,
+    name=None,
+    dim=None)
+
+其中，logits = tf.matmul(X, W) + bias
+
+bias
+--------
+对于一个神经元而言，bias是不可或缺的。
+
+初始化
 ^^^^^^^^^
-一个softmax group包括多个neurons，它们作为一个整体的loss称为“Cross Entropy(互熵)”。
+把同一层的神经元的bias都初始化成相同的值，有时候是0，或者0.1。
 
-.. image:: img/softmax-loss-1.jpg
+tf.nn.bias_add()
+^^^^^^^^^^^^^^^^^^^^^^^
+1. 首先计算神经元的“输入线性加权和”，对于CNN而言，就是tf.nn.conv2d()
+2. 然后通过调用bias_add()，把bias加到“加权和”上
 
-首先L是损失。Sj是softmax的输出向量S的第j个值，前面已经介绍过了，表示的是这个样本属于第j个类别的概率。yj前面有个求和符号，j的范围也是1到类别数T，因此y是一个1*T的向量，里面的T个值，而且只有1个值是1，其他T-1个值都是0。那么哪个位置的值是1呢？答案是真实标签对应的位置的那个值是1，其他都是0。所以这个公式其实有一个更简单的形式：
+TF中神经元加权和的计算
+-------------------------
+在上述所有神经元的激活函数中，加权和是基础，那么在TF中，是如何计算这些加权和的呢？
 
-.. image:: img/softmax-loss-2.jpg
+卷积网络
+^^^^^^^^^^^^
+关键函数
 
-当然此时要限定j是指向当前样本的真实标签。
+- tf.nn.con2d()
+- tf.nn.bias_add()
 
-来举个例子吧。假设一个5分类问题，然后一个样本I的标签y=[0,0,0,1,0]，也就是说样本I的真实标签是4，假设模型预测的结果概率（softmax的输出）p=[0.2,0.3,0.4,0.6,0.5]，可以看出这个预测是对的，那么对应的损失L=-log(0.6)，也就是当这个样本经过这样的网络参数产生这样的预测p时，它的损失是-log(0.6)。那么假设p=[0.2,0.3,0.4,0.1,0.5]，这个预测结果就很离谱了，因为真实标签是4，而你觉得这个样本是4的概率只有0.1（远不如其他概率高，如果是在测试阶段，那么模型就会预测该样本属于类别5），对应损失L=-log(0.1)。那么假设p=[0.2,0.3,0.4,0.3,0.5]，这个预测结果虽然也错了，但是没有前面那个那么离谱，对应的损失L=-log(0.3)。我们知道log函数在输入小于1的时候是个负数，而且log函数是递增函数，所以-log(0.6) < -log(0.3) < -log(0.1)。简单讲就是你预测错比预测对的损失要大，预测错得离谱比预测错得轻微的损失要大。
+例如，《tf实战》p88，101
+
+全链接网络
+^^^^^^^^^^^^^
+关键函数
+
+- tf.matmul()
+- tf.nn.bias_add()
