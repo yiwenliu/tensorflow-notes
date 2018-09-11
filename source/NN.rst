@@ -64,10 +64,11 @@ Construct a NN in TF
 
 Network Cost Function
 ------------------------
-Definition
+Summary
 ^^^^^^^^^^^^
 - output layer的neuron model决定了整个神经网络的loss的计算方式
 - 对于mini/full batch learning method而言，整个神经网络的cost function被定义为“batch中每个sample的loss的均值”
+- 如果网络loss的定义中是几个项相加，TF采用的方法是先定义各个子项，然后加起来。例如，对卷积网络中全链接层的weight进行regularization时（除去卷积层和softmax层的weight），是如何处理的，《tf实战》5.2
 
 回归场景的loss
 ^^^^^^^^^^^^^^^^^^^^

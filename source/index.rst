@@ -29,10 +29,11 @@ Welcome to tensorflow-notes's documentation!
    tensorflow-slim
    tf-visual
    dataset
+   gradient-descent
+   opt_ algorithm
    ml2nn
    neuron
    NN
-   opt_ algorithm
    CNN
    FCN
    

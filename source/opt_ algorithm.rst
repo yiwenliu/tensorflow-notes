@@ -3,7 +3,7 @@ Optimization Algorithm
 
 What to Optimize
 -------------------
-最优算法就是寻找cost function最小值的算法
+Algorithms for optimizing gradient descent, because of the :ref:`challenges <challenges-of-gd>`
 
 Evaluation the Algorithm
 --------------------------
@@ -71,6 +71,8 @@ mini-batch method
 
 还可以从 :ref:`learning curve <large-scale-data-ps>` 的角度来理解mini-batch的可行性
 
+mini-batch通常比online好，因为GPU上高效的矩阵运算。
+
 相关概念：
 
 - epoch
@@ -85,16 +87,6 @@ mini-batch method
 stochastic method
 +++++++++++++++++++
 
-Frome Andrew Ng 10th Week，下图来自于Andrew Ng 10th-week
-
-.. image:: img/nn-4.png
-
-上图中，
-
-- m是数据集的大小。
-- Repeat内部的for循环，表示针对每条训练数据，weights都会发生改变。
-- 外层的Repeat循环表示上述过程要重复的次数。
-
 online method
 ++++++++++++++++
 
@@ -104,8 +96,8 @@ Online method的算法和stochastic method类似，但是，前者不保存train
 
 .. _learning-rate:
 
-Learning Rate
-^^^^^^^^^^^^^^^^^
+Size of the Step(Learning Rate)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 How α influence the learning 
 ++++++++++++++++++++++++++++++++
 根据Gradient discent的公式，
@@ -162,7 +154,7 @@ The Direction of steepest descent
 ++++++++++++++++++++++++++++++++++++++
 0. network's cost function下降的方向是由每个Δw决定的，可由等高线, :ref:`Error Surface <error-surface>` ,上w的移动看出来。
 
-1. cost function的值下降最快的方向就是梯度的反方向。
+1. cost function的值下降最快的方向就是梯度的反方向, but the direction of steepest descent does not point at the minimum unless the ellipse is a circle(from hinton lecture 6a)
 
 2. 有两种gradient(From Hilton)
 
@@ -200,6 +192,8 @@ Dropout
 
 Data Augmentation
 ^^^^^^^^^^^^^^^^^^
+“数据增强”可以增多training set，也是防止overfit的常用方法。
+
 `this article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“数据集扩增”部分讲的很好，还有相关论文，暂时没有时间看。
 
 `the article <https://zhuanlan.zhihu.com/p/31761796>`_ 详述了对MTCNN中所使用的"data set"进行data augmentation的过程
@@ -210,87 +204,32 @@ LRN,局部响应归一化，AlexNet首次引入。用在神经网络结构中的
 
 作用：对局部神经元的活动创建竞争机制，使得其中响应比较大的值变得相对更大，并抑制其他反馈较小的neuron，增强了模型的泛化能力。
 
-Training
-----------
-Definition
-^^^^^^^^^^^^
-其实，神经网络的训练过程就是使用Optimization Algorithm最小化Loss的过程。
-
-Epoch&Iteration
-^^^^^^^^^^^^^^^^^
-- epoch
-- iteration
-- batch size
-- number of batches
-
-当一个完整的数据集通过了神经网络一次并且返回了一次，这个过程称为一个 epoch。
-
-迭代是 batch 需要完成一个 epoch 的次数。记住：在一个 epoch 中，batch 数和迭代数是相等的。比如对于一个有 2000 个训练样本的数据集。将 2000 个样本分成大小为 500 的 batch，那么完成一个 epoch 需要 4 个 iteration。
-
-
 Instance 
 ----------
+
 一个算法可能就出自一篇论文。
 
-总览
-^^^^^
+Summary
+^^^^^^^^^^^^
 `An overview of gradient descent optimization algorithms <http://ruder.io/optimizing-gradient-descent/index.html>`_
 
-SGD
-^^^^^^
-1. 随机梯度下降，Stochastic Gradient Descent，又可以称为mini-batch gradient descent
-2. 使用一小部分样本进行训练
-#. MNIST training set只有55000个样本，下面的例子却使用总数为100万的训练样本数量
-
-.. code-block:: python
-  :linenos:
-
-  #return an operation
-  train_step = tf.train.GradientDescentOptimizer(learning-rate).minimize(loss-function)
-  for i in range(20000):
-    batch = mnist.train.next_batch(50)
-    train_step.run(feed_dict={x:batch[0], y_:batch[1]})
-
-.. _sgd-lr:
-
-4. manual adjust **learning rate** to mini-batch gradient descent
-
-- if the error keeps getting worse or oscillates wildly, **reduce** the learning rate
-- towards the end of learning it nearly always helps to **turn down** the learning rate
-- when error stops decreaseing, **turn down** the learning rate
-- if the error is falling fairly consistently bust slow, **increase** the learning rate
-    
-
-BGD
-^^^^^
-batch gradient descent，传统的梯度下降每次使用全部样本进行训练
+.. _sgd-momentum:
 
 Momentum
 ^^^^^^^^^^^
 
-1. Momentum改进自SGD算法。
-2. 计算公式的改变之处可以参见《Hilton lecture6》或者 `An overview of gradient descent <http://ruder.io/optimizing-gradient-descent/index.html#momentum>`_ , 这两者在求取v(t)时所使用的signs相反，应该无影响。
+1. Momentum改进自SGD算法，计算公式的改变之处可以参见《Hilton lecture6》或者 `An overview of gradient descent:Momentum <http://ruder.io/optimizing-gradient-descent/index.html#momentum>`_ , 这两者在求取v(t)时所使用的signs相反，应该无影响。
 
 - 在求ΔW时，没有采用"steepest descent"（问题是，没有沿着梯度的方向，为什么还能加速？）
 - Hilton says(lecture 6c) it can speed up mini-batch learning, 但是代价是引入了一个新的“动量衰减参数”
 - 一个已经完成的梯度+步长的组合不会立刻消失，只是会以一定的形式衰减，剩下的能量将继续发挥余热。
 
-3. Momentum相比于SGD速度更快且振动减小了，体现在两个方面，如下图
+2. Momentum相比于SGD速度更快且振动减小了，体现在两个方面，如下图
 
 .. image:: img/high-line.png
 
-- 从横轴看，The momentum term increases for dimensions whose gradients point in the same directions
-- 从纵轴看，The momentum term reduces updates for dimensions whose gradients change directions. 
-
-.. _sgd-momentum:
-
-SGD&Momentum&NAG
-++++++++++++++++++
-`ref <https://zhuanlan.zhihu.com/p/21486826>`_ 给出了SGD&Momentum&NAG的比较，提炼如下：
-
-- 用了一个等高线是椭圆的cost function作为取最值的对象，而可以通过对dataset的预处理让等高线尽量圆一点。
-- 用等高线坐标系中weights的移动轨迹使优化的过程可视化。
-- 给出了三幅图，说明使用SGD时，如果只是单纯的加大learning rate，1)收敛速度不一定会增加，反而可能根本无法收敛;2)gradient oscillation并没有改变。
+- 从横轴看，The momentum term increases for dimensions whose gradients point **in the same directions** 。右图的紫色圆圈代表的一步迭代和左图对应的比起来，横轴上移动的更远。
+- 从纵轴看，The momentum term reduces updates for dimensions whose **gradients change directions**. 右图的紫色圆圈代表的一步迭代在纵轴上几乎保持了和上一步相同的方向。
 - 比较SGD和Momentum的weights的运动轨迹时，最大的区别就是“使得梯度下降的的时候转弯掉头的幅度不那么大了，于是就能够更加平稳、快速地冲向局部最小点”。
 
 NAG
@@ -315,6 +254,8 @@ Rmsprop
 
 Adam
 ^^^^^
+`Adam Overview <http://ruder.io/optimizing-gradient-descent/index.html#adam>`_
+
 1. use momentum
 2. use mini-batch method
 3. adaptive learning rates
