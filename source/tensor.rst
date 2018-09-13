@@ -140,9 +140,22 @@ element-wise 比较两个tensor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 tf.nn.top_k(), tutorial and `examples <https://www.jianshu.com/p/343c2eaacd18>`_
 
-Evaluating Tensors
----------------------
+求tensor的值(Evaluating)
+-----------------------------
 Evaluating tensor和executing a graph是一个意思。
+
+.. code-block:: none
+    :linenos:
+
+    >>> a = tf.constant([10,20])
+    >>> a
+    <tf.Tensor 'Const_1:0' shape=(2,) dtype=int32>
+    >>> sess = tf.InteractivateSession()
+    >>> v = sess.run(a)
+    >>> v
+    array([10, 20])
+    >>> type(v)
+    <class 'numpy.ndarray'>
 
 name
 -----

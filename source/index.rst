@@ -30,7 +30,8 @@ Welcome to tensorflow-notes's documentation!
    tf-visual
    dataset
    gradient-descent
-   opt_ algorithm
+   opt_algorithm
+   generalization
    ml2nn
    neuron
    NN

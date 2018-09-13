@@ -31,6 +31,9 @@ tf.get_variable()干了两件事，都和tf.variable_scope()有关：
 
 initialization
 ----------------
+
+如果不初始化，直接执行session.run(my_variable)会报错。
+
 1. 最容易想到的初始化方法：
 
 .. code-block:: python
@@ -44,7 +47,7 @@ initialization
 .. code-block:: python
   :linenos:
 
-  #tf.global_variables_initializer(). This function returns a single operation responsible #for initializing all variables in the tf.GraphKeys.GLOBAL_VARIABLES collection.
+  #tf.global_variables_initializer(). This function returns a single operation responsible for initializing all variables in the tf.GraphKeys.GLOBAL_VARIABLES collection.
   session.run(tf.global_variables_initializer())
 
 3. Most high-level frameworks such as tf.contrib.slim, tf.estimator.Estimator and Keras 

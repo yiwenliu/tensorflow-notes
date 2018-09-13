@@ -67,7 +67,7 @@ Network Cost Function
 Summary
 ^^^^^^^^^^^^
 - output layer的neuron model决定了整个神经网络的loss的计算方式
-- 对于mini/full batch learning method而言，整个神经网络的cost function被定义为“batch中每个sample的loss的均值”
+- 对于mini/full batch learning method而言，整个神经网络的cost function被定义为“batch中每个sample的loss的均值”，见《tf实战》p90函数loss()中使用了tf.reduce_mean()
 - 如果网络loss的定义中是几个项相加，TF采用的方法是先定义各个子项，然后加起来。例如，对卷积网络中全链接层的weight进行regularization时（除去卷积层和softmax层的weight），是如何处理的，《tf实战》5.2
 
 回归场景的loss
@@ -86,6 +86,10 @@ Euclidean(欧几里德) loss
 
 多分类场景的loss
 ^^^^^^^^^^^^^^^^^^^^
+使用softmax作为神经网络最后一层输出，在testing set上计算的是“准确率”，而非loss。
+
+loss when trainning
++++++++++++++++++++++
 一个softmax group包括多个neurons，它们作为一个整体作为output layer时的loss称为“Cross Entropy(互熵)”。下图是“一条训练数据”的loss计算方法。
 
 .. image:: img/softmax-loss-1.jpg
@@ -98,9 +102,12 @@ Euclidean(欧几里德) loss
 
 来举个例子吧。假设一个5分类问题，然后一个样本I的标签y=[0,0,0,1,0]，也就是说样本I的真实标签是4，假设模型预测的结果概率（softmax的输出）p=[0.2,0.3,0.4,0.6,0.5]，可以看出这个预测是对的，那么对应的损失L=-log(0.6)，也就是当这个样本经过这样的网络参数产生这样的预测p时，它的损失是-log(0.6)。那么假设p=[0.2,0.3,0.4,0.1,0.5]，这个预测结果就很离谱了，因为真实标签是4，而你觉得这个样本是4的概率只有0.1（远不如其他概率高，如果是在测试阶段，那么模型就会预测该样本属于类别5），对应损失L=-log(0.1)。那么假设p=[0.2,0.3,0.4,0.3,0.5]，这个预测结果虽然也错了，但是没有前面那个那么离谱，对应的损失L=-log(0.3)。我们知道log函数在输入小于1的时候是个负数，而且log函数是递增函数，所以-log(0.6) < -log(0.3) < -log(0.1)。简单讲就是你预测错比预测对的损失要大，预测错得离谱比预测错得轻微的损失要大。
 
-Implementation in TF
-+++++++++++++++++++++++++++
+Implementation in TF when training：
 《tf实战》p90 def loss()
+
+loss when testing
+++++++++++++++++++++++++++++
+《tf实战》p91 tf.nn.in_top_k()
 
 .. _error-surface:
 
