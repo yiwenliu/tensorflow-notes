@@ -89,7 +89,10 @@ Create a Layer
 ^^^^^^^^^^^^^^^^^^^
 由layers.py模块实现。
 
-- tf
+卷积
++++++++
+
+1. tf
 
 .. code-block:: python
   :linenos:
@@ -104,7 +107,7 @@ Create a Layer
     bias = tf.nn.bias_add(conv, biases)
     conv1 = tf.nn.relu(bias, name=scope)
 
-- slim
+2. slim
 
 .. code-block:: python
   :linenos:
@@ -119,11 +122,50 @@ slim.conv2d(), `tutorial <https://www.tensorflow.org/api_docs/python/tf/contrib/
 - weights_regularizer=None,
 - biases_initializer=tf.zeros_initializer(),
 
+3. 两者的区别
+
+- 在slim.conv2d()的参数列表中，初始化weights矩阵时，并未像tf那样指定shape，因为slim.conv2d()设定了num_outputs和kernel_size两个参数，就没有必要再设定weights的shape了，这样做，反而更明了。
+- 在slim.conv2d()的参数列表中包括了bias，如此，就不必像tf那样初始化bias时要指定其shape
+- 在slim.conv2d()的参数列表中包括了神经元的“激活函数”，如此，就不必像tf那样“显示调用”tf.nn.bias_add()以及tf.nn.relu()了
+- slim.conv2d()有weights_regularizer参数，可以和tf处理regularization的方式——《tf实战》p86——进行比较，简单不少
+- slim.conv2d()的scope参数——Optional scope for variable_scope.就不用像tf那样，显示调用with tf.variable_scope('xxx')了。
+
+池化
+++++++
+
+.. code-block:: none
+    :linenos:
+
+    #tf
+    tf.nn.max_pool(conv1, ksize=[1,3,3,1], strides=[1,2,2,1])
+    #slim
+    slim.max_pool2d(conv1, kernel_size=[3,3], stride=2)
+
+比较发现：
+
+- slim的shape参数的设置比较容易理解，而tf设置的4-d shape很容易迷惑
+
 .. _arg-scope:
 
 Scopes
 ^^^^^^^^
-arg_scope.py模块，涉及到一个新的 :ref:`scope mechanisms <scope>` 的概念，在 `github page <https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/slim#scopes>`_ 中详述了arg_scope()函数的意义和用法，另可见 `def arg_scope() in tf tutorial <https://www.tensorflow.org/api_docs/python/tf/contrib/framework/arg_scope>`_
+tf中所有socpe的概念都是为了在其范围内定义一个统一的参数，使代码更加简洁。
+
+arg_scope.py模块，涉及到一个新的 :ref:`scope mechanisms <scope>` 的概念——allows a user to specify one or more operations and a set of arguments which will be passed to each of the operations defined in the arg_scope（见函数原型）. 
+
+在 `github page <https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/slim#scopes>`_ 中详述了如下内容：
+
+- 引入arg_scope()函数的原因
+- 示例程序
+
+另可见 `def arg_scope() in tf tutorial <https://www.tensorflow.org/api_docs/python/tf/contrib/framework/arg_scope>`_
+
+函数原型如下：
+
+.. code-block:: python
+    :linenos:
+
+    slim.arg_scope([a list of operations], arg1=xxx, arg2=xxx, ...)
 
 Training Models
 -----------------

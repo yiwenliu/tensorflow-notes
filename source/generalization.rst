@@ -22,9 +22,34 @@ L2 Regularization
 对training set进行预处理
 ------------------------------
 
+.. _dropout:
+
 Dropout
 -------------------
-详见 :ref:`CNN-Dropout <dropout>`
+
+Dropout概念的出处
+^^^^^^^^^^^^^^^^^^^
+Dropout来自于论文 `Improving neural networks by preventing co-adaptation of feature detectors <https://arxiv.org/abs/1207.0580>`_, 作者是鼎鼎有名的Hinton。虽然论文链接中指给出了summary，但是依然信息量巨大：
+
+    - 手段就是“ randomly omit half of the feature detectors on each training case. ”
+    - 关于co-adaptation，论文摘要中给出了2个关键表达：“context of several other specific feature detectors” v.s. " internal contexts"
+    - 应用场景： a large feedforward neural network+ trained on a small training set
+
+更加深入地理解，可以看看Hinton和Alex两牛2012的论文《ImageNet Classification with Deep Convolutional Neural Networks》
+
+droput原理
+^^^^^^^^^^^^^^
+`正则化方法 <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“Dropout”部分，要注意：
+
+- 使用mini-batch learning method时，在mini-batch中的每一个training case，隐去的神经元必须是一样的。因为按照BP的原理，把一个mini-batch中的所有training case运算一个来回（FP+BP），weights才会迭代一次，但是，隐去的神经元的weights不更新。
+
+Usage
+^^^^^^^^
+1. AlexNet“首次”在最后的几个“全连接层”使用了Dropout，以随机忽略一部分neurons。注意，并非在“卷积层”使用dropout。见《tensorflow实战》p98(2)的描述，但是书中没有给出代码。
+
+2. 示例代码见《tensorflow实战》p82，Dropout层用在了全连接层的后面，softmax之前。
+
+3. tensor经过dropout后的变化可以参见 `谈谈Tensorflow的dropout <http://www.jianshu.com/p/c9f66bc8f96c>`_
 
 .. _data-aug:
 

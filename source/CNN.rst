@@ -41,15 +41,26 @@ CNN的好处
 
 术语解释
 -------------
-1. 卷积核:feature detector
+1. 卷积核
+
+- 又可称为"feature detector". 
+- shape is [filter_height, filter_width, in_channel, out_channel]，
+
 2. feature map：每个卷积核生成的另一幅图像
+
 3. 通道：包括
 
 - in_channel, 卷积前的图像，例如，RGB就是3通道, ARGB就是4通道；或者是上一卷积层中卷积核的数量
 - out_channels, out_channels==本卷积层的kernel_numbers
 
-4. replicated feature approach: use many diffrent copies of the same feature detector with **different positions**.
-5. CNN中的“C”，应该是代表了replicated feature approach。把图像的多维数据摊开到一维，移动卷积核，与图像数据相乘求和，这种计算过程，和两个离散信号求卷积的过程相同。
+4. replicated feature approach
+
+- 定义：use many diffrent copies of the same feature detector with **different positions**.
+- CNN中的“C”，应该是代表了replicated feature approach。把图像的多维数据摊开到一维，移动卷积核，与图像数据相乘求和，这种计算过程，和两个离散信号求卷积的过程相同。
+
+5. Training data
+
+- shape is [batch-size, channels, height, width].
 
 Graph（网络结构）
 --------------------
@@ -125,34 +136,20 @@ padding的本意是“填充”，在tf的卷积和池化函数中，都会出�
 
 卷积运算时参数的个数
 ----------------------
-以第一层卷积为例，需要的参数个数是：
+在创建卷积核所对应的参数矩阵时，每一个卷积层的参数矩阵的shape是[filter_height, filter_width, in_channel, out_channel]。我自己产生了一个疑问——in_channel这个参数是否必须？换言之，一个"filter kernel"在不同channel上进行卷积运算时的参数是否相同，如果相同，in_channel仅仅就是为了计算方便，在不同的in_channel扩展相同的filter_height*filter_width？
 
-(channel number) x (kernel number) x (kernel size + 1)
+答案是——一个"filter kernel"在不同channel上进行卷积运算时的参数不同，换言之，in_channel这个参数是必须的并且是有现实意义的。
+
+每一层卷积层需要的参数个数的公式是：
+
+.. code-block:: none
+    :linenos:
+
+    out_channel * (filter_height * filter_width * in_channel) + out_channel
+
+上述公式中：
+
+- (filter_height * filter_width * in_channel)是一个卷积核的参数矩阵
+- 最后"+ out_channel"的意义是bias
 
 例如，AlexNet中第1层卷积的参数达到了35k，见《tf实战》p99
-
-.. _dropout:
-
-Dropout
-----------
-Usage
-^^^^^^^^
-AlexNet首次在最后的几个全连接层使用了Dropout，以随机忽略一部分呢neurons
-
-在《tensorflow实战》ch5，Dropout层用在了全连接层的后面，softmax之前。
-
-Intro
-^^^^^^^
-下面的链接很好的解释了Dropout的概念及其本质。
-http://www.jianshu.com/p/c9f66bc8f96c
-
-`this article <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“Dropout”部分讲的很好
-
-Implementation In TF
-----------------------------
-可以参考《tf实战》p88, p101。
-
-有几点需要注意：
-
-1. 激活函数不能丢
-2. 卷积后还要加上bias，才能作为激活函数的输入

@@ -26,7 +26,7 @@ Welcome to tensorflow-notes's documentation!
    file_IO
    protocol-buffer
    tfrecord
-   tensorflow-slim
+   slim
    tf-visual
    dataset
    gradient-descent
