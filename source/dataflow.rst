@@ -1,5 +1,12 @@
 Dataflow Programming Model
 ============================
+What is programming model
+--------------------------------
+Programming model，编程模型，是一种高层抽象；它独立于“编程语言”，用于扩充其"execution model"。例如，
+
+- Mapreduce编程模型，用于大数据并行处理。
+- POSIX thread library提供的API，让C语言程序也有了创建和操纵线程的能力（C语言的execution model不支持线程操作）。
+
 What is Dataflow Programming
 -----------------------------
 models a program as a directed graph of the data flowing between operations

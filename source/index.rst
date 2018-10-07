@@ -35,6 +35,7 @@ Welcome to tensorflow-notes's documentation!
    ml2nn
    neuron
    NN
+   NN_loss
    CNN
    FCN
    

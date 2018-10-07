@@ -43,6 +43,12 @@ BP算法的思想
 4. 对每一个training data计算1-3步
 5. 由Δ求得梯度。
 
+BP的推导
+^^^^^^^^^^^^
+推导过程参考了 `BP算法的理解与推导 <https://zhuanlan.zhihu.com/p/45190898>`_
+
+.. image:: img/bp.jpg
+
 weight matrix initialization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 详见 Andrew Ng week5 p30
@@ -62,76 +68,7 @@ BP算法的弱点
 Construct a NN in TF
 ---------------------------
 
-Network Cost Function
-------------------------
-Summary
-^^^^^^^^^^^^
-- output layer的neuron model决定了整个神经网络的loss的计算方式
-- 对于mini/full batch learning method而言，整个神经网络的cost function被定义为“batch中每个sample的loss的均值”，见《tf实战》p90函数loss()中使用了tf.reduce_mean()
-- 如果网络loss的定义中是几个项相加，TF采用的方法是先定义各个子项，然后加起来。例如，对卷积网络中全链接层的weight进行regularization时（除去卷积层和softmax层的weight），是如何处理的，《tf实战》5.2
 
-回归场景的loss
-^^^^^^^^^^^^^^^^^^^^
-Euclidean(欧几里德) loss
-
-（from Andrew Ng Week6）
-
-.. image:: img/cost-func.png
-
-二分类场景的loss
-^^^^^^^^^^^^^^^^^^^^
-使用sigmoid neuron作为output layer
-
-.. image:: img/sigmoid-loss.png
-
-多分类场景的loss
-^^^^^^^^^^^^^^^^^^^^
-使用softmax作为神经网络最后一层输出，在testing set上计算的是“准确率”，而非loss。
-
-loss when trainning
-+++++++++++++++++++++
-一个softmax group包括多个neurons，它们作为一个整体作为output layer时的loss称为“Cross Entropy(互熵)”。下图是“一条训练数据”的loss计算方法。
-
-.. image:: img/softmax-loss-1.jpg
-
-首先L是损失。Sj是softmax的输出向量S的第j个值，前面已经介绍过了，表示的是这个样本属于第j个类别的概率。yj前面有个求和符号，j的范围也是1到类别数T，因此y是一个1*T的向量，里面的T个值，而且只有1个值是1，其他T-1个值都是0。那么哪个位置的值是1呢？答案是真实标签对应的位置的那个值是1，其他都是0。所以这个公式其实有一个更简单的形式：
-
-.. image:: img/softmax-loss-2.jpg
-
-当然此时要限定j是指向当前样本的真实标签。
-
-来举个例子吧。假设一个5分类问题，然后一个样本I的标签y=[0,0,0,1,0]，也就是说样本I的真实标签是4，假设模型预测的结果概率（softmax的输出）p=[0.2,0.3,0.4,0.6,0.5]，可以看出这个预测是对的，那么对应的损失L=-log(0.6)，也就是当这个样本经过这样的网络参数产生这样的预测p时，它的损失是-log(0.6)。那么假设p=[0.2,0.3,0.4,0.1,0.5]，这个预测结果就很离谱了，因为真实标签是4，而你觉得这个样本是4的概率只有0.1（远不如其他概率高，如果是在测试阶段，那么模型就会预测该样本属于类别5），对应损失L=-log(0.1)。那么假设p=[0.2,0.3,0.4,0.3,0.5]，这个预测结果虽然也错了，但是没有前面那个那么离谱，对应的损失L=-log(0.3)。我们知道log函数在输入小于1的时候是个负数，而且log函数是递增函数，所以-log(0.6) < -log(0.3) < -log(0.1)。简单讲就是你预测错比预测对的损失要大，预测错得离谱比预测错得轻微的损失要大。
-
-Implementation in TF when training：
-《tf实战》p90 def loss()
-
-loss when testing
-++++++++++++++++++++++++++++
-《tf实战》p91 tf.nn.in_top_k()
-
-.. _error-surface:
-
-Error Surface&等高线
-^^^^^^^^^^^^^^^^^^^^^
-- 在Hilton和Andrew的课中，多次提及这个概念。
-- 在图中，可以看出weights的运行轨迹。
-- 下图就是一个linear neuron的error surface的垂直截面图和水平截面图，水平轴是each weight，垂直轴是error。
-
-.. image:: img/nn-1.png
-
-从上图可得：
-
-- 梯度下降法的作用就是不断调整参数，使得模型的误差由“碗沿”降到“碗底”，参数由椭圆外部移动到椭圆的中心附近。
-- weights每一个分量的变化(**gradient descent**)的矢量和就是cost function收敛的方向
-
-OHEM(Online Hard Sample Mining)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-在MTCNN的face/nonface classification task中，使用了这个概念对训练的loss进行修改。
-
-Hard Sample & Easy Sample
-+++++++++++++++++++++++++++
-有一篇论文详述了 `SAMPLE IMPORTANCE IN TRAINING DEEP NEURAL
-NETWORKS <https://openreview.net/pdf?id=r1IRctqxg>`_
 
 使用NN的一般流程
 ------------------
