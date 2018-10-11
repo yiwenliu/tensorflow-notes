@@ -2,9 +2,9 @@ TF Visualization
 ==================
 可视化的实现方式
 ------------------
-Package **summary**, `on github <https://github.com/tensorflow/tensorflow/tree/r1.6/tensorflow/python/summary>`_, provide a way to **export condensed information about a model**, which is then accessible in tools such as TensorBoard. 因为涉及到“数据导出”，即结构化数据的序列化和文件保存，所以不可避免的要用到protobufs.
+Package **summary**, `on github <https://github.com/tensorflow/tensorflow/tree/r1.6/tensorflow/python/summary>`_, provide a way to **export condensed information about a model**, which is then accessible in tools such as TensorBoard. 因为涉及到“数据导出”，即结构化数据的序列化和文件保存，所以不可避免的要用到 :ref:`protobufs <protobuf-tf>`.
 
-Package **summary** 用于TensorFlow Event Processing, and  is primarily being developed to support **TensorBoard**, but it can be used by anyone who wishes to analyze or visualize TensorFlow **events files**.
+Package **summary**, `api docs <https://www.tensorflow.org/api_docs/python/tf/summary>`_, 用于TensorFlow Event Processing, and  is primarily being developed to support **TensorBoard**, but it can be used by anyone who wishes to analyze or visualize TensorFlow **events files**.
 
 .. _write-event-file:
 

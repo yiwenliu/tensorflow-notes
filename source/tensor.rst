@@ -8,22 +8,50 @@ Very briefly, a tensor is an N-dimensional array containing the same type of dat
 1. its data type and 
 2. the value of each of the N dimension.
 
-In python, tensor is a class, <class 'tensorflow.python.framework.ops.Tensor'>. The data flowing in the graph are instance of Tensor.
+class Tensor
+------------------
+In `tf python API <https://www.tensorflow.org/api_docs/python/tf/Tensor>`_, Tensor is a class, <class 'tensorflow.python.framework.ops.Tensor'>. The data flowing in the graph are instance of Tensor.
+
+从class Tensor的 `官方文档 <https://www.tensorflow.org/api_docs/python/tf/Tensor>`_, 可得对于tensor的理解，见如下代码的注释：
+
+.. code-block:: python
+    :linenos:
+
+    #c, d, and e are Tensor objects, a symbolic(象征性的) handle to one of the outputs of an Operation. 
+    #c, d, and e do not hold the values of that operation's output, but build a dataflow connection between operations
+    c = tf.constant([[1.0, 2.0], [3.0, 4.0]])
+    d = tf.constant([[1.0, 1.0], [0.0, 1.0]])
+    e = tf.matmul(c, d)
+    #如果要得到“the value that `e` represents”，就得Execute the graph
+    sess = tf.Session() # Construct a `Session` to execute the graph.
+    result = sess.run(e) #result就不是Tensor对象了，而是numpy.ndarray对象
 
 Tensor Type
 --------------
 Represents the type of the elements in a Tensor. `tf.DType <https://www.tensorflow.org/api_docs/python/tf/DType>`_
 
+tensor name
+---------------------
+按照一定的规则，由 :ref:`operation's name <ops-name>` 来决定。
+
+A tensor name has the form "<OP_NAME>:<i>" where:
+
+- "<OP_NAME>" is the name of the operation that produces it.
+- "<i>" is an integer representing the index of that tensor among the operation's outputs.
+
 Tensor-like objects
 --------------------
-tf中有5种 `tensor-like objects <https://www.tensorflow.org/programmers_guide/graphs#tensor-like_objects>`_ ,它们在进入operation进行计算时，都将被转换为tf.Tensor
+tf中有5种 `tensor-like objects <https://www.tensorflow.org/programmers_guide/graphs#tensor_like_objects>`_ ,它们在进入operation进行计算时，都将被转换为tf.Tensor
+
+Manipulate the Shape
+----------------------
 
 The shape of numpy's array
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 https://stackoverflow.com/questions/22053050/difference-between-numpy-array-shape-r-1-and-r
 
 tensor shape and tensor rank
-------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 +------+-----------+------------------+---------------------------------------+-------+
 | rank | dimension |     数学实例     |               python例子              | shape |
 +------+-----------+------------------+---------------------------------------+-------+
@@ -34,8 +62,7 @@ tensor shape and tensor rank
 |   2  |    2-D    |   矩阵(数据表)   | m = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] | [3,3] |
 +------+-----------+------------------+---------------------------------------+-------+
 
-Manipulate the Shape
-----------------------
+
 Get the Size of Tensor
 ^^^^^^^^^^^^^^^^^^^^^^^^
 得到tensor所有元素的总个数， `tf.size() <https://www.tensorflow.org/api_docs/python/tf/size>`_
@@ -157,22 +184,3 @@ Evaluating tensor和executing a graph是一个意思。
     >>> type(v)
     <class 'numpy.ndarray'>
 
-name
------
-按照一定的规则，由 :ref:`operation's name <ops-name>` 来决定。
-
-A tensor name has the form "<OP_NAME>:<i>" where:
-
-- "<OP_NAME>" is the name of the operation that produces it.
-- "<i>" is an integer representing the index of that tensor among the operation's outputs.
-
-
-
-Create a Tensor
------------------
-- tf.range()
-- tf.zeros(shape,dtype=tf.float32,name=None)
-- tf.zeros_like(tensor,
-    dtype=None,
-    name=None,
-    optimize=True)

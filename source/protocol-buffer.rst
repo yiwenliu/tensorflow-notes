@@ -206,6 +206,8 @@ map
 -----
 map在field的定义中的位置是filed-type所占的位置，详见 `Maps <https://developers.google.com/protocol-buffers/docs/proto#maps>`_
 
+.. _protobuf-tf:
+
 TF中的应用
 ------------
 General
