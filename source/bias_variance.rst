@@ -1,5 +1,7 @@
 Bias v.s. Variance
 =======================
+用J :subscript:`train` (Θ)的绝对值衡量bias, 用J :subscript:`train` (Θ)和J :subscript:`cv` (Θ)的相对值衡量variance。
+
 Definition
 -------------
 偏差：描述的是预测值（估计值）的期望与真实值之间的差距。偏差越大，越偏离真实数据，如下图第二行所示。
