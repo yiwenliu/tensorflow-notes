@@ -31,6 +31,7 @@ Welcome to tensorflow-notes's documentation!
    dataset
    gradient-descent
    opt_algorithm
+   bias_variance
    generalization
    ml2nn
    neuron

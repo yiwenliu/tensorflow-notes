@@ -53,7 +53,7 @@ Data Augmentation
 2. 不Augmentation无法进行运算，例如，在MTCNN中，对于人脸分类这个单一任务，依据WIDER FACE数据集的annotation只有抠出人脸数据，所以必须利用滑动窗口从原始数据集中获得正样本，负样本和中间样本。
 
 tf中对于data augmentation的支持
-------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 - tf.image.random_flip_left_right(),随机的水平翻转
 - tf.random_crop(),随机剪切24x24大小的图片
 - tf.image.random_brightness(), tf.image.random_contrast()设置随机的亮度和对比度
@@ -61,7 +61,7 @@ tf中对于data augmentation的支持
 
 预处理
 ---------
-“预处理”，可能是拿到数据集后的第3步操作（第2步可选）。
+“预处理”，可能是拿到数据集后的第3步操作（第2步可选）。并且，应该只需要对training set进行“预处理”。
 
 为什么需要预处理
 ^^^^^^^^^^^^^^^^^^^
