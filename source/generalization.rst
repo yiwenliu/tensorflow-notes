@@ -1,34 +1,29 @@
-泛化
-==========
-How To Judge
--------------------
-有很多防止overfit的方法，但是首先要判断是否发生了overfit，并辨别成因，使用对应的解决方法。
+Generalization(泛化)
+==============================
 
-显然，只有把train set和validation set的cost function曲线放在一起，才能判断是否发生了ovefit。
+Regularization(正规化)
+---------------------------
 
 L1 Regularization
--------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: img/l1-reg.png
 
 L2 Regularization
--------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: img/l2-reg.png
 
-从《tf实战》5.3的例子看出，在一个神经网络中，
+1. 从《tf实战》5.3的例子看出，在一个神经网络中，
 
-1. 并非要对每一层的weights进行penalization。书中的例子，只对全连接层进行了penalization,而对于前面的卷积层、后面的softmax都没有进行这个操作。
-2. bias不参与regularization
-
-对training set进行预处理
-------------------------------
+    - 并非要对每一层的weights进行penalization。书中的例子，只对整个神经网络中间的全连接层进行了regularization(p89),而对于前面的卷积层（p88）、后面的softmax都没有进行这个操作。
+    - bias不参与regularization
 
 .. _dropout:
 
 Dropout
--------------------
+^^^^^^^^^^^^
 
 Dropout概念的出处
-^^^^^^^^^^^^^^^^^^^
+++++++++++++++++++++++++++
 Dropout来自于论文 `Improving neural networks by preventing co-adaptation of feature detectors <https://arxiv.org/abs/1207.0580>`_, 作者是鼎鼎有名的Hinton。虽然论文链接中指给出了summary，但是依然信息量巨大：
 
     - 手段就是“ randomly omit half of the feature detectors on each training case. ”
@@ -38,13 +33,13 @@ Dropout来自于论文 `Improving neural networks by preventing co-adaptation of
 更加深入地理解，可以看看Hinton和Alex两牛2012的论文《ImageNet Classification with Deep Convolutional Neural Networks》
 
 droput原理
-^^^^^^^^^^^^^^
+++++++++++++++++++++++++++
 `正则化方法 <http://blog.csdn.net/u012162613/article/details/44261657>`_ 中的“Dropout”部分，要注意：
 
 - 使用mini-batch learning method时，在mini-batch中的每一个training case，隐去的神经元必须是一样的。因为按照BP的原理，把一个mini-batch中的所有training case运算一个来回（FP+BP），weights才会迭代一次，但是，隐去的神经元的weights不更新。
 
 Usage
-^^^^^^^^
+++++++++++++++++++++++++++
 1. AlexNet“首次”在最后的几个“全连接层”使用了Dropout，以随机忽略一部分neurons。注意，并非在“卷积层”使用dropout。见《tensorflow实战》p98(2)的描述，但是书中没有给出代码。
 
 2. 示例代码见《tensorflow实战》p82，Dropout层用在了全连接层的后面，softmax之前。
@@ -70,3 +65,6 @@ LRN,局部响应归一化，AlexNet首次引入。用在神经网络结构中的
 
 使用梯度下降优化算法
 ------------------------
+
+对training set进行预处理
+------------------------------
