@@ -29,6 +29,7 @@ Welcome to tensorflow-notes's documentation!
    slim
    tf-visual
    dataset
+   svm
    gradient-descent
    opt_algorithm
    bias_variance
