@@ -43,6 +43,7 @@ hypothesis
 
 - svm的hypothesis不像LR输出的是probability，而是make a prediction of y=1 or 0 directly.
 - 公式中的X即可能是original kernel，又可能是经过kernel function扩维后的new features.
+- 所谓decision boundary就是公式中的 Θ :superscript:`T` x
 
 cost function
 ----------------
@@ -69,4 +70,32 @@ SVM的underfitting/overfitting会受到下列因素的影响，《ML》p61：
 
 Large Margin Classfier
 --------------------------
-SVM又称为Large Margin Classfier
+1. Margin: distance between decision boundary and examples.
+
+2. SVM又称为Large Margin Classfier,为什么说SVM的cost function是large margin的原因?如下图，SVM的optimization object满足一定的条件时发生了变化。
+
+.. image:: img/svm-db.png
+
+由上图的cost function求得的Θ构成的decision boundary就会是下图的“黑色线”，而不是“绿色”或“紫色”
+
+.. image:: img/svm-large-margin.png
+
+3. 下面2副图是SVM的optimization object使用向量内积时的转化
+
+.. image:: img/svm_db_1.png
+
+.. image:: img/svm_db_2.png
+
+而且，下面这副图说明了，既要使||Θ||最小化，又要满足constraints对于||Θ||取值范围的限定，只能是 **projection** 尽量大，所以SVM选择下图右侧的绿色的decision boundary。
+
+.. image:: img/svm_db_3.png
+
+数学含义
+-----------------
+用向量内积来理解optimization object of SVM
+
+向量内积有2种计算方式，当两个向量的夹角>90时，是负数，如下图
+
+.. image:: img/svm-inner-product.png
+
+在讲义中例子是vector，如果是多维数组的内积呢？
