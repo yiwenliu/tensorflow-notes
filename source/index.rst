@@ -7,6 +7,7 @@ Welcome to tensorflow-notes's documentation!
 ============================================
 
 .. toctree::
+   :numbered:
    :maxdepth: 2
    :caption: Contents:
    
@@ -40,6 +41,9 @@ Welcome to tensorflow-notes's documentation!
    NN_loss
    CNN
    FCN
+   NLP/ner
+   NLP/spacy
+   NLP/pos
    
 
 Indices and tables
