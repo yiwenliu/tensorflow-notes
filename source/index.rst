@@ -41,13 +41,11 @@ Welcome to tensorflow-notes's documentation!
    NN_loss
    CNN
    FCN
-<<<<<<< HEAD
    recommendation-sys
-=======
    NLP/ner
    NLP/spacy
    NLP/pos
->>>>>>> 54deaca3da676d9174ad6fe3667a49d550e6bb32
+
    
 
 Indices and tables

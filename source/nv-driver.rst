@@ -115,8 +115,11 @@ Select "Clear Secure Boot keys" (You will have the option "Install default Secur
 After you cleared the Secure Boot Keys, Secure Boot will be automatically disabled. You can set the OS Type to Other OS now.
 
 （2）执行驱动安装的run文件
-$sudo sh ./NVIDIA*.run --no-opengl-files
-（如果安装不正常则带 --uninstall 参数卸载）
+
+.. code-block:: none
+    :linenos:
+
+    $sudo sh ./NVIDIA*.run --no-opengl-files
 
 - 报错The distribution-provided pre-install script failed!不必理会，继续安装；
 - 最重要的一步，安装程序问你是否使用nv的xconfig文件，nvidia-xconfig, 这里一点要选yes，否则在启动x-window时不会使用nv驱动。
