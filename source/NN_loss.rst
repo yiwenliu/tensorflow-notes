@@ -88,6 +88,9 @@ TF提供了两种方法：
 
 loss when testing
 ^^^^^^^^^^^^^^^^^^^^^^^^
+注意：使用softmax作为神经网络最后一层输出，在testing set上计算的是“准确率”，而非loss。
+
+
 《tf实战》p91 tf.nn.in_top_k()
 
 OHEM(Online Hard Sample Mining)

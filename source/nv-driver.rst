@@ -105,12 +105,22 @@ $sudo service lightdm stop
 
 7. 安装驱动
 
-执行驱动安装的run文件
-$sudo sh ./NVIDIA*.run
+（1）进入blos关闭secure boot （华硕还有fast boot）
+Make sure the "OS Type" is "Windows UEFI"
+
+Enter "Key Management"
+
+Select "Clear Secure Boot keys" (You will have the option "Install default Secure Boot keys" to restore the default keys after you cleared the Secure Boot Keys)
+
+After you cleared the Secure Boot Keys, Secure Boot will be automatically disabled. You can set the OS Type to Other OS now.
+
+（2）执行驱动安装的run文件
+$sudo sh ./NVIDIA*.run --no-opengl-files
 （如果安装不正常则带 --uninstall 参数卸载）
 
 - 报错The distribution-provided pre-install script failed!不必理会，继续安装；
 - 最重要的一步，安装程序问你是否使用nv的xconfig文件，nvidia-xconfig, 这里一点要选yes，否则在启动x-window时不会使用nv驱动。
+- –-no-opengl-files：表示只安装驱动文件，不安装OpenGL文件。这个参数不可省略，否则会导致登陆界面死循环，英语一般称为”login loop”或者”stuck in login”。因为NVIDIA的驱动默认会安装OpenGL，而Ubuntu的内核本身也有OpenGL、且与GUI显示息息相关，一旦NVIDIA的驱动覆写了OpenGL，在GUI需要动态链接OpenGL库的时候就引起问题。
 
 8. 重启X 服务
 

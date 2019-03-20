@@ -40,6 +40,7 @@ Welcome to tensorflow-notes's documentation!
    NN_loss
    CNN
    FCN
+   recommendation-sys
    
 
 Indices and tables
