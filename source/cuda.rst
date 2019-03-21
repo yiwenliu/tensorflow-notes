@@ -1,7 +1,7 @@
 安装CUDA
-----------------------------
+==============
 版本
-^^^^^^
+----------------
 tensorflow, cuda, cudnn的版本必须要对应，否则在import tensoflow时，会报找不到.so的错误
 
 CUDA 8.0→cuDNN v5.1 / CUDA 8.0→cuDNN v6.0 / CUDA 9.0→cuDNN v7.0.5
@@ -9,12 +9,12 @@ CUDA 8.0→cuDNN v5.1 / CUDA 8.0→cuDNN v6.0 / CUDA 9.0→cuDNN v7.0.5
 另外，tensorflow 1.6/1.5和CUDA ９.0对应，1.4/1.3和CUDA 8.0对应
 
 cuda安装包
-^^^^^^^^^^^^^
+----------------
 1. 在下述的ubuntu的两个版本中，在cuda的下载页面都是选择.run安装文件
 2. 安装路径/usr/local/cuda-x.x
 
 安装版本匹配的gcc
-^^^^^^^^^^^^^^^^^^^^^^^
+--------------------
 ubuntu中的gcc版本往往过高，ubuntu16是gcc6， ubuntu18是gcc7
 
 1. cuda8使用 gcc-5.4
@@ -40,7 +40,7 @@ ubuntu中的gcc版本往往过高，ubuntu16是gcc6， ubuntu18是gcc7
     $sudo ln -s g++-x g++
 
 install on ubuntu16
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------
 CUDA安装包里集成了显卡驱动，下载时请选择cuda8.0，否则在import tensorflow时，会报错“找不到*.so.8”。
 
 安装路径/usr/local/cuda-8.0
@@ -48,7 +48,7 @@ CUDA安装包里集成了显卡驱动，下载时请选择cuda8.0，否则在imp
 安装过程见《tf实战》p43
 
 install on ubuntu18
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 
 .. code-block:: none
     :linenos:
@@ -83,15 +83,15 @@ install on ubuntu18
     $source ~/.bashrc
 
 卸载
-^^^^^^^^
+----------------
 run the uninstall scripte in /usr/local/cuda-9.2/bin
 
 安装cuda中包含的nv驱动
-^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------
 在cuda的安装过程中，没有安装其中包括的nv驱动，
 
 sudo <cudaInstaller>.run -silent -driver
 
 设置CUDA的路径
-^^^^^^^^^^^^^^^^^^^
+--------------------
 on ubuntu16, 过程见《tf实战》p44
