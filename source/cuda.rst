@@ -1,5 +1,12 @@
 安装CUDA
 ----------------------------
+版本
+^^^^^^
+tensorflow, cuda, cudnn的版本必须要对应，否则在import tensoflow时，会报找不到.so的错误
+
+CUDA 8.0→cuDNN v5.1 / CUDA 8.0→cuDNN v6.0 / CUDA 9.0→cuDNN v7.0.5
+
+另外，tensorflow 1.6/1.5和CUDA ９.0对应，1.4/1.3和CUDA 8.0对应
 
 cuda安装包
 ^^^^^^^^^^^^^
